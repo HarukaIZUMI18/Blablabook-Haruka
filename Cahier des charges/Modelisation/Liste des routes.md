@@ -1,18 +1,22 @@
 # Liste des routes API
 
+## Collection non public
+
 1. Authentification (/auth)
-   - Inscription (/register) POST
-   - Connection (/login) POST
+   - POST /auth/register > Inscription 
+   - POST /auth/login > Connection 
 
 2. Gestion profil (/user)
-    - Mon profil (/profil) GET
-    - Ajout livre à sa bibliothèque (/addBook) POST 
-    - Supprimer livre (bibliothèque user) (/deleteBook/:id) DELETE
-    - Bibliothèque user (/library) GET
-    - Modifier status livre bibliothèque (Lu, A lire, En cours, Abandonnées, En pause) (/:id/status) PATCH
+    - GET /user/me > Mon profil
 
-3. Livre (/book)
-    - Listes des livres (/books) GET
-    - Recherche (/research) POST
-    - Détail livre (/:id) GET
-    - Liste de livre random (/randomList) GET
+3. Collection (/collection)
+    - GET /collection > collection de l'utilisateur
+    - POST /collection/:id > Ajout livre à sa bibliothèque
+    - DELETE /collection/:id > Supprimer un livre de sa collection
+    - PATCH /collection/:id > Modifier le status des livres de la collection (Lu, A lire, En cours, Abandonnées, En pause)
+
+4. Livre (/book)
+    - GET /books > Listes des livres
+    - GET /book/:id > Détail d'un livre
+    - GET /book/search?q= > Recherche 
+    - GET /book/random > Liste de livre random
