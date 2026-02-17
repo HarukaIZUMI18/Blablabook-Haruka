@@ -1,12 +1,19 @@
-# Front-end
+## Front-end
 
 - Framework : SVELTE
 - CSS
 - JS
 
-# Back-end
+## Back-end
 
 - Node js
-- EXpress
+- Express
+- Base de données : PostgreSQL
+- Validation de données: Joi
 - ORM: Sequelize
-- 
+- API externe: Open Library API
+
+## Outil 
+
+- Docker
+
