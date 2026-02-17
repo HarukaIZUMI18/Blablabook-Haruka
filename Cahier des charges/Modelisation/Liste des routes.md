@@ -11,12 +11,12 @@
 
 3. Collection (/collection)
     - GET /collection > collection de l'utilisateur
-    - POST /collection/:id > Ajout livre à sa bibliothèque
-    - DELETE /collection/:id > Supprimer un livre de sa collection
-    - PATCH /collection/:id > Modifier le status des livres de la collection (Lu, A lire, En cours, Abandonnées, En pause)
 
 4. Livre (/book)
-    - GET /books > Listes des livres
+    - GET /book > Listes des livres
     - GET /book/:id > Détail d'un livre
     - GET /book/search?q= > Recherche 
     - GET /book/random > Liste de livre random
+    - POST /book/:id/collection > Ajout livre à sa bibliothèque
+    - DELETE /book/:id/collection > Supprimer un livre de sa collection
+    - PATCH /book/:id/collection > Modifier le status des livres de la collection (Lu, A lire, En cours, Abandonnées, En pause)

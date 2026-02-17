@@ -30,3 +30,8 @@ BlaBlaBook, association fictive de passionnés de lecture souhaitant créer du l
     - Recherche et découverte de nouveaux livres : moteur de recherche par nom de livre.
 
     - Page de détail d'un livre avec les informations liées à ce dernier.
+
+## Evolution possible 
+
+1. Pouvoir mettre un avis une note ou un avis sur un livre
+2. Améliorer la fonction de filtrage par genre, date de publication...
