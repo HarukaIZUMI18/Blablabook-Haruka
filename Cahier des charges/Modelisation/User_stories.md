@@ -1,12 +1,13 @@
-| En tant que | Je souhaite pouvoir | Dans le but de
-| ---         | ---                 | ---
-| Utilisateur | s'inscrire  à l'application | s'authentifier
-| Utilisateur | Se connecter | aller à sa bibliothéque personel de blablabook
-| Utilisateur | Acceder a la homepage | consulter l'etat actuel de blablabook
-| Utilisateur | Rechercher un livre | consulter le detail d'un livre
-| Utilisateur | Voir les details d'un livre | consulter le detail d'un livre
-| Utilisateur | Ajouter un livre à ma collection | ajouter un livre à la collection personelle 
-| Utilisateur | Modifier le status d'un livre | garder un historique de lecture
-| Utilisateur | Supprimer un livre de ma collection | Ne plus la voir dans la bibliothéque
-| Utilisateur | Avoir ma collection privée | Afin de la garder privée
-| Utilisateur | Acceder au site de maniere responsive | Acceder à la bibliothéque sur mobile et desktop
+| En tant que           | Je souhaite pouvoir                   | Dans le but de
+| ---                   | ---                                   | --- 
+| Utilisateur           | M'inscrire  à l'application           | Pouvoir utiliser les fonctionnalité du site
+| Utilisateur           | Me connecter                          | Accéder à ma collection de livres
+| Utilisateur           | Modifier mes information de compte    | Mettre mes données personnelles à jour
+| Utilisateur           | Supprimer mon compte                  | Ne plus avoir de présence sur l'application
+| Utilisateur           | Acceder a la homepage                 | Découvrir les fonctionnalités de l'application
+| Utilisateur           | Rechercher un livre                   | Voir la listes livres disponible
+| Utilisateur           | Voir les details d'un livre           | Savoir si le livre m'intéresse
+| Utilisateur connecté  | Ajouter un livre à ma collection      | Enrichir notre colllection
+| Utilisateur connecté  | Modifier le statut d'un livre         | Garder un historique de lecture
+| Utilisateur connecté  | Supprimer un livre de ma collection   | Ne plus le voir dans la bibliothéque
+| Utilisateur           | Acceder au site de maniere responsive | Acceder à la bibliothéque sur mobile et desktop
