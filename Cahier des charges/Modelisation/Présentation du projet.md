@@ -32,12 +32,12 @@ BlaBlaBook, association fictive de passionnés de lecture souhaitant créer du l
 
     - Page de détail d'un livre avec les informations liées à ce dernier.
 
-## Evolution possible 
+## Evolution possible
 
 1. Pouvoir mettre un avis une note ou un avis sur un livre
 2. Améliorer la fonction de filtrage par genre, date de publication...
 
-## Rôle de chacun 
+## Rôle de chacun
 
 - Kevin Merlo -> Product Owner
 - Haruka IZUMI -> Lead developer front
