@@ -21,6 +21,7 @@ BlaBlaBook, association fictive de passionnés de lecture souhaitant créer du l
 2. Authentification
 
     - Système d'inscription et de connexion / déconnexion (JWT).
+    - Systeme de desinscription du compte
 
 3. Bibliothèque personnelle
 
