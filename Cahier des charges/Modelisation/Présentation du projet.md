@@ -36,3 +36,10 @@ BlaBlaBook, association fictive de passionnés de lecture souhaitant créer du l
 
 1. Pouvoir mettre un avis une note ou un avis sur un livre
 2. Améliorer la fonction de filtrage par genre, date de publication...
+
+## Rôle de chacun 
+
+- Kevin Merlo -> Product Owner
+- Haruka IZUMI -> Lead developer front
+- Sabrya Djennane -> Référente technique: git master
+- Alexandre Loncle -> Lead developer back
