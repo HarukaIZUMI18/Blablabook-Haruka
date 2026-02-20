@@ -41,7 +41,7 @@ services:
   # nom du service
   db:
     # on utilise l'image postgre
-    image: postgres
+    image: postgres:18-alpine
     # nom du conteneur
     container_name: blablabook-database
     # environnement : on déclare les infos nécessaires à notre BDD
