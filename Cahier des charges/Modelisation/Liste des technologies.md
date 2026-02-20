@@ -15,6 +15,7 @@
 - Auth:JWT
 - ORM: Sequelize
 - API externe: Open Library API
+- express-xss-sanitizer
 
 ## Outil
 
