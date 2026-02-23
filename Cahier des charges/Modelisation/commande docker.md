@@ -76,6 +76,12 @@ Affiche les logs en temps réel (follow).
 docker compose logs -f
 ```
 
+Affiche les logs en temps réel (follow) d'un conteneur spécifique.
+
+```bash
+docker compose logs -f <nom_du_conteneur>
+```
+
 ## Connection
 
 Se connecter à la bdd
