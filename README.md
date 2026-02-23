@@ -1,19 +1,27 @@
-# Blablabook
+# Blablabook 
 
-## Installation
+Application de gestion de bibliothèque comprenant une API (Node.js/PostgreSQL) et un Client (Frontend).
 
-### API
+---
+
+## 🚀 Installation avec Docker
+
+### 1. Préparation
+
+Créez un fichier `.docker.env` à la racine du projet en vous basant sur le fichier `.docker.env.exemple`.
+
+### 2. Lancement
+
+Pour construire les images et lancer les services en arrière-plan :
 
 ```bash
-cd api
-npm i
+docker compose up -d
 ```
 
-> Créer le fichier `.env` en vous basant sur le `.env.example`.
+## Architecture des Services
 
-### Client
-
-```bash
-cd client
-npm i
-```
+| Service      | Conteneur             | Port Externe | Image / Runtime                 |
+| ------------ | --------------------- | ------------ | ------------------------------- |
+| **API**      | `blablabook-api`      | `3000`       | Node.js 24-alpine               |
+| **Client**   | `blablabook-client`   | `4173`       | Node.js 24-alpine (Svelte/Vite) |
+| **Database** | `blablabook-database` | `5432`       | PostgreSQL 18-alpine            |
