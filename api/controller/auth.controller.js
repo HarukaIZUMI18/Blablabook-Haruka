@@ -60,4 +60,47 @@ export const authController = {
       updated_at: createUser.updated_at,
     });
   },
+  async login(req, res) {
+    // 1. Validation des données
+    const loginSchema = Joi.object({
+      email: Joi.string().email().required(),
+      password: Joi.string().min(8).required(),
+    });
+
+    const { email, password } = Joi.attempt(req.body, loginSchema);
+
+    // 2. Chercher l'utilisateur
+    const user = await User.findOne({ where: { email } });
+    if (!user) {
+      return res.status(StatusCodes.UNAUTHORIZED).json({
+        message: "Email ou mot de passe incorrect",
+      });
+    }
+
+    // 3. Vérifier le mot de passe (argon2)
+    const validPassword = await argon2.verify(user.password, password);
+    if (!validPassword) {
+      return res.status(StatusCodes.UNAUTHORIZED).json({
+        message: "Email ou mot de passe incorrect",
+      });
+    }
+
+    // 4. Créer un token JWT (valable 24h)
+    const token = jwt.sign(
+      { userId: user.id, email: user.email },
+      process.env.JWT_SECRET, 
+      { expiresIn: "24h" },
+    );
+
+    // 5. Réponse avec token
+    res.status(StatusCodes.OK).json({
+      message: "Connexion réussie",
+      token,
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+      },
+    });
+  },
 };
