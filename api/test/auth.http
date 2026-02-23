@@ -1,13 +1,15 @@
 @baseURL=http://localhost:3000
 
+### GET /
 GET {{baseURL}}/
 
+### POST /auth/register
 POST {{baseURL}}/auth/register
 Content-Type: application/json
 
 {
   "name": "Test",
   "email": "test@test.com",
-  "password": "test",
-  "confirm": "test"
+  "password": "test123456",
+  "confirm": "test123456"
 }
