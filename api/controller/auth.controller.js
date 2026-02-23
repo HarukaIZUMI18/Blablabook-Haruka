@@ -9,7 +9,7 @@ export const authController = {
   async register(req, res) {
     // Définition du schema de validation
     const registerSchema = Joi.object({
-      email: Joi.string(),
+      email: Joi.string().email().required(),
       name: Joi.string().min(1).required(),
       password: Joi.string().min(8).required(),
       confirm: Joi.string().min(8).required(),
@@ -51,7 +51,7 @@ export const authController = {
       password: hashPassword,
     });
 
-    // Le renvoyer au client (note : si possible sans renvoyer le mot de passe haché par sécurité)
+    // Le renvoyer au client
     res.status(StatusCodes.CREATED).json({
       id: createUser.id,
       email: createUser.email,

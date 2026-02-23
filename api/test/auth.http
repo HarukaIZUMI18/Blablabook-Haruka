@@ -1,6 +1,6 @@
 @baseURL=http://localhost:3000
 
-### GET /
+### Route home
 GET {{baseURL}}/
 
 ### POST /auth/register
