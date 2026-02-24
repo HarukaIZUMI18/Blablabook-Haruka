@@ -19,9 +19,10 @@ Content-Type: application/json
 
 {
   "email": "test@test.com",
-  "password": "test123456"
+  "password": "3456"
 }
 ### POST /user/me
 
 GET {{baseURL}}/user/me
 Authorization: Bearer {{accessToken}}
+test12
