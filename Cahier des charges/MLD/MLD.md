@@ -15,7 +15,7 @@ Table BOOK {
   cover varchar  [not null]
   author varchar(100) [not null]
   description varchar [not null]
-  publish_year year [not null]
+  publish_year smallint  [not null]
   created_at timestamp
   updated_at timestamp
 }
