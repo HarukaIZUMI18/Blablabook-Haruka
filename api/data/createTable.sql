@@ -14,7 +14,7 @@ CREATE TABLE "BOOK" (
   "title" varchar(100) NOT NULL,
   "cover" varchar NOT NULL,
   "author" varchar(100) NOT NULL,
-  "description" varchar NOT NULL,
+  "description" text NOT NULL,
   "publish_year" SMALLINT NOT NULL,
   "created_at" timestamp,
   "updated_at" timestamp
