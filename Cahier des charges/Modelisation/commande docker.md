@@ -2,6 +2,11 @@
 
 ## Démarrage
 
+Démarre le ou les conteneurs et les surveille pour des changements
+```bash
+docker compose up --watch <nom_du_conteneur>
+```
+
 Démarre en arrière-plan (detached). Le flag `-d` signifie detached, les conteneurs tournent en fond sans bloquer ton terminal.
 
 ```bash

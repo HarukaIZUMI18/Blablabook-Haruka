@@ -11,13 +11,25 @@ services:
     # on expose le port 3000 du conteneur sur notre port 3000
     ports:
       - 3000:3000
-    # le serivce api dépend du service db
+    # le service api dépend du service db
     depends_on:
       - db
     # on nomme le conteneur parce qu'on fait les choses proprement
     container_name: blablabook-api
     env_file:
       - .docker.env
+    # docker compose watch
+    develop:
+      watch:
+        # sync : synchronise les fichiers sans redémarrer le conteneur
+        - action: sync
+          path: ./api
+          target: /app
+          ignore:
+            - node_modules/
+        # rebuild : reconstruit l'image si package.json change
+        - action: rebuild
+          path: ./api/package.json
 
   # nom du service
   client:
@@ -27,9 +39,9 @@ services:
       context: ./client
       # on utilise le fichier Dockerfile.client
       dockerfile: Dockerfile.client
-    # on expose le port 4173 du conteneur sur notre port 4173
+    # on expose le port 5173 du conteneur sur notre port 5173
     ports:
-      - 4173:4173
+      - 5173:5173
     # notre service ne démarre que quand le service api est prêt
     depends_on:
       - api
@@ -37,10 +49,22 @@ services:
     container_name: blablabook-client
     env_file:
       - .docker.env
+    # docker compose watch
+    develop:
+      watch:
+        # sync : synchronise les fichiers sans redémarrer le conteneur
+        - action: sync
+          path: ./client
+          target: /app
+          ignore:
+            - node_modules/
+        # rebuild : reconstruit l'image si package.json change
+        - action: rebuild
+          path: ./client/package.json
 
   # nom du service
   db:
-    # on utilise l'image postgre
+    # on utilise l'image postgres
     image: postgres:18-alpine
     # nom du conteneur
     container_name: blablabook-database
