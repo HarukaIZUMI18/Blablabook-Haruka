@@ -20,32 +20,48 @@
 </script>
 
 <header>
-  <nav>
-    <a class="logo" href="/">
-      {@html Logo}
-    </a>
-    <div class="buttons">
-      {#if !token}
-        <button
-          on:click={() => {
-            authMode = "login";
-            showAuth = true;
-          }}
-        >
-          Connexion
-        </button>
-        <button
-          on:click={() => {
-            authMode = "register";
-            showAuth = true;
-          }}
-        >
-          Inscription
-        </button>
-      {:else}
-        <button class="logout-btn" on:click={logout}>Déconnexion</button>
-      {/if}
+  <nav class="nav-container">
+    <div class="nav-top">
+      <a class="logo" href="/">
+        {@html Logo}
+      </a>
+
+      <div class="buttons">
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Rechercher un livre..."
+        />
+        {#if !token}
+          <button
+            on:click={() => {
+              authMode = "login";
+              showAuth = true;
+            }}
+          >
+            Connexion
+          </button>
+          <button
+            on:click={() => {
+              authMode = "register";
+              showAuth = true;
+            }}
+          >
+            Inscription
+          </button>
+        {:else}
+          <button class="logout-btn" on:click={logout}>Déconnexion</button>
+        {/if}
+      </div>
     </div>
+
+    {#if token}
+      <div class="nav-bottom">
+        <button> <a href="/" class="nav-bottom_a">Mon Profil</a></button>
+        <button><a href="/" class="nav-bottom_a">Collection</a></button>
+        <button><a href="/" class="nav-bottom_a">Liste des livres</a></button>
+      </div>
+    {/if}
   </nav>
 </header>
 
@@ -58,30 +74,52 @@
 
 <style>
   header {
-    padding: 0 2rem;
-    height: 70px;
-    display: flex;
-    align-items: center;
+    width: 100%;
     position: sticky;
     top: 0;
     z-index: 100;
+    background: var(--color-primary); /* Assurez-vous d'avoir un fond */
     box-shadow: var(--shadow);
+    padding: 0.5rem 0; /* Padding vertical réduit ici */
   }
 
-  nav {
+  .nav-container {
+    display: flex;
+    flex-direction: column;
     width: 100%;
+    margin: 0 auto;
+  }
+
+  .nav-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    box-sizing: border-box;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+  }
+
+  .nav-bottom {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  /* Ajustement du logo pour éviter qu'il ne casse la hauteur */
+  .logo :global(svg) {
+    height: 60px; /* 120px était peut-être un peu grand pour un header à deux lignes */
+    width: auto;
+    display: block;
   }
 
   .logo :global(svg path) {
     fill: var(--color-text);
   }
 
-  .logo :global(svg) {
-    height: 120px;
-    width: auto;
+  .nav-bottom_a {
+    text-decoration: none;
+    cursor: pointer;
   }
 
   .buttons {
@@ -108,6 +146,24 @@
     transform: translateY(-1px);
   }
 
+  .search-input {
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius);
+    border: 2px solid var(--color-bg);
+    backdrop-filter: blur(5px);
+    color: var(--color-text);
+    font-size: 0.9rem;
+    width: 200px;
+    transition: all 0.2s ease;
+  }
+
+  .search-input:focus {
+    outline: none;
+    width: 250px; /* S'agrandit légèrement au focus */
+    border-color: var(--color-secondary);
+    background: white;
+    box-shadow: 0 0 0 4px rgba(var(--color-secondary-rgb), 0.1); /* Halo autour */
+  }
   /* Styles de la Modale */
   .overlay {
     position: fixed;
