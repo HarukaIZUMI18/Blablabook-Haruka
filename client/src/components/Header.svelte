@@ -43,7 +43,6 @@
           Inscription
         </button>
       {:else}
-        <span class="welcome">Bonjour !</span>
         <button class="logout-btn" on:click={logout}>Déconnexion</button>
       {/if}
     </div>
@@ -66,7 +65,7 @@
     position: sticky;
     top: 0;
     z-index: 100;
-    background: var(--color-secondary);
+    box-shadow: var(--shadow);
   }
 
   nav {
@@ -76,24 +75,37 @@
     align-items: center;
   }
 
+  .logo :global(svg path) {
+    fill: var(--color-text);
+  }
+
   .logo :global(svg) {
     height: 120px;
     width: auto;
-    color: aliceblue;
   }
 
   .buttons {
     display: flex;
     gap: 1rem;
   }
-
   button {
     padding: 0.5rem 1rem;
     border-radius: var(--radius);
     cursor: pointer;
-    background: var(--color-bg);
+    background: var(--color-secondary);
     border: none;
     color: var(--color-text);
+    box-shadow: var(--shadow-btn);
+    transition:
+      box-shadow 0.15s ease,
+      transform 0.15s ease;
+  }
+
+  button:hover {
+    box-shadow:
+      0 4px 8px rgba(0, 0, 0, 0.25),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    transform: translateY(-1px);
   }
 
   /* Styles de la Modale */

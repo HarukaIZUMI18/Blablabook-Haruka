@@ -22,19 +22,14 @@
       } else {
         if (password !== confirm)
           throw new Error("Les mots de passe ne correspondent pas");
-        // On envoie bien 'confirm' car l'API le demande
         response = await api.register({ name, email, password, confirm });
       }
 
       if (response?.token) {
-        // 1. On stocke le token pour le prochain rafraîchissement
         localStorage.setItem("token", response.token);
-
-        // 2. IMPORTANT : On appelle la fonction du parent pour mettre à jour l'UI
         if (onSuccess) {
           onSuccess(response.token);
         }
-
         message = isLogin ? "Connecté !" : "Compte créé !";
       }
     } catch (err) {
@@ -85,8 +80,8 @@
       </div>
     {/if}
 
-    <button type="submit" disabled={loading}>
-      {loading ? "Traitement..." : isLogin ? "Connexion" : "S'inscrire"}
+    <button type="submit">
+      {isLogin ? "Connexion" : "S'inscrire"}
     </button>
   </form>
 
@@ -128,6 +123,12 @@
     font-size: 1rem;
   }
 
+  input:focus {
+    outline: none;
+    border-color: var(--color-secondary);
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.08);
+  }
+
   button[type="submit"] {
     border: none;
     padding: 0.8rem;
@@ -135,11 +136,21 @@
     font-weight: bold;
     font-size: 1rem;
     cursor: pointer;
-    background: var(--color-bg);
+    background: var(--color-secondary);
+    color: var(--color-text);
+    box-shadow: var(--shadow-btn);
+    transition: box-shadow 0.15s ease, transform 0.15s ease;
   }
 
-  button:disabled {
-    background: #ccc;
+  button[type="submit"]:hover {
+    box-shadow: var(--shadow-btn-hover);
+    transform: translateY(-1px);
+  }
+
+  .status-message {
+    margin-top: 0.5rem;
+    text-align: center;
+    color: green;
   }
 
   .status-message.error {

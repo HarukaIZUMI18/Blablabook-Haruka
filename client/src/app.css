@@ -4,13 +4,16 @@
 
   --color-text: #592f25;
   --color-bg: #f2ceae;
-
+    
   --font-size-sm: 0.875rem;
   --font-size-base: 1rem;
   --font-size-lg: 1.25rem;
 
   --radius: 8px;
   --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-btn: 0 2px 4px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  --shadow-btn-hover: 0 4px 8px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+
   --font-primary: "Beautifuly Delicious", sans-serif;
 }
 
