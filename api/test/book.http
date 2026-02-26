@@ -1,0 +1,15 @@
+@baseURL=http://localhost:3000
+
+
+### Tout les livres
+GET {{baseURL}}/book
+
+### Trouver 1 livre
+GET {{baseURL}}/book/23
+
+### Liste random
+GET {{baseURL}}/book/random
+
+
+### Recherche
+GET {{baseURL}}/book/search?q=h%20g%20rowling
