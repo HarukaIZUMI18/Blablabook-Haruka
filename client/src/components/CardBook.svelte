@@ -1,6 +1,6 @@
 <script>
   let { book } = $props();
-  let isLoaded = $state(false); // État pour le chargement de l'image
+  let isLoaded = $state(false);
 </script>
 
 <article class="card">
