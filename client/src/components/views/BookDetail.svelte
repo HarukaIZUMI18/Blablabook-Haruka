@@ -6,7 +6,6 @@
   // svelte-ignore export_let_unused
   export let params;
 </script>
-
 <section>
   <div class="detail_img">
     <img
@@ -18,7 +17,6 @@
     <h1>Harry Potter1</h1>
   </div>
   <div class="detail_description">
-  
     <p><strong>Auteur:</strong> J.K. Rowling</p>
     <p><strong>Année:</strong> 1997</p>
     <h2>Description</h2>
@@ -33,24 +31,27 @@
     </p>
   </div>
 </section>
-
 <!-- Utilisateur sans connecter -->
 {#if !token}
-<div class="back_list">
-<Link to="/BookList">
-<button>Retour à la liste</button>
-</Link>
-</div>
+  <div class="back_list">
+    <Link to="/BookList">
+      <button>Retour à la liste</button>
+    </Link>
+  </div>
 {:else}
-<div class="back_list">
-<Link to="/BookList">
-<button>Retour à la liste</button>
-</Link>
-<Link to="/Collection">
-<button>Retour à ma collection</button>
-</Link>
+<div class="status_book">
+    <button>Status</button>
 </div>
+  <div class="back_list">
+    <Link to="/BookList">
+      <button>Retour à la liste</button>
+    </Link>
+    <Link to="/Collection">
+      <button>Retour à ma collection</button>
+    </Link>
+  </div>
 {/if}
+
 <style>
   section {
     display: grid;
@@ -63,7 +64,7 @@
   .detail_img {
     grid-area: 1 / 1 / 5 / 3;
   }
-  .detail_img img{
+  .detail_img img {
     height: 450px;
     max-width: 100%;
   }
@@ -75,10 +76,28 @@
     grid-area: 2 / 3 / 5 / 6;
   }
 
-  .back_list{
+  .status_book{
+    margin: 2rem;
+
+  }
+  .back_list {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+    margin-bottom: 2rem;
   }
 
+  /* Responsive mobile */
+  @media screen and (max-width: 940px) {
+    section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 1.5rem;
+  }
+  .detail_img img{
+    display: block;
+    margin: 0 auto;
+  }
+}
 </style>
