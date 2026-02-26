@@ -3,9 +3,6 @@
   //Pour test
   export let book = {
     id: 1,
-    titre: "Harry Potter1",
-    author: "J.K. Rowling",
-    year: 1997
   };
 </script>
 <article>
@@ -16,9 +13,9 @@
     />
     <Link to={`/book/${book.id}`}>
     <figcaption>
-      <h2>{book.titre}</h2>
-      <p><strong>Auteur:</strong>{book.author}</p>
-      <p><strong>Année:</strong>{book.year}</p>
+      <h2>Harry Potter1</h2>
+      <p><strong>Auteur:</strong>J.K. Rowling</p>
+      <p><strong>Année:</strong>1997</p>
     </figcaption>
     </Link>
   </figure>
