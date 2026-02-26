@@ -1,53 +1,50 @@
-<section>
-  <article>
-    <figure class="img_book"><img src="https://covers.openlibrary.org/b/id/14348537-L.jpg" alt="">
+<article>
+  <figure class="img_book">
+    <img
+      src="https://covers.openlibrary.org/b/id/14348537-L.jpg"
+      alt="Couverture de Harry Potter"
+    />
     <figcaption>
-    <h2>Harry Potter</h2>
-    <p>Auteur: J.K Roling</p>
-    <p>Année: 1997</p>
+      <h2>Harry Potter</h2>
+      <p><strong>Auteur:</strong> J.K. Rowling</p>
+      <p><strong>Année:</strong> 1997</p>
     </figcaption>
-    </figure>
-  </article>
-  <article>
-    <figure class="img_book"><img src="https://covers.openlibrary.org/b/id/14348537-L.jpg" alt="">
-    <figcaption>
-     <h2>Harry Potter 2</h2>
-    <p>Auteur: J.K Roling</p>
-    <p>Année: 1998</p>
-    </figcaption>
-    </figure>
-  </article>
-  <article>
-    <figure class="img_book"><img src="https://covers.openlibrary.org/b/id/14348537-L.jpg" alt="">
-    <figcaption>
-    <h2>Harry Potter 3</h2>
-    <p>Auteur: J.K Roling</p>
-    <p>Année: 1999</p>
-    </figcaption>
-    </figure>
-  </article>
-</section>
+  </figure>
+</article>
 
 <style>
-section{
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
-    margin: 2rem;
-}
-    article{
-        display: flex;
-        flex-direction: column;
-        border: 2px var(--color-secondary) solid;
-        border-radius: 10px;
-        width: calc(100% / 3);
-        height: 60vh;
-        align-items: center;
-        overflow: hidden;
-    }
+  article {
+    width: 280px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  }
 
-    .img_book img{
-        width: auto;
-        height: 30vh;
-    }
+  .img_book {
+    margin: 0;
+  }
+
+  .img_book img {
+    width: 100%;
+    height: 380px;
+    object-fit: cover;
+    display: block;
+  }
+
+  figcaption {
+    padding: 15px;
+  }
+
+  h2 {
+    margin: 0 0 10px 0;
+    font-size: 1.3rem;
+    color: #333;
+  }
+
+  p {
+    margin: 5px 0;
+    color: #666;
+    font-size: 0.9rem;
+  }
 </style>

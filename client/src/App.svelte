@@ -1,11 +1,33 @@
 <script>
+  import { Router, Route } from "svelte-routing";
   import Header from "./components/Header.svelte";
   import CardBook from "./components/CardBook.svelte";
+  import Collection from "./components/views/Collection.svelte";
+  import Profil from "./components/views/Profil.svelte";
+  import BookList from "./components/views/BookList.svelte";
+
+  export let url = "";
 </script>
 
-<Header />
+<Router {url}>
+  <Header />
 
-<CardBook />
+  <main>
+    <Route path="/">
+      <h2>Suggestion de livre</h2>
+      <CardBook />
+    </Route>
 
-<main>
-</main>
+    <Route path="/profil">
+      <Profil />
+    </Route>
+
+    <Route path="/collection">
+      <Collection />
+    </Route>
+
+    <Route path="/livres">
+      <BookList />
+    </Route>
+  </main>
+</Router>

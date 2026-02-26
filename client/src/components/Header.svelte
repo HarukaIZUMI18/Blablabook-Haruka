@@ -1,4 +1,5 @@
 <script>
+  import { Link } from "svelte-routing";
   import Login from "./Login.svelte";
   import Logo from "../lib/assets/Blablabook.svg?raw";
 
@@ -34,7 +35,7 @@
         />
         {#if !token}
           <button
-            on:click={() => {
+            onclick={() => {
               authMode = "login";
               showAuth = true;
             }}
@@ -42,7 +43,7 @@
             Connexion
           </button>
           <button
-            on:click={() => {
+            onclick={() => {
               authMode = "register";
               showAuth = true;
             }}
@@ -50,23 +51,29 @@
             Inscription
           </button>
         {:else}
-          <button class="logout-btn" on:click={logout}>Déconnexion</button>
+          <button class="logout-btn" onclick={logout}>Déconnexion</button>
         {/if}
       </div>
     </div>
 
     {#if token}
       <div class="nav-bottom">
-        <button> <a href="/" class="nav-bottom_a">Mon Profil</a></button>
-        <button><a href="/" class="nav-bottom_a">Collection</a></button>
-        <button><a href="/" class="nav-bottom_a">Liste des livres</a></button>
+        <button>
+          <a href="/profil">Mon Profil</a>
+        </button>
+        <button>
+          <a href="/collection">Ma Collection</a>
+        </button>
+        <button>
+          <a href="/livres">Liste des livres</a>
+        </button>
       </div>
     {/if}
   </nav>
 </header>
 
 {#if showAuth}
-  <div class="overlay" on:click={() => (showAuth = false)} role="none"></div>
+  <div class="overlay" onclick={() => (showAuth = false)} role="none"></div>
   <div class="auth-modal">
     <Login isLogin={authMode === "login"} onSuccess={handleLoginSuccess} />
   </div>
@@ -81,6 +88,12 @@
     background: var(--color-primary); /* Assurez-vous d'avoir un fond */
     box-shadow: var(--shadow);
     padding: 0.5rem 0; /* Padding vertical réduit ici */
+  }
+
+  .nav-bottom a {
+    text-decoration: none;
+    color: var(--color-text);
+    cursor: pointer;
   }
 
   .nav-container {
@@ -115,11 +128,6 @@
 
   .logo :global(svg path) {
     fill: var(--color-text);
-  }
-
-  .nav-bottom_a {
-    text-decoration: none;
-    cursor: pointer;
   }
 
   .buttons {
