@@ -1,14 +1,26 @@
+<script>
+  import { Link } from "svelte-routing";
+  //Pour test
+  export let book = {
+    id: 1,
+    titre: "Harry Potter1",
+    author: "J.K. Rowling",
+    year: 1997
+  };
+</script>
 <article>
   <figure class="img_book">
     <img
       src="https://covers.openlibrary.org/b/id/14348537-L.jpg"
       alt="Couverture de Harry Potter"
     />
+    <Link to={`/book/${book.id}`}>
     <figcaption>
-      <h2>Harry Potter</h2>
-      <p><strong>Auteur:</strong> J.K. Rowling</p>
-      <p><strong>Année:</strong> 1997</p>
+      <h2>{book.titre}</h2>
+      <p><strong>Auteur:</strong>{book.author}</p>
+      <p><strong>Année:</strong>{book.year}</p>
     </figcaption>
+    </Link>
   </figure>
 </article>
 

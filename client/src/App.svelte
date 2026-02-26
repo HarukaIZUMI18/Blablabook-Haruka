@@ -5,6 +5,7 @@
   import Collection from "./components/views/Collection.svelte";
   import Profil from "./components/views/Profil.svelte";
   import BookList from "./components/views/BookList.svelte";
+  import BookDetail from "./components/views/BookDetail.svelte";
 
   export let url = "";
 </script>
@@ -29,5 +30,10 @@
     <Route path="/livres">
       <BookList />
     </Route>
+
+    <Route path="/book/:id" let:params>
+    <BookDetail {params} />
+    </Route>
+    
   </main>
 </Router>
