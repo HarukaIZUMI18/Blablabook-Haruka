@@ -1,50 +1,55 @@
-<article>
-  <figure class="img_book">
-    <img
-      src="https://covers.openlibrary.org/b/id/14348537-L.jpg"
-      alt="Couverture de Harry Potter"
-    />
-    <figcaption>
-      <h2>Harry Potter</h2>
-      <p><strong>Auteur:</strong> J.K. Rowling</p>
-      <p><strong>Année:</strong> 1997</p>
+<script>
+  let { book } = $props();
+</script>
+
+<article class="card">
+  <figure>
+    <img src={book.cover} alt={book.title} />
+    <figcaption class="content">
+      <h3>{book.title}</h3>
+      <p>Auteur: {book.author}</p>
+      <p>Année: {book.publish_year}</p>
     </figcaption>
   </figure>
 </article>
 
 <style>
-  article {
-    width: 280px;
-    border-radius: 10px;
-    overflow: hidden;
-    background: #fff;
+  .card {
+    background: white;
+    border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    width: 280px;
+    overflow: hidden; 
+    transition: transform 0.2s;
+    display: flex;
+    flex-direction: column;
   }
 
-  .img_book {
-    margin: 0;
+  .card:hover {
+    transform: translateY(-5px);
   }
 
-  .img_book img {
-    width: 100%;
-    height: 380px;
-    object-fit: cover;
-    display: block;
+  figure {
+    margin: 0; 
+    display: flex;
+    flex-direction: column;
+    height: 100%;
   }
 
-  figcaption {
+  .content {
     padding: 15px;
+    flex-grow: 1; 
   }
 
-  h2 {
-    margin: 0 0 10px 0;
-    font-size: 1.3rem;
-    color: #333;
+  h3 {
+    margin: 0 0 8px 0;
+    font-size: 1.2rem;
+    line-height: 1.2;
   }
 
   p {
-    margin: 5px 0;
-    color: #666;
+    margin: 4px 0;
     font-size: 0.9rem;
+    color: #666;
   }
 </style>

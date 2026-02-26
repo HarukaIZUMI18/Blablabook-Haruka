@@ -4,6 +4,9 @@
 ### Tout les livres
 GET {{baseURL}}/book
 
+### Tout les livres avec pagination
+GET {{baseURL}}/book?page=2&limit=5
+
 ### Trouver 1 livre
 GET {{baseURL}}/book/23
 

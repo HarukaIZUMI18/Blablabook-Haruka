@@ -82,12 +82,9 @@
 <style>
   header {
     width: 100%;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: var(--color-primary); /* Assurez-vous d'avoir un fond */
+    background: var(--color-primary); 
     box-shadow: var(--shadow);
-    padding: 0.5rem 0; /* Padding vertical réduit ici */
+    padding: 0.5rem 0; 
   }
 
   .nav-bottom a {

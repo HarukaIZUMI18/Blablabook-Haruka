@@ -5,8 +5,31 @@ import { StatusCodes } from "http-status-codes";
 export const bookController = {
   // Récupère la liste complète des livre
   async all(req, res) {
-    const books = await Book.findAll();
-    res.status(StatusCodes.OK).json(books);
+    // 1. On récupère les paramètres s'ils existent
+    const page = req.query.page ? parseInt(req.query.page) : null;
+    const limit = req.query.limit ? parseInt(req.query.limit) : null;
+
+    const options = {
+      order: [["title", "ASC"]],
+    };
+
+    if (page && limit) {
+      options.limit = limit;
+      options.offset = (page - 1) * limit;
+    }
+
+    const { count, rows } = await Book.findAndCountAll(options);
+
+    res.status(StatusCodes.OK).json({
+      totalItems: count,
+      books: rows,
+      // On n'envoie ces infos que si la pagination était demandée
+      ...(page &&
+        limit && {
+          currentPage: page,
+          totalPages: Math.ceil(count / limit),
+        }),
+    });
   },
   // Récupère un livre par son id
   async one(req, res) {
