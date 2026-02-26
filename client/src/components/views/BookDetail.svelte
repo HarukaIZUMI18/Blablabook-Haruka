@@ -1,10 +1,32 @@
 <script>
   import { Link } from "svelte-routing";
-  import Collection from "./Collection.svelte";
-
+// Pour page connecté et sans connecté
   let token = localStorage.getItem("token");
-  // svelte-ignore export_let_unused
-  export let params;
+   const { params } = $props();
+
+   // Status du livre
+
+   let book = $state({
+    id:1, status: "à lire"
+   });
+
+const statuses = [
+  "à lire",
+    "abandonné",
+    "Lu",
+    "En pause",
+    "En cours"
+];
+
+function changeStatus(book, newStatus) {
+  book.status = newStatus;
+  fetch(`/api/books/${book.id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status: newStatus })
+    });
+}
+
 </script>
 <section>
   <div class="detail_img">
@@ -15,12 +37,25 @@
   </div>
   <div class="detail_title">
     <h1>Harry Potter1</h1>
-    <!-- Il faut ajouté une fonctionnalité pour status-->
-    <p>Status: Lu</p>
   </div>
   <div class="detail_description">
     <p><strong>Auteur:</strong> J.K. Rowling</p>
     <p><strong>Année:</strong> 1997</p>
+    <!-- Séléction un status de livre -->
+    {#if token}
+<div class="status_book">
+<label for="sutatus_select">Sélelectionnez le statut du livre</label>
+    <select
+    id="status_select"
+    bind:value={book.status}
+  >
+    {#each statuses as s}
+      <option value={s}>{s}</option>
+    {/each}
+  </select>
+  <p><strong>Status de ce livre:</strong> {book.status}</p>
+</div>
+    {/if}
     <h2>Description</h2>
     <p>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
@@ -40,19 +75,6 @@
       <button>Retour à la liste</button>
     </Link>
   </div>
-{:else}
-<!-- Séléction un status de livre -->
-<div class="status_book">
-<label for="sutatus_select">Sélelectionnez le statut du livre</label>
-    <select name="status" id="sutatus_select">
-        <option value="">Status du livre</option>
-        <option value="toRead">À lire</option>
-        <option value="giveUp">Abandonné</option>
-        <option value="read">Lu</option>
-        <option value="pause">En pause</option>
-        <option value="progress">En cours</option>
-    </select>
-</div>
 {/if}
 
 <style>
@@ -80,7 +102,12 @@
   }
 
   .status_book{
-    margin: 2rem;
+    padding: 2rem;
+  }
+
+  select{
+    border: 2px solid var(--color-bg);
+    border-radius: var(--radius);
   }
 
   /* Status de livre */
