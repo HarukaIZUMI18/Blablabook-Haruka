@@ -31,7 +31,7 @@
       <BookList />
     </Route>
 
-    <Route path="/book/:id" let:params>
+    <Route path="/livre/:id" let:params>
     <BookDetail {params} />
     </Route>
     

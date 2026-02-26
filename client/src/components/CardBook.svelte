@@ -11,7 +11,7 @@
       src="https://covers.openlibrary.org/b/id/14348537-L.jpg"
       alt="Couverture de Harry Potter"
     />
-    <Link to={`/book/${book.id}`}>
+    <Link to={`/livre/${book.id}`}>
     <figcaption>
       <h2>Harry Potter1</h2>
       <p><strong>Auteur:</strong>J.K. Rowling</p>

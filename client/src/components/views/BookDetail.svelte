@@ -15,6 +15,8 @@
   </div>
   <div class="detail_title">
     <h1>Harry Potter1</h1>
+    <!-- Il faut ajouté une fonctionnalité pour status-->
+    <p>Status: Lu</p>
   </div>
   <div class="detail_description">
     <p><strong>Auteur:</strong> J.K. Rowling</p>
@@ -39,17 +41,18 @@
     </Link>
   </div>
 {:else}
+<!-- Séléction un status de livre -->
 <div class="status_book">
-    <button>Status</button>
+<label for="sutatus_select">Sélelectionnez le statut du livre</label>
+    <select name="status" id="sutatus_select">
+        <option value="">Status du livre</option>
+        <option value="toRead">À lire</option>
+        <option value="giveUp">Abandonné</option>
+        <option value="read">Lu</option>
+        <option value="pause">En pause</option>
+        <option value="progress">En cours</option>
+    </select>
 </div>
-  <div class="back_list">
-    <Link to="/BookList">
-      <button>Retour à la liste</button>
-    </Link>
-    <Link to="/Collection">
-      <button>Retour à ma collection</button>
-    </Link>
-  </div>
 {/if}
 
 <style>
@@ -78,14 +81,9 @@
 
   .status_book{
     margin: 2rem;
+  }
 
-  }
-  .back_list {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    margin-bottom: 2rem;
-  }
+  /* Status de livre */
 
   /* Responsive mobile */
   @media screen and (max-width: 940px) {
