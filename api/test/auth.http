@@ -1,5 +1,5 @@
 @baseURL=http://localhost:3000
-@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTc3MTg2MjEyNSwiZXhwIjoxNzcxOTQ4NTI1fQ.W91qKPDTFDCXPXT6wyE24Uzwum5oM8WRee0nKEhEJNk
+@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTc3MjAyMDU1NCwiZXhwIjoxNzcyMTA2OTU0fQ.ZilkubxLczhiHAUW9ZpEiP9bVrCUqAJs2AlbdJhI5Z0
 ### Route home
 GET {{baseURL}}/
 
@@ -19,7 +19,7 @@ Content-Type: application/json
 
 {
   "email": "test@test.com",
-  "password": "3456"
+  "password": "test123456"
 }
 ### POST /user/me
 
