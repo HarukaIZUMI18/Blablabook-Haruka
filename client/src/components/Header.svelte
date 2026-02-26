@@ -116,9 +116,8 @@
     margin-bottom: 0.5rem;
   }
 
-  /* Ajustement du logo pour éviter qu'il ne casse la hauteur */
   .logo :global(svg) {
-    height: 60px; /* 120px était peut-être un peu grand pour un header à deux lignes */
+    height: 60px; 
     width: auto;
     display: block;
   }
@@ -164,10 +163,9 @@
 
   .search-input:focus {
     outline: none;
-    width: 250px; /* S'agrandit légèrement au focus */
+    width: 250px;
     border-color: var(--color-secondary);
     background: white;
-    box-shadow: 0 0 0 4px rgba(var(--color-secondary-rgb), 0.1); /* Halo autour */
   }
   /* Styles de la Modale */
   .overlay {

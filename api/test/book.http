@@ -15,4 +15,4 @@ GET {{baseURL}}/book/random
 
 
 ### Recherche
-GET {{baseURL}}/book/search?q=h%20g%20rowling
+GET {{baseURL}}/book/search?q=j%20k%20rowling
