@@ -36,8 +36,8 @@
   text-align: center;
   background-color: #f0f0f0; 
   box-sizing: border-box;
-  border-bottom-left-radius: 20 px;
-  border-bottom-right-radius: 20 px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
 }
 
 </style>

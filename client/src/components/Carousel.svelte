@@ -24,6 +24,8 @@
 
  let index = 0;
 
+ let visibleCount = window.innerWidth <= 768 ? 2 : 3;
+
   function prev() {
     index = (index - 1 + books.length) % books.length;
   }
@@ -47,11 +49,15 @@
   <button class="arrow" on:click={next}>⟩</button>
 </div>
 
+
+
+
+
 <style>
   .carousel {
     display: flex;
     align-items: center;
-    justify-content: center;   
+    justify-content: center;
     width: 100%;
     margin-top: 20px;
   }
@@ -62,9 +68,27 @@
   }
 
   .slide {
-    width: 420px; 
+    width: 420px;
+    height: 100%;
     display: flex;
     justify-content: center;
+    overflow: hidden;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: box-shadow 0.25s ease;
+  }
+
+  .slide:hover {
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.15);
+  }
+
+  .slide :global(.img_book) {
+    transition: transform 0.3s ease;
+    transform-origin: center;
+  }
+
+  .slide:hover :global(.img_book) {
+    transform: scale(1.06);
   }
 
   .arrow {
@@ -74,12 +98,45 @@
     cursor: pointer;
     color: #592f25;
     margin: 0 10px;
+    transition: transform 0.2s ease;
   }
 
   .arrow:hover {
     transform: scale(1.2);
   }
+
+  @media (max-width: 768px) {
+    .carousel {
+      width: 100%;
+      overflow-x: auto;
+      padding: 0 10px;
+    }
+
+    .slides {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+    }
+
+    .slide {
+      min-width: 260px;
+      scroll-snap-align: center;
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.2s ease;
+    }
+
+    .slide:hover {
+      transform: scale(1.02);
+    }
+
+    .arrow {
+      display: none;
+    }
+  }
 </style>
+
 
 
 

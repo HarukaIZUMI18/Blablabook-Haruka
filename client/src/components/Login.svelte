@@ -30,6 +30,8 @@
         if (onSuccess) {
           onSuccess(response.token);
         }
+        window.location.href = "/";
+
         message = isLogin ? "Connecté !" : "Compte créé !";
       }
     } catch (err) {
