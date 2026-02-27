@@ -22,33 +22,66 @@
     }
   ];
 
+ let index = 0;
+
+  function prev() {
+    index = (index - 1 + books.length) % books.length;
+  }
+
+  function next() {
+    index = (index + 1) % books.length;
+  }
 </script>
 
 <div class="carousel">
-  {#each books as book}
-    <div class="slide">
-      <CardBook {book} />
-    </div>
-  {/each}
+  <button class="arrow" on:click={prev}>⟨</button>
+
+  <div class="slides">
+    {#each books.slice(index, index + 3) as book}
+      <div class="slide">
+        <CardBook {book} />
+      </div>
+    {/each}
+  </div>
+
+  <button class="arrow" on:click={next}>⟩</button>
 </div>
 
 <style>
   .carousel {
     display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    gap: 20px;
-    padding: 10px 0;
+    align-items: center;
+    justify-content: center;   
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .slides {
+    display: flex;
+    gap: 10px;
   }
 
   .slide {
-    min-width: 280px;
-    scroll-snap-align: center;
+    width: 420px; 
+    display: flex;
+    justify-content: center;
   }
 
-  .carousel::-webkit-scrollbar {
-    display: none;
+  .arrow {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: #592f25;
+    margin: 0 10px;
+  }
+
+  .arrow:hover {
+    transform: scale(1.2);
   }
 </style>
+
+
+
 
 

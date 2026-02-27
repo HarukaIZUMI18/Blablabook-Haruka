@@ -5,6 +5,7 @@
   import Collection from "./components/views/Collection.svelte";
   import Profil from "./components/views/Profil.svelte";
   import BookList from "./components/views/BookList.svelte";
+  import Carousel from "./components/Carousel.svelte";
 
   export let url = "";
 </script>
@@ -14,8 +15,8 @@
 
   <main>
     <Route path="/">
-      <h2>Suggestion de livre</h2>
-      <CardBook />
+      <h2>Suggestion de livres :</h2>
+      <Carousel />
     </Route>
 
     <Route path="/profil">

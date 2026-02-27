@@ -16,39 +16,35 @@
   </figure>
 </article>
 
-<style>
-  article {
-    width: 280px;
-    border-radius: 10px;
-    overflow: hidden;
-    background: #fff;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  }
-
+  <style>
   .img_book {
-    margin: 0;
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    width: 60%;
   }
 
   .img_book img {
-    width: 100%;
-    height: 380px;
-    object-fit: cover;
-    display: block;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
   }
 
   figcaption {
-    padding: 15px;
-  }
+  width: 100%;
+  padding: 8px;
+  text-align: center;
+  background-color: #f0f0f0; 
+  box-sizing: border-box;
+  border-bottom-left-radius: 20 px;
+  border-bottom-right-radius: 20 px;
+}
 
-  h2 {
-    margin: 0 0 10px 0;
-    font-size: 1.3rem;
-    color: #333;
-  }
-
-  p {
-    margin: 5px 0;
-    color: #666;
-    font-size: 0.9rem;
-  }
 </style>
+
+
+
+
+
+
+
