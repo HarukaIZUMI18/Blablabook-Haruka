@@ -3,14 +3,14 @@ import { Op } from "sequelize";
 import { StatusCodes } from "http-status-codes";
 
 export const bookController = {
-  // Récupère la liste complète des livre
+
   async all(req, res) {
-    // 1. On récupère les paramètres s'ils existent
     const page = req.query.page ? parseInt(req.query.page) : null;
     const limit = req.query.limit ? parseInt(req.query.limit) : null;
+    const order = req.query.order === "Z-A" ? "DESC" : "ASC";
 
     const options = {
-      order: [["title", "ASC"]],
+      order: [["title", order]],
     };
 
     if (page && limit) {

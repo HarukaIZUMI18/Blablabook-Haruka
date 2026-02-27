@@ -24,6 +24,7 @@ export const bookMiddleware = {
     const schemaPagination = Joi.object({
       page: Joi.number().integer().min(1).optional(),
       limit: Joi.number().integer().max(100).optional(),
+      order: Joi.string().valid("A-Z", "Z-A").optional().default("A-Z"),
     });
     const { error, value } = schemaPagination.validate(req.query);
 
@@ -32,8 +33,9 @@ export const bookMiddleware = {
         message: "Paramètres de requête invalides",
       });
     }
-    if (value.page) req.query.page = value.page;
-    if (value.limit) req.query.limit = value.limit;
+    req.query.page = value.page;
+    req.query.limit = value.limit;
+    req.query.order = value.order;
     next();
   },
 };

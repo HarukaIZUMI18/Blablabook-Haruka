@@ -33,9 +33,11 @@
     background: white;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    width: 280px;
+    width: 100%;
+    max-width: 280px;
     overflow: hidden;
     transition: transform 0.2s;
+    margin: 0 auto;
   }
 
   .card:hover {
@@ -95,7 +97,7 @@
   }
 
   .content {
-    padding: 15px;
+    padding: 1rem;
     text-align: center;
   }
 

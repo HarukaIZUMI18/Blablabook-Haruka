@@ -15,7 +15,6 @@
   <main>
     <Route path="/">
       <h2>Suggestion de livre</h2>
-      <CardBook />
     </Route>
 
     <Route path="/profil">

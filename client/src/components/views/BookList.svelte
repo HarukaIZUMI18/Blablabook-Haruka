@@ -5,7 +5,8 @@
   let books = $state([]);
   let currentPage = $state(1);
   let totalPages = $state(0);
-  const limit = 50;
+  let limit = $state(50);
+  let order = $state("A-Z");
 
   $effect(() => {
     window.scrollTo({
@@ -16,14 +17,36 @@
   });
 
   async function fetchBooks() {
-    const data = await api.allBook({ page: currentPage, limit });
+    const data = await api.allBook({ page: currentPage, limit, order });
     books = data.books;
     totalPages = data.totalPages;
+  }
+  function handleFilterChange() {
+    currentPage = 1;
   }
 </script>
 
 <section>
   <h2>Liste de livres:</h2>
+  <div class="controls-top">
+    <div class="group">
+      <label for="order">Trier par :</label>
+      <select id="order" bind:value={order} onchange={handleFilterChange}>
+        <option value="A-Z">Titre (A-Z)</option>
+        <option value="Z-A">Titre (Z-A)</option>
+      </select>
+    </div>
+    <div class="group">
+      <label for="pagination">Afficher :</label>
+      <select id="pagination" bind:value={limit} onchange={handleFilterChange}>
+        <option value={10}>10</option>
+        <option value={20}>20</option>
+        <option value={30}>30</option>
+        <option value={40}>40</option>
+        <option value={50}>50</option>
+      </select>
+    </div>
+  </div>
   <div class="grid">
     {#each books as book (book.id)}
       <CardBook {book} />
@@ -45,14 +68,38 @@
 
 <style>
   h2 {
-    margin: 1em 1em 0 1em ;
+    margin: 1em 1em 0 1em;
+  }
+  select,
+  select::picker(select) {
+    appearance: base-select;
+    color: var(--color-text);
+    background: var(--color-secondary);
+  }
+
+  select::picker(select) {
+    border-radius: var(--radius);
+    padding: 5px;
+  }
+  .group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .controls-top {
+    display: flex;
+    justify-content: space-between;
+    margin: 1em 2em;
   }
   .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    margin: 20px 30px 30px 30px;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    max-width: 1200px;
+    margin: 20px auto;
     gap: 1em 0.5em;
     justify-items: center;
+    padding: 0 20px;
   }
 
   .controls {
@@ -88,5 +135,13 @@
 
   span {
     font-weight: bold;
+  }
+
+  @media (max-width: 600px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      width: 80%;
+    }
   }
 </style>

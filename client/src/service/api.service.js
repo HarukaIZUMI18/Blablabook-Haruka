@@ -15,7 +15,6 @@ async function login(loginData) {
 }
 
 async function allBook(params = {}) {
-  // On utilise URLSearchParams pour transformer {page: 1, limit: 10} en "page=1&limit=10"
   const searchParams = new URLSearchParams(params).toString();
   const endpoint = searchParams ? `book?${searchParams}` : "book";
 
