@@ -20,11 +20,12 @@ const statuses = [
 
 function changeStatus(book, newStatus) {
   book.status = newStatus;
+  /* Exemple d'envoyer à API
   fetch(`/api/books/${book.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status: newStatus })
-    });
+    }); */
 }
 
 </script>
