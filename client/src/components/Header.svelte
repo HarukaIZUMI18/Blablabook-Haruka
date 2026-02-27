@@ -148,22 +148,6 @@
     gap: 1rem;
     align-items: center;
   }
-  button {
-    padding: 0.5rem 1rem;
-    border-radius: var(--radius);
-    cursor: pointer;
-    background: var(--color-secondary);
-    border: none;
-    color: var(--color-text);
-    box-shadow: var(--shadow-btn);
-    transition:
-      box-shadow 0.15s ease,
-      transform 0.15s ease;
-  }
-  button:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  }
   .search-input {
     padding: 0.5rem 1rem;
     border-radius: var(--radius);
