@@ -110,13 +110,12 @@ function changeStatus(book, newStatus) {
   .back_list{
     margin: 2rem;
   }
-
+  /* Status de livre */
   select{
     border: 2px solid var(--color-bg);
     border-radius: var(--radius);
+    padding: 0.3rem;
   }
-
-  /* Status de livre */
 
   /* Responsive mobile */
   @media screen and (max-width: 940px) {
