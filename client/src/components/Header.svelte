@@ -17,6 +17,7 @@
   function logout() {
     localStorage.removeItem("token");
     token = null;
+    window.location.replace("/");
   }
 </script>
 
