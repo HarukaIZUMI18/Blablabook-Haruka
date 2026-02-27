@@ -30,14 +30,12 @@
   <h2>Liste de livres:</h2>
   <div class="controls-top">
     <div class="group">
-      <label for="order">Trier par :</label>
       <select id="order" bind:value={order} onchange={handleFilterChange}>
         <option value="A-Z">Titre (A-Z)</option>
         <option value="Z-A">Titre (Z-A)</option>
       </select>
     </div>
     <div class="group">
-      <label for="pagination">Afficher :</label>
       <select id="pagination" bind:value={limit} onchange={handleFilterChange}>
         <option value={10}>10</option>
         <option value={20}>20</option>
@@ -74,6 +72,8 @@
   select::picker(select) {
     appearance: base-select;
     color: var(--color-text);
+    border: none;
+    box-shadow: var(--shadow-btn);
     background: var(--color-secondary);
   }
 
@@ -137,19 +137,21 @@
     font-weight: bold;
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 840px) {
     .grid {
       grid-template-columns: repeat(2, 1fr);
       gap: 15px;
-      width: 80%;
+      width: 90%;
     }
   }
 
+  /* 2 colonnes fixes même sur très petit écran */
   @media (max-width: 480px) {
     .grid {
-      grid-template-columns: repeat(1, 1fr);
-      gap: 5px;
-      width: 80%;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      width: 95%;
+      padding: 0 8px;
     }
   }
 </style>
