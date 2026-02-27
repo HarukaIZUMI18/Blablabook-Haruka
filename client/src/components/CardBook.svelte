@@ -34,14 +34,13 @@
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     width: 100%;
-    max-width: 280px;
     overflow: hidden;
     transition: transform 0.2s;
     margin: 0 auto;
   }
 
   .card:hover {
-    transform: translateY(-5px);
+    transform: scale(1.03);
   }
 
   .card a {
@@ -59,8 +58,10 @@
 
   .image-container {
     width: 100%;
-    height: 400px;
+    height: 350px;
+    aspect-ratio: 2 / 3;
     position: relative;
+    overflow: hidden;
   }
 
   img {
