@@ -5,7 +5,7 @@
   let books = $state([]);
   let currentPage = $state(1);
   let totalPages = $state(0);
-  let limit = $state(50);
+  let limit = $state(30);
   let order = $state("A-Z");
 
   $effect(() => {
@@ -94,8 +94,8 @@
   }
   .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    max-width: 1200px;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    max-width: 1600px;
     margin: 20px auto;
     gap: 1em 0.5em;
     justify-items: center;
@@ -141,6 +141,14 @@
     .grid {
       grid-template-columns: repeat(2, 1fr);
       gap: 15px;
+      width: 80%;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .grid {
+      grid-template-columns: repeat(1, 1fr);
+      gap: 5px;
       width: 80%;
     }
   }

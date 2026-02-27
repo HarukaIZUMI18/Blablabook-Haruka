@@ -1,5 +1,4 @@
 <script>
-  import { Link } from "svelte-routing";
   import Login from "./Login.svelte";
   import Logo from "../lib/assets/Blablabook.svg?raw";
 
@@ -229,9 +228,9 @@
     }
 
     .nav-content {
-      display: none; /* Caché par défaut */
+      display: none; 
       position: absolute;
-      top: 100%; /* Juste en dessous du header */
+      top: 100%; 
       left: 0;
       width: 100%;
       background: var(--color-primary);
