@@ -4,13 +4,12 @@
   let token = localStorage.getItem("token");
    const { params } = $props();
 
-   // Status du livre
-
+   // Status du livre exemple
    let book = $state({
-    id:1, status: "à lire"
+    id:1, status: ""
    });
 
-const statuses = [
+const status = [
   "à lire",
     "abandonné",
     "Lu",
@@ -26,6 +25,7 @@ function changeStatus(book, newStatus) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status: newStatus })
     }); */
+    console.log("Status actuel", book.status);
 }
 
 </script>
@@ -35,13 +35,6 @@ function changeStatus(book, newStatus) {
       src="https://covers.openlibrary.org/b/id/14348537-L.jpg"
       alt="Couverture de Harry Potter"
     />
-  </div>
-  <div class="detail_title">
-    <h1>Harry Potter1</h1>
-  </div>
-  <div class="detail_description">
-    <p><strong>Auteur:</strong> J.K. Rowling</p>
-    <p><strong>Année:</strong> 1997</p>
     <!-- Séléction un status de livre -->
     {#if token}
 <div class="status_book">
@@ -50,13 +43,21 @@ function changeStatus(book, newStatus) {
     id="status_select"
     bind:value={book.status}
   >
-    {#each statuses as s}
+  <option value="" disabled hidden>Vous avez lu ce livre?</option>
+    {#each status as s}
       <option value={s}>{s}</option>
     {/each}
   </select>
-  <p><strong>Status de ce livre:</strong> {book.status}</p>
+<button onclick={() => changeStatus(book, book.status)}>Oui</button>
 </div>
     {/if}
+  </div>
+  <div class="detail_title">
+    <h1>Harry Potter1</h1>
+  </div>
+  <div class="detail_description">
+    <p><strong>Auteur:</strong> J.K. Rowling</p>
+    <p><strong>Année:</strong> 1997</p>
     <h2>Description</h2>
     <p>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
@@ -104,6 +105,10 @@ function changeStatus(book, newStatus) {
 
   .status_book{
     padding: 2rem;
+  }
+
+  .back_list{
+    margin: 2rem;
   }
 
   select{
