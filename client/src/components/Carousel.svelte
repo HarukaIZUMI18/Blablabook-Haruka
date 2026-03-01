@@ -120,7 +120,7 @@
 
  let index = 0;
 
- let visibleCount = window.innerWidth <= 768 ? 2 : 3;
+ let visibleCount = window.innerWidth <= 900 ? 1 : 5;
 
   function prev() {
     index = (index - 1 + books.length) % books.length;
@@ -135,7 +135,7 @@
   <button class="arrow" on:click={prev}>⟨</button>
 
   <div class="slides">
-    {#each books.slice(index, index + 5) as book}
+    {#each books.slice(index, index + visibleCount) as book}
       <div class="slide">
         <CardBook {book} />
       </div>
@@ -148,6 +148,7 @@
 
 
 
+￼￼Déconnexion
 
 <style>
   .carousel {
@@ -200,7 +201,7 @@
     transform: scale(1.2);
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 900px) {
     .carousel {
       width: 100%;
       overflow-x: auto;
@@ -212,6 +213,7 @@
       gap: 12px;
       overflow-x: auto;
       scroll-snap-type: x mandatory;
+      justify-content: center;
     }
 
     .slide {
@@ -226,9 +228,6 @@
       transform: scale(1.02);
     }
 
-    .arrow {
-      display: none;
-    }
   }
 </style>
 

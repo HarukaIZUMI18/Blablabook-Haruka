@@ -22,23 +22,21 @@
 
     <main>
       <Route path="/">
-        {#if !isLoggedIn}
-          <div class="welcome">
-            <h1>Bienvenue sur <span>BlaBlaBook</span></h1>
-            <p>
-              Découvrez de nouveaux livres, explorez des univers variés et
-              trouvez votre prochaine lecture en un instant.
-            </p>
-            <p>
-              Créez un compte ou connectez‑vous pour accéder à votre espace
-              personnel et commencer votre aventure littéraire.
-            </p>
-          </div>
-        {/if}
+  <div class:is-connected={isLoggedIn}>
+    {#if !isLoggedIn}
+      <div class="welcome">
+        <h1>Bienvenue sur <span>BlaBlaBook</span></h1>
+        <p>Découvrez de nouveaux livres, explorez des univers variés et trouvez votre prochaine lecture en un instant.</p>
+        <p>Créez un compte ou connectez‑vous pour accéder à votre espace personnel et commencer votre aventure littéraire.</p>
+      </div>
+    {/if}
 
-        <h2>Suggestion de livres :</h2>
-        <Carousel />
-      </Route>
+    <h2>Suggestion de livres :</h2>
+    <Carousel />
+  </div>
+</Route>
+
+
 
       <Route path="/profil">
         <Profil />
@@ -87,4 +85,28 @@
     margin: 6px 0;
     opacity: 0.9;
   }
+  main {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* centre tout le contenu */
+  width: 100%;
+  text-align: center; /* centre les titres */
+}
+
+.is-connected h2 {
+  margin-top: 25px; /* espace au-dessus du titre */
+}
+
+.is-connected :global(.carousel) {
+  margin-top: 10px; /* descend le carousel */
+}
+
+.is-connected {
+  padding-top: 70px; 
+}
+
+
+
+
+
 </style>
