@@ -69,20 +69,28 @@
     margin: 1em 1em 0 1em;
   }
 
-  /* Ne fonctionne pas sur Firefox */
-  select,
-  select::picker(select) {
-    appearance: base-select;
+  select {
     color: var(--color-text);
     border: none;
     box-shadow: var(--shadow-btn);
     background: var(--color-secondary);
+    border-radius: var(--radius);
+    padding: 0.4rem 2rem 0.4rem 0.75rem;
+    font-family: var(--font-primary);
+    font-size: 0.9rem;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23888' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.6rem center;
   }
 
-  select::picker(select) {
-    border-radius: var(--radius);
-    padding: 5px;
+  select:focus {
+    outline: 2px solid var(--color-secondary);
+    outline-offset: 2px;
   }
+
   .group {
     display: flex;
     align-items: center;
@@ -92,8 +100,12 @@
   .controls-top {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75em;
     margin: 1em 2em;
   }
+
   .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -139,13 +151,14 @@
     font-weight: bold;
   }
 
-  @media (max-width: 1500px){
-     .grid {
+  @media (max-width: 1500px) {
+    .grid {
       grid-template-columns: repeat(4, 1fr);
       gap: 15px;
       width: 90%;
+    }
   }
-}
+
   @media (max-width: 840px) {
     .grid {
       grid-template-columns: repeat(2, 1fr);
@@ -154,8 +167,12 @@
     }
   }
 
-  /* 2 colonnes fixes même sur très petit écran */
   @media (max-width: 480px) {
+    .controls-top {
+      margin: 1em;
+      justify-content: center;
+    }
+
     .grid {
       grid-template-columns: repeat(2, 1fr);
       gap: 8px;

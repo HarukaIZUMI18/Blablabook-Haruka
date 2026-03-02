@@ -9,6 +9,7 @@
   import BookList from "./components/views/BookList.svelte";
   import Carousel from "./components/Carousel.svelte";
   import BookDetail from "./components/views/BookDetail.svelte";
+  import SearchResult from "./components/views/SearchResult.svelte";
 
   export let url = "";
 
@@ -35,9 +36,9 @@
     <Carousel />
   </div>
 </Route>
-
-
-
+      <Route path="/search">
+        <SearchResult />
+      </Route>
       <Route path="/profil">
         <Profil />
       </Route>

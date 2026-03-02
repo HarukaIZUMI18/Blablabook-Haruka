@@ -6,6 +6,7 @@
   let authMode = $state("login");
   let token = $state(localStorage.getItem("token"));
   let isMenuOpen = $state(false);
+  let searchQuery = $state("");
 
   function handleLoginSuccess(newToken) {
     token = newToken;
@@ -19,6 +20,18 @@
     isMenuOpen = false;
     window.location.replace("/");
   }
+
+  function search() {
+    const q = searchQuery.trim();
+    if (!q) return;
+    isMenuOpen = false;
+    searchQuery = "";
+    window.location.href = `/search?q=${encodeURIComponent(q)}`;
+  }
+
+  function handleEnter(e) {
+    if (e.key === "Enter") search();
+  }
 </script>
 
 <header>
@@ -30,11 +43,35 @@
 
       <!-- Liens desktop (toujours rendus, cachés via CSS sur mobile) -->
       <div class="desktop-nav">
-        <input
-          type="text"
-          class="search-input"
-          placeholder="Rechercher un livre..."
-        />
+        <div class="search">
+          <input
+            type="text"
+            class="search-input"
+            placeholder="Rechercher un livre..."
+            bind:value={searchQuery}
+            onkeydown={handleEnter}
+          />
+          <button class="search-btn" onclick={search} aria-label="Rechercher">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="11" cy="11" r="8" /><line
+                x1="21"
+                y1="21"
+                x2="16.65"
+                y2="16.65"
+              />
+            </svg>
+          </button>
+        </div>
 
         {#if !token}
           <a href="/livres" class="link">Catalogue</a>
@@ -52,8 +89,8 @@
           >
         {:else}
           <a href="/livres" class="link">Catalogue</a>
-          <a href="/collection" class="link">Ma collection</a>
-          <a href="/profil" class="link">Mon profil</a>
+          <a href="/collection" class="link">Collection</a>
+          <a href="/profil" class="link">Profil</a>
           <button onclick={logout}>Déconnexion</button>
         {/if}
       </div>
@@ -79,12 +116,32 @@
       class:is-open={isMenuOpen}
       aria-hidden={!isMenuOpen}
     >
-      <input
-        type="text"
-        class="search-input"
-        placeholder="Rechercher un livre..."
-        tabindex={isMenuOpen ? 0 : -1}
-      />
+      <div class="search mobile-search">
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Rechercher un livre..."
+          bind:value={searchQuery}
+          onkeydown={handleEnter}
+          tabindex={isMenuOpen ? 0 : -1}
+        />
+        <button class="search-btn" onclick={search} aria-label="Rechercher">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+        </button>
+      </div>
 
       {#if !token}
         <a
@@ -117,16 +174,14 @@
         <a
           href="/collection"
           class="mobile-link"
-          onclick={() => (isMenuOpen = false)}>Ma collection</a
+          onclick={() => (isMenuOpen = false)}>Collection</a
         >
         <a
           href="/profil"
           class="mobile-link"
-          onclick={() => (isMenuOpen = false)}>Mon profil</a
+          onclick={() => (isMenuOpen = false)}>Profil</a
         >
-        <button class="mobile-btn" onclick={logout}
-          >Déconnexion</button
-        >
+        <button class="mobile-btn" onclick={logout}>Déconnexion</button>
       {/if}
     </div>
   </nav>
@@ -144,11 +199,7 @@
     width: 100%;
     background: var(--color-primary);
     box-shadow: var(--shadow);
-    padding: 0.5rem 0;
-    /* sticky + z-index pour que le drawer ne passe pas sous le contenu */
-    position: sticky;
-    top: 0;
-    z-index: 900;
+    padding: 1rem 0;
   }
 
   .nav-container {
@@ -180,24 +231,70 @@
     gap: 1rem;
   }
 
-  .search-input {
-    padding: 0.5rem 1rem;
-    border-radius: var(--radius);
-    border: 2px solid var(--color-bg);
-    color: var(--color-text);
-    font-family: var(--font-primary);
-    font-size: 0.9rem;
-    width: 200px;
-    background: transparent;
-    outline: none;
-    transition:
-      border-color 0.2s,
-      box-shadow 0.2s;
+  .search {
+    display: flex;
+    align-items: center;
+    background-color: #f4f4f4;
+    border: 1px solid transparent;
+    border-radius: 50px;
+    padding: 2px 6px 2px 18px;
+    width: 100%;
+    max-width: 350px;
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-bg) 50%, transparent);
   }
-  .search-input:focus {
+
+  .search:hover {
+    background-color: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  .search:focus-within {
     border-color: var(--color-secondary);
-    box-shadow: 0 0 0 3px
-      color-mix(in srgb, var(--color-secondary) 20%, transparent);
+    box-shadow: 0 0 0 4px
+      color-mix(in srgb, var(--color-secondary) 15%, transparent);
+  }
+
+  .search-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 10px 0;
+    font-size: 0.95rem;
+    background: transparent;
+    color: var(--color-text);
+  }
+
+  .search-input::placeholder {
+    color: #888;
+    transition: opacity 0.2s;
+  }
+
+  .search-input:focus::placeholder {
+    opacity: 0.5;
+  }
+
+  .search-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: none;
+    box-shadow: none;
+    margin-left: 8px;
+  }
+
+  .search-btn:hover {
+    transform: scale(1.05);
+    background-color: var(--color-secondary);
+  }
+
+  .search-btn:active {
+    transform: scale(0.95);
+  }
+  .mobile-search {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
   }
 
   .link {
@@ -321,7 +418,6 @@
     padding: 0.6rem 0.75rem;
     border-radius: var(--radius);
   }
-  
 
   /* ── Modale ── */
   .overlay {
