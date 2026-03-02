@@ -52,7 +52,7 @@
       </Route>
       
       <Route path="/livre/:id" let:params>
-        <BookDetail {params} />
+        <BookDetail { params } />
       </Route>
 
       <Route path="*">

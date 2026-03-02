@@ -2,6 +2,7 @@ import { httpRequester } from "./httpRequester.js";
 
 export const api = {
   allBook,
+  getBookById,
   register,
   login,
   getUserInfo,
@@ -39,3 +40,7 @@ async function updateProfile(profileData) {
 async function search(query) {
   return await httpRequester.get(`book/search?q=${encodeURIComponent(query)}`);
 }
+
+ async function getBookById(id) {
+    return await httpRequester.get(`book/${id}`);
+  }
