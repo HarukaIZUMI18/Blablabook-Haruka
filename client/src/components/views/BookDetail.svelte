@@ -26,6 +26,7 @@
   }
 </script>
 
+<main>
 <section>
   {#if book}
     <div class="detail_img">
@@ -65,7 +66,7 @@
     </Link>
   </div>
 {/if}
-
+</main>
 <style>
   section {
     display: grid;
@@ -91,6 +92,7 @@
   }
 
   .status_book {
+    grid-area: 5 / 1 / 6 / 3;
     padding: 2rem;
   }
 
@@ -104,6 +106,12 @@
     padding: 0.3rem;
   }
 
+  @media screen and (max-width: 1100px) {
+    main{
+      display: flex;
+      margin: 2rem;
+    }
+  }
   /* Responsive mobile */
   @media screen and (max-width: 940px) {
     section {
