@@ -2,6 +2,7 @@ import { httpRequester } from "./httpRequester.js";
 
 export const api = {
   allBook,
+  getBookById,
   register,
   login,
   getUserInfo,
@@ -31,3 +32,8 @@ async function allBook(params = {}) {
     return await httpRequester.patch(`user/me`, profileData);
   }
   
+  // Récupérer un livre par Id pour Détail d'un livre
+
+  async function getBookById(id) {
+    return await httpRequester.get(`book/${id}`);
+  }

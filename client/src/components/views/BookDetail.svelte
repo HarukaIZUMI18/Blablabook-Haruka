@@ -1,74 +1,61 @@
 <script>
+  import { onMount } from "svelte";
+  import { api } from "../../service/api.service.js";
   import { Link } from "svelte-routing";
-// Pour page connecté et sans connecté
-  let token = localStorage.getItem("token");
-   const { params } = $props();
+  // Pour page connecté et sans connecté
+  let token = $state(null);
+  const { params } = $props();
 
-   // Status du livre exemple
-   let book = $state({
-    id:1, status: ""
-   });
+  let book = $state(null);
 
-const status = [
-  "à lire",
-    "abandonné",
-    "Lu",
-    "En pause",
-    "En cours"
-];
+  onMount(() => {
+    token = localStorage.getItem("token");
+    fetchBook();
+  });
 
-function changeStatus(book, newStatus) {
-  book.status = newStatus;
-  /* Exemple d'envoyer à API
-  fetch(`/api/books/${book.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status: newStatus })
-    }); */
+  async function fetchBook() {
+    const data = await api.getBookById(params.id);
+    book = data;
+  }
+
+  const status = ["à lire", "abandonné", "Lu", "En pause", "En cours"];
+
+  function changeStatus(book, newStatus) {
+    book.status = newStatus;
     console.log("Status actuel", book.status);
-}
-
+  }
 </script>
+
 <section>
-  <div class="detail_img">
-    <img
-      src="https://covers.openlibrary.org/b/id/14348537-L.jpg"
-      alt="Couverture de Harry Potter"
-    />
+  {#if book}
+    <div class="detail_img">
+      <img src={book.cover} alt={`Couverture de ${book.title}`} />
+    </div>
     <!-- Séléction un status de livre -->
     {#if token}
-<div class="status_book">
-<label for="sutatus_select">Sélelectionnez le statut du livre</label>
-    <select
-    id="status_select"
-    bind:value={book.status}
-  >
-  <option value="" disabled hidden>Vous avez lu ce livre?</option>
-    {#each status as s}
-      <option value={s}>{s}</option>
-    {/each}
-  </select>
-<button onclick={() => changeStatus(book, book.status)}>Oui</button>
-</div>
+      <div class="status_book">
+        <label for="sutatus_select">Sélelectionnez le statut du livre</label>
+        <select id="status_select" bind:value={book.status}>
+          <option value="" disabled hidden>Vous avez lu ce livre?</option>
+          {#each status as s}
+            <option value={s}>{s}</option>
+          {/each}
+        </select>
+        <button onclick={() => changeStatus(book, book.status)}>Oui</button>
+      </div>
     {/if}
-  </div>
-  <div class="detail_title">
-    <h1>Harry Potter1</h1>
-  </div>
-  <div class="detail_description">
-    <p><strong>Auteur:</strong> J.K. Rowling</p>
-    <p><strong>Année:</strong> 1997</p>
-    <h2>Description</h2>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-      commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-      velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-      cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-      est laborum.
-    </p>
-  </div>
+    <div class="detail_title">
+      <h1>{book.title}</h1>
+    </div>
+    <div class="detail_description">
+      <p><strong>Auteur:</strong> {book.author}</p>
+      <p><strong>Année:</strong> {book.publish_year}</p>
+      <h2>Description</h2>
+      <p>
+        {book.description}
+      </p>
+    </div>
+  {/if}
 </section>
 <!-- Utilisateur sans connecter -->
 {#if !token}
@@ -103,15 +90,15 @@ function changeStatus(book, newStatus) {
     grid-area: 2 / 3 / 5 / 6;
   }
 
-  .status_book{
+  .status_book {
     padding: 2rem;
   }
 
-  .back_list{
+  .back_list {
     margin: 2rem;
   }
   /* Status de livre */
-  select{
+  select {
     border: 2px solid var(--color-bg);
     border-radius: var(--radius);
     padding: 0.3rem;
@@ -124,10 +111,10 @@ function changeStatus(book, newStatus) {
       flex-direction: column;
       align-items: center;
       margin: 1.5rem;
+    }
+    .detail_img img {
+      display: block;
+      margin: 0 auto;
+    }
   }
-  .detail_img img{
-    display: block;
-    margin: 0 auto;
-  }
-}
 </style>
