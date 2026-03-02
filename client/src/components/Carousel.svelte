@@ -122,6 +122,12 @@
 
  let visibleCount = window.innerWidth <= 900 ? 1 : 5;
 
+  function updateVisibleCount() {
+    visibleCount = window.innerWidth <= 900 ? 1 : 5;
+  }
+
+  window.addEventListener("resize", updateVisibleCount);
+
   function prev() {
     index = (index - 1 + books.length) % books.length;
   }
@@ -144,11 +150,6 @@
 
   <button class="arrow" on:click={next}>⟩</button>
 </div>
-
-
-
-
-￼￼Déconnexion
 
 <style>
   .carousel {
@@ -230,7 +231,6 @@
 
   }
 </style>
-
 
 
 
