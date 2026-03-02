@@ -88,25 +88,26 @@
   main {
   display: flex;
   flex-direction: column;
-  align-items: center; /* centre tout le contenu */
+  align-items: center;
   width: 100%;
-  text-align: center; /* centre les titres */
+  text-align: center;
 }
 
 .is-connected h2 {
-  margin-top: 25px; /* espace au-dessus du titre */
+  margin-top: 25px;
 }
 
 .is-connected :global(.carousel) {
-  margin-top: 10px; /* descend le carousel */
+  margin-top: 10px;
 }
 
 .is-connected {
   padding-top: 70px; 
 }
 
-
-
-
-
+ @media (max-width: 800px) {
+  .welcome {
+    margin: 1em;
+  }
+ }
 </style>
