@@ -27,17 +27,9 @@ async function allBook(params = {}) {
 async function getUserInfo() {
   return await httpRequester.get(`user/me`);
 }
-  
-async function updateProfile(profileData) {
-  return await httpRequester.patch(`user/me`, profileData);
-}
 
 async function randomBook() {
 return await httpRequester.get(`book/random`);
-}
-
-async function getUserInfo() {
-  return await httpRequester.get(`user/me`);
 }
 
 async function updateProfile(profileData) {
