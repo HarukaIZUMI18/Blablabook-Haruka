@@ -68,6 +68,8 @@
   h2 {
     margin: 1em 1em 0 1em;
   }
+
+  /* Ne fonctionne pas sur Firefox */
   select,
   select::picker(select) {
     appearance: base-select;
@@ -137,6 +139,13 @@
     font-weight: bold;
   }
 
+  @media (max-width: 1500px){
+     .grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      width: 90%;
+  }
+}
   @media (max-width: 840px) {
     .grid {
       grid-template-columns: repeat(2, 1fr);
