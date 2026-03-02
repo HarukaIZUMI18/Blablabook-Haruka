@@ -1,63 +1,9 @@
 <script>
   import { onMount, onDestroy } from "svelte";
   import CardBook from "./CardBook.svelte";
+  import { api } from "../service/api.service.js";
 
-  let books = [
-    {
-      title: "Harry Potter",
-      author: "J.K. Rowling",
-      year: 1997,
-      cover: "https://covers.openlibrary.org/b/id/9269962-L.jpg",
-    },
-    {
-      title: "Pride and Prejudice",
-      author: "Jane Austen",
-      year: 1813,
-      cover: "https://covers.openlibrary.org/b/id/8231856-L.jpg",
-    },
-    {
-      title: "Le Seigneur des Anneaux",
-      author: "J.R.R. Tolkien",
-      year: 1954,
-      cover: "https://covers.openlibrary.org/b/id/8101350-L.jpg",
-    },
-    {
-      title: "Pride and Prejudice",
-      author: "Jane Austen",
-      year: 1813,
-      cover: "https://covers.openlibrary.org/b/id/8231856-L.jpg",
-    },
-    {
-      title: "Le Seigneur des Anneaux",
-      author: "J.R.R. Tolkien",
-      year: 1954,
-      cover: "https://covers.openlibrary.org/b/id/8101350-L.jpg",
-    },
-    {
-      title: "Pride and Prejudice",
-      author: "Jane Austen",
-      year: 1813,
-      cover: "https://covers.openlibrary.org/b/id/8231856-L.jpg",
-    },
-    {
-      title: "Le Seigneur des Anneaux",
-      author: "J.R.R. Tolkien",
-      year: 1954,
-      cover: "https://covers.openlibrary.org/b/id/8101350-L.jpg",
-    },
-    {
-      title: "Pride and Prejudice",
-      author: "Jane Austen",
-      year: 1813,
-      cover: "https://covers.openlibrary.org/b/id/8231856-L.jpg",
-    },
-    {
-      title: "Le Seigneur des Anneaux",
-      author: "J.R.R. Tolkien",
-      year: 1954,
-      cover: "https://covers.openlibrary.org/b/id/8101350-L.jpg",
-    },
-  ];
+  let books = [];
 
   let index = 0;
   let visibleCount = 5;
@@ -75,11 +21,13 @@
   }
 
   function getVisibleBooks(books, start, count) {
-    return Array.from(
-      { length: count },
-      (_, i) => books[(start + i) % books.length],
-    );
-  }
+  if (!books || books.length === 0) return []; 
+  return Array.from(
+    { length: count },
+    (_, i) => books[(start + i) % books.length]
+  );
+}
+
 
   $: visibleBooks = getVisibleBooks(books, index, visibleCount);
 
@@ -91,7 +39,22 @@
     index = (index + 1) % books.length;
   }
 
-  onMount(() => {
+  onMount(async () => {
+  console.log("onMount lancé");
+
+  try {
+    const res = await api.randomBook();
+    console.log("RES =", res);
+    console.log("TYPE =", Array.isArray(res) ? "array" : typeof res);
+
+    books = res; // on corrigera après selon ce que tu vois
+  } catch (err) {
+    console.error("ERREUR API =", err);
+  }
+
+
+
+
     updateVisibleCount();
     window.addEventListener("resize", updateVisibleCount);
   });
@@ -101,6 +64,7 @@
   });
 </script>
 
+{#if books.length > 0}
 <div class="carousel">
   <button class="arrow" on:click={prev} aria-label="Précédent">&#10094;</button>
 
@@ -114,6 +78,7 @@
 
   <button class="arrow" on:click={next} aria-label="Suivant">&#10095;</button>
 </div>
+{/if}
 
 <style>
   .carousel {
@@ -131,12 +96,12 @@
     gap: 1.25rem;
     flex: 1;
     justify-content: center;
-    min-width: 0; 
+    min-width: 0;
   }
 
   .slide {
     flex: 1 1 0;
-    min-width: 0; 
+    min-width: 0;
     border-radius: 14px;
     overflow: hidden;
     cursor: pointer;

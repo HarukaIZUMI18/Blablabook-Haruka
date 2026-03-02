@@ -6,6 +6,7 @@ export const api = {
   login,
   getUserInfo,
   updateProfile,
+  randomBook
 };
 
 async function register(signupData) {
@@ -30,4 +31,10 @@ async function allBook(params = {}) {
   async function updateProfile(profileData) {
     return await httpRequester.patch(`user/me`, profileData);
   }
+
+ async function randomBook() {
+  return await httpRequester.get(`book/random`);
+}
+
+
   
