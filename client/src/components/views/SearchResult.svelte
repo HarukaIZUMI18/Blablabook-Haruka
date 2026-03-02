@@ -22,12 +22,12 @@
 <section>
   {#if !query}
     <h2>Votre recherche est vide</h2>
-    <p class="empty-message">
+    <p>
       Entrez un mot-clé dans la barre de recherche pour trouver des livres.
     </p>
   {:else if books.length === 0}
     <h2>Aucun résultat pour "{query}"</h2>
-    <p class="empty-message">Essayez avec d'autres termes de recherche.</p>
+    <p>Essayez avec d'autres termes de recherche.</p>
   {:else}
     <h2>Résultats pour "{query}"</h2>
     <div class="grid">
