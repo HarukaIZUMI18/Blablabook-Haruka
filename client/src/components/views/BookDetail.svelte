@@ -1,75 +1,175 @@
 <script>
   import { Link } from "svelte-routing";
-// Pour page connecté et sans connecté
-  let token = localStorage.getItem("token");
-   const { params } = $props();
+  import { api } from "../../service/api.service.js";
+  import { onMount } from "svelte";
 
-   // Status du livre exemple
-   let book = $state({
-    id:1, status: ""
-   });
+  // Pour page connecté et sans connecté
+  let token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  const { params } = $props();
 
-const status = [
-  "à lire",
-    "abandonné",
-    "Lu",
-    "En pause",
-    "En cours"
-];
+  // États Svelte 5
+  let book = $state(null);
+  let loading = $state(true);
+  let collectionStatus = $state(null); // null = pas dans la collection, sinon = statut
+  let checkingCollection = $state(true);
+  let toast = $state(null);
+  let toastTimeout = $state(null);
+  let selectedStatus = $state("à lire");
 
-function changeStatus(book, newStatus) {
-  book.status = newStatus;
-  /* Exemple d'envoyer à API
-  fetch(`/api/books/${book.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status: newStatus })
-    }); */
-    console.log("Status actuel", book.status);
-}
+  const statuses = [
+    { value: "à lire", label: "À lire" },
+    { value: "en cours", label: "En cours" },
+    { value: "lu", label: "Lu" },
+    { value: "abandonné", label: "Abandonné" },
+  ];
 
+  onMount(async () => {
+    await loadBook();
+    if (token) {
+      await checkCollection();
+    }
+  });
+
+  async function loadBook() {
+    try {
+      loading = true;
+      const data = await api.getBook(params.id);
+      book = data;
+    } catch (error) {
+      showToast("Erreur lors du chargement du livre", "error");
+    } finally {
+      loading = false;
+    }
+  }
+
+  async function checkCollection() {
+    try {
+      checkingCollection = true;
+      const data = await api.getCollection();
+      const found = data.books?.find(b => b.id === parseInt(params.id));
+      collectionStatus = found?.collectStatus || null;
+    } catch (error) {
+      console.error("Erreur vérification collection:", error);
+    } finally {
+      checkingCollection = false;
+    }
+  }
+
+  async function handleAddToCollection() {
+    try {
+      await api.addToCollection(book.id, selectedStatus);
+      collectionStatus = selectedStatus;
+      showToast("Livre ajouté à votre collection", "success");
+    } catch (error) {
+      showToast("Erreur lors de l'ajout à la collection", "error");
+    }
+  }
+
+  async function handleUpdateStatus() {
+    try {
+      await api.updateCollectionStatus(book.id, selectedStatus);
+      collectionStatus = selectedStatus;
+      showToast("Statut mis à jour", "success");
+    } catch (error) {
+      showToast("Erreur lors de la mise à jour", "error");
+    }
+  }
+
+  async function handleRemoveFromCollection() {
+    try {
+      await api.removeFromCollection(book.id);
+      collectionStatus = null;
+      showToast("Livre retiré de la collection", "success");
+    } catch (error) {
+      showToast("Erreur lors de la suppression", "error");
+    }
+  }
+
+  function showToast(message, type) {
+    if (toastTimeout) clearTimeout(toastTimeout);
+    toast = { message, type };
+    toastTimeout = setTimeout(() => {
+      toast = null;
+    }, 3000);
+  }
 </script>
 <section>
-  <div class="detail_img">
-    <img
-      src="https://covers.openlibrary.org/b/id/14348537-L.jpg"
-      alt="Couverture de Harry Potter"
-    />
-    <!-- Séléction un status de livre -->
-    {#if token}
-<div class="status_book">
-<label for="sutatus_select">Sélelectionnez le statut du livre</label>
-    <select
-    id="status_select"
-    bind:value={book.status}
-  >
-  <option value="" disabled hidden>Vous avez lu ce livre?</option>
-    {#each status as s}
-      <option value={s}>{s}</option>
-    {/each}
-  </select>
-<button onclick={() => changeStatus(book, book.status)}>Oui</button>
-</div>
-    {/if}
-  </div>
-  <div class="detail_title">
-    <h1>Harry Potter1</h1>
-  </div>
-  <div class="detail_description">
-    <p><strong>Auteur:</strong> J.K. Rowling</p>
-    <p><strong>Année:</strong> 1997</p>
-    <h2>Description</h2>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-      commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-      velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-      cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-      est laborum.
-    </p>
-  </div>
+  {#if loading || checkingCollection}
+    <p class="loading" aria-busy="true">Chargement...</p>
+  {:else if book}
+    <div class="detail_img">
+      <img
+        src={book.cover}
+        alt={`Couverture de ${book.title}`}
+      />
+      
+      {#if token}
+        <div class="collection-section">
+          {#if collectionStatus === null}
+            <!-- Pas dans la collection : afficher bouton ajout + select -->
+            <div class="add-to-collection">
+              <label for="status-select">Statut</label>
+              <select id="status-select" bind:value={selectedStatus}>
+                {#each statuses as status}
+                  <option value={status.value}>{status.label}</option>
+                {/each}
+              </select>
+              <button onclick={handleAddToCollection}>
+                Ajouter à ma collection
+              </button>
+            </div>
+          {:else}
+            <!-- Dans la collection : afficher statut actuel + boutons -->
+            <div class="collection-info">
+              <p class="current-status">
+                <strong>Statut actuel :</strong> {collectionStatus}
+              </p>
+              <div class="update-status">
+                <label for="status-update">Changer</label>
+                <select id="status-update" bind:value={selectedStatus}>
+                  {#each statuses as status}
+                    <option value={status.value}>{status.label}</option>
+                  {/each}
+                </select>
+                <button onclick={handleUpdateStatus}>
+                  Modifier
+                </button>
+              </div>
+              <button class="remove-btn" onclick={handleRemoveFromCollection}>
+                Retirer de ma collection
+              </button>
+            </div>
+          {/if}
+        </div>
+      {/if}
+    </div>
+    
+    <div class="detail_title">
+      <h1>{book.title}</h1>
+    </div>
+    <div class="detail_description">
+      <p><strong>Auteur:</strong> {book.author}</p>
+      <p><strong>Année:</strong> {book.publish_year}</p>
+      <h2>Description</h2>
+      <p>{book.description}</p>
+    </div>
+  {:else}
+    <p class="error">Livre non trouvé</p>
+  {/if}
 </section>
+
+<!-- Toast notification -->
+{#if toast}
+  <div 
+    class="toast" 
+    class:success={toast.type === "success"} 
+    class:error={toast.type === "error"}
+    role="alert" 
+    aria-live="polite"
+  >
+    {toast.message}
+  </div>
+{/if}
 <!-- Utilisateur sans connecter -->
 {#if !token}
   <div class="back_list">
@@ -129,5 +229,126 @@ function changeStatus(book, newStatus) {
     display: block;
     margin: 0 auto;
   }
+}
+
+/* Collection section styles */
+.collection-section {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: white;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.add-to-collection,
+.collection-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.add-to-collection label,
+.update-status label {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.add-to-collection select,
+.update-status select {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: var(--radius);
+  font-family: var(--font-primary);
+  font-size: 0.9rem;
+}
+
+.add-to-collection select:focus,
+.update-status select:focus {
+  outline: none;
+  border-color: var(--color-secondary);
+}
+
+.add-to-collection button {
+  padding: 0.75rem;
+  font-weight: 600;
+}
+
+.collection-info {
+  gap: 1rem;
+}
+
+.current-status {
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.update-status {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.update-status button {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+}
+
+.remove-btn {
+  padding: 0.5rem 1rem;
+  border: 1px solid #dc3545;
+  background: transparent;
+  color: #dc3545;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+}
+
+.remove-btn:hover {
+  background: #dc3545;
+  color: white;
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 1rem 1.5rem;
+  border-radius: var(--radius);
+  font-family: var(--font-primary);
+  font-size: 0.95rem;
+  z-index: 1000;
+  animation: slideDown 0.3s ease;
+}
+
+.toast.success {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.toast.error {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* Loading & Error */
+.loading,
+.error {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.1rem;
 }
 </style>
