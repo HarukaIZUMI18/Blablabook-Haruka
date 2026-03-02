@@ -169,14 +169,10 @@
     height: 100%;
     display: flex;
     justify-content: center;
-    overflow: hidden;
+    
     border-radius: 14px;
     cursor: pointer;
     transition: box-shadow 0.25s ease;
-  }
-
-  .slide:hover {
-    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.15);
   }
 
   .slide :global(.img_book) {

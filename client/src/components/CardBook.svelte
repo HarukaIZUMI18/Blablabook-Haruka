@@ -14,8 +14,13 @@
         <img
           src={book.cover}
           alt={book.title}
+          loading="lazy"
+          decoding="async"
           class:hidden={!isLoaded}
           onload={() => (isLoaded = true)}
+          onerror={() => {
+            isLoaded = false;
+          }}
         />
       </div>
 
@@ -30,9 +35,8 @@
 
 <style>
   .card {
-    background: white;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.332);
     width: 100%;
     overflow: hidden;
     transition: transform 0.2s;
@@ -58,7 +62,6 @@
 
   .image-container {
     width: 100%;
-    height: 350px;
     aspect-ratio: 2 / 3;
     position: relative;
     overflow: hidden;
@@ -68,6 +71,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: top;
     display: block;
     transition: opacity 0.3s ease;
   }
@@ -79,10 +83,7 @@
 
   .skeleton {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
     background-size: 200% 100%;
     animation: shimmer 1.5s infinite;
@@ -96,29 +97,36 @@
       background-position: -200% 0;
     }
   }
-
+  
   .content {
-    padding: 1rem;
+    padding: 0.75rem;
     text-align: center;
   }
 
   h3 {
-    margin: 0 0 8px 0;
-    font-size: 1.1rem;
+    margin: 0 0 6px 0;
+    font-size: 1rem;
     color: var(--color-text);
   }
 
   p {
     margin: 2px 0;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     color: #666;
   }
+
+  @media (max-width: 480px) {
+    .content {
+      padding: 0.4rem 0.35rem;
+    }
+
+    h3 {
+      font-size: 0.75rem;
+      margin-bottom: 3px;
+    }
+
+    p {
+      font-size: 0.65rem;
+    }
+  }
 </style>
-
-
-
-
-
-
-
-
