@@ -4,6 +4,7 @@
 
   let books = $state([]);
   let query = $state("");
+
   $effect(() => {
     const params = new URLSearchParams(window.location.search);
     query = params.get("q") || "";
@@ -19,16 +20,22 @@
 </script>
 
 <section>
-  {#if query}
-    <h2>Résultat de votre recherche: "{query}"</h2>
-  {:else}
+  {#if !query}
     <h2>Votre recherche est vide</h2>
+    <p class="empty-message">
+      Entrez un mot-clé dans la barre de recherche pour trouver des livres.
+    </p>
+  {:else if books.length === 0}
+    <h2>Aucun résultat pour "{query}"</h2>
+    <p class="empty-message">Essayez avec d'autres termes de recherche.</p>
+  {:else}
+    <h2>Résultats pour "{query}"</h2>
+    <div class="grid">
+      {#each books as book (book.id)}
+        <CardBook {book} />
+      {/each}
+    </div>
   {/if}
-  <div class="grid">
-    {#each books as book (book.id)}
-      <CardBook {book} />
-    {/each}
-  </div>
 </section>
 
 <style>
