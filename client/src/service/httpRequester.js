@@ -7,6 +7,7 @@ export const httpRequester = {
 };
 
 async function request(method, endpoint, body) {
+  // Récupération du token directement depuis localStorage
   const accessToken = localStorage.getItem("token");
 
   const response = await fetch(`${import.meta.env.VITE_API_URL}/${endpoint}`, {
@@ -24,9 +25,9 @@ async function request(method, endpoint, body) {
   }
 
   // Certaines routes API ne renvoie pas de body (ex: routes DELETE avec retour 204 No Content)
-  if (! response.headers.get("Content-Type")?.includes("application/json")) {
+  if (!response.headers.get("Content-Type")?.includes("application/json")) {
     return null;
   }
-  
+
   return await response.json();
 }

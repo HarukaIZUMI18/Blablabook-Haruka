@@ -1,0 +1,126 @@
+@baseURL=http://localhost:3000
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTc3MjAyMDU1NCwiZXhwIjoxNzcyMTA2OTU0fQ.ZilkubxLczhiHAUW9ZpEiP9bVrCUqAJs2AlbdJhI5Z0
+
+# ============================================
+# Test des endpoints Collection - REST Client
+# ============================================
+
+### 1. Connexion pour récupérer le token
+# Cette requête permet de se connecter et d'obtenir un token d'authentification.
+
+POST {{baseURL}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@test.com",
+  "password": "test123456"
+}
+
+---
+
+### 2. Voir sa collection (vide au départ)
+# Récupère tous les livres de la collection de l'utilisateur connecté.
+# Devrait retourner un tableau vide si c'est la première connexion.
+
+GET {{baseURL}}/collect
+Authorization: Bearer {{token}}
+
+---
+
+### 3. Ajouter un livre sans statut
+# Ajoute le livre avec ID 1 à la collection.
+# Le statut par défaut sera "à lire".
+
+POST {{baseURL}}/collect
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "bookId": 1
+}
+
+---
+
+### 4. Ajouter un livre avec statut "en cours"
+# Ajoute le livre avec ID 2 à la collection avec le statut "en cours".
+
+POST {{baseURL}}/collect
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "bookId": 2,
+  "status": "en cours"
+}
+
+---
+
+### 5. Tenter d'ajouter le même livre (doit retourner 409)
+# Essaie d'ajouter le livre avec ID 1 qui existe déjà dans la collection.
+# Doit retourner une erreur 409 Conflict.
+
+POST {{baseURL}}/collect
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "bookId": 1,
+  "status": "lu"
+}
+
+---
+
+### 6. Voir la collection avec les livres ajoutés
+# Récupère tous les livres de la collection.
+# Devrait maintenant contenir les deux livres ajoutés.
+
+GET {{baseURL}}/collect
+Authorization: Bearer {{token}}
+
+---
+
+### 7. Filtrer par statut "à lire"
+# Récupère uniquement les livres avec le statut "à lire".
+
+GET {{baseURL}}/collect?status=%C3%A0%20lire
+Authorization: Bearer {{token}}
+
+---
+
+### 8. Changer le statut d'un livre
+# Modifie le statut du livre avec ID 1 en "lu".
+# Utilise PATCH pour une mise à jour partielle.
+
+PATCH {{baseURL}}/collect/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "status": "lu"
+}
+
+---
+
+### 9. Retirer un livre de la collection
+# Supprime le livre avec ID 1 de la collection.
+
+DELETE {{baseURL}}/collect/1
+Authorization: Bearer {{token}}
+
+---
+
+### 10. Vérifier que le livre est bien retiré
+# Récupère la collection pour confirmer la suppression.
+# Le livre avec ID 1 ne doit plus apparaître.
+
+GET {{baseURL}}/collect
+Authorization: Bearer {{token}}
+
+---
+
+## Notes
+
+- **Important** : Après avoir exécuté la requête de login (n°1), copiez le nouveau token depuis la réponse et mettre à jour la variable `@token` en haut du fichier pour les requêtes suivantes.
+- L'encodage UTF-8 pour les paramètres (comme "à lire") nécessite `%C3%A0%20lire` dans l'URL.
+- Le format `@variable` permet de réutiliser des valeurs across les requêtes.
+- Pour tester avec un autre utilisateur, modifiez les identifiants dans la requête de login.

@@ -2,6 +2,7 @@ import { Router } from "express";
 import { authRouter } from "./auth.router.js";
 import { userRouter } from "./user.router.js";
 import { bookRouter } from "./book.route.js";
+import { collectRouter } from "./collect.router.js";
 
 export const apiRouter = Router();
 
@@ -17,3 +18,4 @@ apiRouter.get("/", (req, res) => {
 apiRouter.use(bookRouter);
 apiRouter.use(authRouter);
 apiRouter.use(userRouter);
+apiRouter.use(collectRouter);
