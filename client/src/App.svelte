@@ -95,7 +95,15 @@
 }
 
 .is-connected h2 {
-  margin-top: 25px;
+   font-size: 1.9rem;
+  font-weight: 700;
+  margin-top: -20px;
+  margin-bottom: 50px;
+  letter-spacing: 0.5px;
+  color: var(--color-text);
+  background-color: #bbbf49;
+  border-radius: 15px;
+
 }
 
 .is-connected :global(.carousel) {

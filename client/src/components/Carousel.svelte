@@ -89,6 +89,7 @@
     margin-top: 20px;
     padding: 0 8px;
     box-sizing: border-box;
+    
   }
 
   .slides {
@@ -100,11 +101,13 @@
   }
 
   .slide {
-    flex: 1 1 0;
-    min-width: 0;
+  flex: 0 0 auto;
+  max-width: 245px;    
+  display: flex;
     border-radius: 14px;
     overflow: hidden;
     cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     transition:
       box-shadow 0.25s ease,
       transform 0.2s ease;

@@ -1,3 +1,7 @@
+html {
+  font-size: 16px;
+}
+
 :root {
   --color-primary: #eeeddc;
   --color-secondary: #bbbf49;
