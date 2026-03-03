@@ -89,8 +89,8 @@
           >
         {:else}
           <a href="/livres" class="link">Catalogue</a>
-          <a href="/collection" class="link">Collection</a>
-          <a href="/profil" class="link">Profil</a>
+          <a href="/collection" class="link">Ma collection</a>
+          <a href="/profil" class="link">Mon profil</a>
           <button onclick={logout}>Déconnexion</button>
         {/if}
       </div>
@@ -174,12 +174,12 @@
         <a
           href="/collection"
           class="mobile-link"
-          onclick={() => (isMenuOpen = false)}>Collection</a
+          onclick={() => (isMenuOpen = false)}>Ma collection</a
         >
         <a
           href="/profil"
           class="mobile-link"
-          onclick={() => (isMenuOpen = false)}>Profil</a
+          onclick={() => (isMenuOpen = false)}>Mon profil</a
         >
         <button class="mobile-btn" onclick={logout}>Déconnexion</button>
       {/if}
@@ -238,7 +238,7 @@
     border: 1px solid transparent;
     border-radius: 50px;
     padding: 2px 6px 2px 18px;
-    width: 100%;
+    
     max-width: 350px;
     box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-bg) 50%, transparent);
   }
@@ -451,4 +451,3 @@
     }
   }
 </style>
-

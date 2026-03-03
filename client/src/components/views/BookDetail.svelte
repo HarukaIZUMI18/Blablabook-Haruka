@@ -28,6 +28,8 @@
     await loadBook();
     if (token) {
       await checkCollection();
+    } else {
+      checkingCollection = false;
     }
   });
 
@@ -148,7 +150,7 @@
           <p><strong>Année:</strong> {book.publish_year}</p>
         </div>
         <div class="description">
-          <h2>Synopsis:</h2>
+          <h2>Résumé:</h2>
           <p>{book.description}</p>
         </div>
       </div>
@@ -201,7 +203,7 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    background-color: white;
+    background-color: var(--color-white);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
     padding: 2em;
@@ -209,7 +211,7 @@
 
   .col-right h1 {
     margin: 0;
-    font-size: 1.75rem;    
+    font-size: 1.75rem;
   }
 
   .meta {
@@ -240,7 +242,7 @@
   /* ── Collection ── */
   .collection-section {
     padding: 1rem;
-    background: white;
+    background: var(--color-white);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
   }
@@ -309,7 +311,7 @@
   }
   .remove-btn:hover {
     background: #dc3545;
-    color: white;
+    color: var(--color-white);
   }
 
   /* ── Toast ── */
