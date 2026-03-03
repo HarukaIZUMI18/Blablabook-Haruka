@@ -23,19 +23,26 @@
 
     <main>
       <Route path="/">
-  <div class:is-connected={isLoggedIn}>
-    {#if !isLoggedIn}
-      <div class="welcome">
-        <h1>Bienvenue sur <span>BlaBlaBook</span></h1>
-        <p>Découvrez de nouveaux livres, explorez des univers variés et trouvez votre prochaine lecture en un instant.</p>
-        <p>Créez un compte ou connectez‑vous pour accéder à votre espace personnel et commencer votre aventure littéraire.</p>
-      </div>
-    {/if}
-
-    <h2>Suggestion de livres :</h2>
-    <Carousel />
-  </div>
-</Route>
+        <div class:is-connected={isLoggedIn}>
+          {#if !isLoggedIn}
+            <div class="welcome">
+              <h1>Bienvenue sur <span>BlaBlaBook</span></h1>
+              <p>
+                Découvrez de nouveaux livres, explorez des univers variés et
+                trouvez votre prochaine lecture en un instant.
+              </p>
+              <p>
+                Créez un compte ou connectez‑vous pour accéder à votre espace
+                personnel et commencer votre aventure littéraire.
+              </p>
+            </div>
+          {/if}
+          <section class="carousel">
+            <h2>Suggestion de livres</h2>
+            <Carousel />
+          </section>
+        </div>
+      </Route>
       <Route path="/search">
         <SearchResult />
       </Route>
@@ -50,9 +57,9 @@
       <Route path="/livres">
         <BookList />
       </Route>
-      
+
       <Route path="/livre/:id" let:params>
-        <BookDetail { params } />
+        <BookDetail {params} />
       </Route>
 
       <Route path="*">
@@ -87,36 +94,58 @@
     opacity: 0.9;
   }
   main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  text-align: center;
-}
-
-.is-connected h2 {
-   font-size: 1.9rem;
-  font-weight: 700;
-  margin-top: -20px;
-  margin-bottom: 50px;
-  letter-spacing: 0.5px;
-  color: var(--color-text);
-  background-color: #bbbf49;
-  border-radius: 15px;
-
-}
-
-.is-connected :global(.carousel) {
-  margin-top: 10px;
-}
-
-.is-connected {
-  padding-top: 70px; 
-}
-
- @media (max-width: 800px) {
-  .welcome {
-    margin: 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    text-align: center;
   }
- }
+  .is-connected h2 {
+    font-size: 1.9rem;
+    font-weight: 700;
+    margin-top: -20px;
+    margin-bottom: 50px;
+    letter-spacing: 0.5px;
+    color: var(--color-text);
+    border-radius: 15px;
+    background-color: var(--color-white);
+    box-shadow: var(--shadow);
+    padding: 1rem 2rem;
+    width: fit-content;
+  }
+
+  .carousel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .is-connected :global(.carousel) {
+    margin-top: 10px;
+  }
+
+  .is-connected {
+    padding-top: 70px;
+  }
+
+  @media (max-width: 800px) {
+    .welcome {
+      margin: 1em;
+    }
+    .welcome h1 {
+      font-size: 1.4rem;
+    }
+    .welcome p {
+      font-size: 1rem;
+    }
+    .is-connected h2 {
+      font-size: 1.5rem;
+    }
+  }
+  @media (max-width: 500px) {
+    .is-connected h2 {
+      font-size: 1.2rem;
+    }
+  }
 </style>

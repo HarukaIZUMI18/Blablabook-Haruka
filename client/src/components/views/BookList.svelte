@@ -27,7 +27,9 @@
 </script>
 
 <section>
-  <h2>Liste de livres:</h2>
+  <div class="title">
+    <h2>Liste de livres</h2>
+  </div>
   <div class="controls-top">
     <div class="group">
       <select id="order" bind:value={order} onchange={handleFilterChange}>
@@ -65,8 +67,18 @@
 </section>
 
 <style>
+  .title {
+    display: flex;
+    justify-content: center;
+  }
   h2 {
     margin: 1em 1em 0 1em;
+    font-size: 2rem;
+    border-radius: 15px;
+    background-color: var(--color-white);
+    box-shadow: var(--shadow);
+    width: fit-content;
+    padding: 1rem 2rem;
   }
 
   select {
@@ -157,6 +169,9 @@
       gap: 15px;
       width: 90%;
     }
+    h2 {
+      font-size: 1.8rem;
+    }
   }
 
   @media (max-width: 840px) {
@@ -164,6 +179,9 @@
       grid-template-columns: repeat(2, 1fr);
       gap: 15px;
       width: 90%;
+    }
+    h2 {
+      font-size: 1.6rem;
     }
   }
 
@@ -178,6 +196,9 @@
       gap: 8px;
       width: 95%;
       padding: 0 8px;
+    }
+    h2 {
+      font-size: 1.4rem;
     }
   }
 </style>

@@ -10,9 +10,10 @@
 
   function getVisibleCount() {
     const w = window.innerWidth;
-    if (w <= 480) return 1;
-    if (w <= 700) return 2;
-    if (w <= 1024) return 3;
+    if (w <= 590) return 1;
+    if (w <= 870) return 2;
+    if (w <= 1200) return 3;
+    if (w <= 1550) return 4;
     return 5;
   }
 
@@ -89,7 +90,7 @@
     margin-top: 20px;
     padding: 0 8px;
     box-sizing: border-box;
-    
+    height: 60vh;
   }
 
   .slides {
@@ -102,7 +103,7 @@
 
   .slide {
   flex: 0 0 auto;
-  max-width: 245px;    
+  max-width: 280px;  
   display: flex;
     border-radius: 14px;
     overflow: hidden;
@@ -122,25 +123,27 @@
     flex-shrink: 0;
     background: none;
     border: none;
-    font-size: 2rem;
+    font-size: 4rem;
     cursor: pointer;
-    color: #592f25;
     padding: 0 10px;
     transition: transform 0.2s ease;
     user-select: none;
+    z-index: 1000;
+    background: none;
+    box-shadow: none;
   }
 
   .arrow:hover {
     transform: scale(1.2);
   }
 
-  @media (max-width: 700px) {
+  @media (max-width: 800px) {
     .slides {
       gap: 0.75rem;
     }
 
     .arrow {
-      font-size: 1.5rem;
+      font-size: 2.5rem;
       padding: 0 6px;
     }
   }
@@ -151,7 +154,7 @@
     }
 
     .arrow {
-      font-size: 1.25rem;
+      font-size: 2rem;
       padding: 0 4px;
     }
   }
