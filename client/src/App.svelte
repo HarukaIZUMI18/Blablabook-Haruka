@@ -10,6 +10,7 @@
   import Carousel from "./components/Carousel.svelte";
   import BookDetail from "./components/views/BookDetail.svelte";
   import SearchResult from "./components/views/SearchResult.svelte";
+  import Footer from "./components/Footer.svelte";
 
   export let url = "";
 
@@ -66,6 +67,7 @@
         <NotFound />
       </Route>
     </main>
+    <Footer />
   </Router>
 </ErrorBoundary>
 
