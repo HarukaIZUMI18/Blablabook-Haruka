@@ -55,19 +55,18 @@ async function updateProfile(profileData) {
 }
 
 async function getCollection(status = null) {
-  const endpoint = status ? `collect?status=${encodeURIComponent(status)}` : "collect";
+  const endpoint = status ? `collection?status=${encodeURIComponent(status)}` : "collection";
   return await httpRequester.get(endpoint);
 }
 
 async function addToCollection(bookId, status = "à lire") {
-  return await httpRequester.post("collect", { bookId, status });
+  return await httpRequester.post(`book/${bookId}/collection`, { status });
 }
 
 async function updateCollectionStatus(bookId, status) {
-  return await httpRequester.patch(`collect/${bookId}`, { status });
+  return await httpRequester.patch(`book/${bookId}/collection`, { status });
 }
 
 async function removeFromCollection(bookId) {
-  return await httpRequester.delete(`collect/${bookId}`);
+  return await httpRequester.delete(`book/${bookId}/collection`);
 }
-  

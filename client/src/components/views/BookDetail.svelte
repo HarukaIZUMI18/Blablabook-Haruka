@@ -3,9 +3,9 @@
   import { api } from "../../service/api.service.js";
   import { Link } from "svelte-routing";
 
-
   // Pour page connecté et sans connecté
-  let token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  let token =
+    typeof window !== "undefined" ? localStorage.getItem("token") : null;
   const { params } = $props();
 
   // États Svelte 5
@@ -47,7 +47,7 @@
     try {
       checkingCollection = true;
       const data = await api.getCollection();
-      const found = data.books?.find(b => b.id === parseInt(params.id));
+      const found = data.books?.find((b) => b.id === parseInt(params.id));
       collectionStatus = found?.collectStatus || null;
     } catch (error) {
       console.error("Erreur vérification collection:", error);
@@ -96,273 +96,278 @@
 </script>
 
 <main>
-<section>
-  {#if loading || checkingCollection}
-    <p class="loading" aria-busy="true">Chargement...</p>
-  {:else if book}
-    <div class="detail_img">
-      <img
-        src={book.cover}
-        alt={`Couverture de ${book.title}`}
-      />
-      
-      {#if token}
-        <div class="collection-section">
-          {#if collectionStatus === null}
-            <!-- Pas dans la collection : afficher bouton ajout + select -->
-            <div class="add-to-collection">
-              <label for="status-select">Statut</label>
-              <select id="status-select" bind:value={selectedStatus}>
-                {#each statuses as status}
-                  <option value={status.value}>{status.label}</option>
-                {/each}
-              </select>
-              <button onclick={handleAddToCollection}>
-                Ajouter à ma collection
-              </button>
-            </div>
-          {:else}
-            <!-- Dans la collection : afficher statut actuel + boutons -->
-            <div class="collection-info">
-              <p class="current-status">
-                <strong>Statut actuel :</strong> {collectionStatus}
-              </p>
-              <div class="update-status">
-                <label for="status-update">Changer</label>
-                <select id="status-update" bind:value={selectedStatus}>
+  <section>
+    {#if loading || checkingCollection}
+      <p class="loading" aria-busy="true">Chargement...</p>
+    {:else if book}
+      <div class="col-left">
+        <img src={book.cover} alt={`Couverture de ${book.title}`} />
+
+        {#if token}
+          <div class="collection-section">
+            {#if collectionStatus === null}
+              <div class="add-to-collection">
+                <label for="status-select">Statut</label>
+                <select id="status-select" bind:value={selectedStatus}>
                   {#each statuses as status}
                     <option value={status.value}>{status.label}</option>
                   {/each}
                 </select>
-                <button onclick={handleUpdateStatus}>
-                  Modifier
+                <button onclick={handleAddToCollection}
+                  >Ajouter à ma collection</button
+                >
+              </div>
+            {:else}
+              <div class="collection-info">
+                <p class="current-status">
+                  <strong>Statut actuel :</strong>
+                  {collectionStatus}
+                </p>
+                <div class="update-status">
+                  <label for="status-update">Changer</label>
+                  <select id="status-update" bind:value={selectedStatus}>
+                    {#each statuses as status}
+                      <option value={status.value}>{status.label}</option>
+                    {/each}
+                  </select>
+                  <button onclick={handleUpdateStatus}>Modifier</button>
+                </div>
+                <button class="remove-btn" onclick={handleRemoveFromCollection}>
+                  Retirer de ma collection
                 </button>
               </div>
-              <button class="remove-btn" onclick={handleRemoveFromCollection}>
-                Retirer de ma collection
-              </button>
-            </div>
-          {/if}
-        </div>
-      {/if}
-    </div>
-    
-    <div class="detail_title">
-      <h1>{book.title}</h1>
-    </div>
-    <div class="detail_description">
-      <p><strong>Auteur:</strong> {book.author}</p>
-      <p><strong>Année:</strong> {book.publish_year}</p>
-      <h2>Description</h2>
-      <p>{book.description}</p>
-    </div>
-  {:else}
-    <p class="error">Livre non trouvé</p>
-  {/if}
-</section>
+            {/if}
+          </div>
+        {/if}
+      </div>
 
-<!-- Toast notification -->
-{#if toast}
-  <div 
-    class="toast" 
-    class:success={toast.type === "success"} 
-    class:error={toast.type === "error"}
-    role="alert" 
-    aria-live="polite"
-  >
-    {toast.message}
-  </div>
-{/if}
-<!-- Utilisateur sans connecter -->
-{#if !token}
-  <div class="back_list">
-    <Link to="/BookList">
-      <button>Retour à la liste</button>
-    </Link>
-  </div>
-{/if}
+      <div class="col-right">
+        <h1>{book.title}</h1>
+        <div class="meta">
+          <p><strong>Auteur:</strong> {book.author}</p>
+          <p><strong>Année:</strong> {book.publish_year}</p>
+        </div>
+        <div class="description">
+          <h2>Synopsis:</h2>
+          <p>{book.description}</p>
+        </div>
+      </div>
+    {:else}
+      <p class="error">Livre non trouvé</p>
+    {/if}
+  </section>
+
+  {#if toast}
+    <div
+      class="toast"
+      class:success={toast.type === "success"}
+      class:error={toast.type === "error"}
+      role="alert"
+      aria-live="polite"
+    >
+      {toast.message}
+    </div>
+  {/if}
 </main>
+
 <style>
   section {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(5, 1fr);
-    grid-column-gap: 0px;
-    grid-row-gap: 0px;
-    margin: 2rem;
-  }
-  .detail_img {
-    grid-area: 1 / 1 / 5 / 3;
-  }
-  .detail_img img {
-    height: 450px;
-    max-width: 100%;
-  }
-  .detail_title {
-    grid-area: 1 / 3 / 2 / 6;
+    grid-template-columns: 300px 1fr;
+    gap: 2rem;
+    max-width: 1100px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+    align-items: start;
   }
 
-  .detail_description {
-    grid-area: 2 / 3 / 5 / 6;
+  /* ── Colonne gauche ── */
+  .col-left {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
   }
 
-  .status_book {
-    grid-area: 5 / 1 / 6 / 3;
-    padding: 2rem;
-  }
-
-  .back_list {
-    margin: 2rem;
-  }
-  /* Status de livre */
-  select {
-    border: 2px solid var(--color-bg);
-    border-radius: var(--radius);
-    padding: 0.3rem;
-  }
-
-  @media screen and (max-width: 1100px) {
-    main{
-      display: flex;
-      margin: 2rem;
-    }
-  }
-  /* Responsive mobile */
-  @media screen and (max-width: 940px) {
-    section {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin: 1.5rem;
-    }
-    .detail_img img {
-      display: block;
-      margin: 0 auto;
-    }
-  }
-  .detail_img img{
+  .col-left img {
     display: block;
-    margin: 0 auto;
+    width: 100%;
+    max-height: 420px;
+    object-fit: contain;
+    border-radius: var(--radius);
   }
 
-/* Collection section styles */
-.collection-section {
-  margin-top: 1rem;
-  padding: 1rem;
-  background: white;
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-}
-
-.add-to-collection,
-.collection-info {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.add-to-collection label,
-.update-status label {
-  font-weight: 600;
-  font-size: 0.9rem;
-}
-
-.add-to-collection select,
-.update-status select {
-  padding: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: var(--radius);
-  font-family: var(--font-primary);
-  font-size: 0.9rem;
-}
-
-.add-to-collection select:focus,
-.update-status select:focus {
-  outline: none;
-  border-color: var(--color-secondary);
-}
-
-.add-to-collection button {
-  padding: 0.75rem;
-  font-weight: 600;
-}
-
-.collection-info {
-  gap: 1rem;
-}
-
-.current-status {
-  font-size: 0.95rem;
-  margin: 0;
-}
-
-.update-status {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.update-status button {
-  padding: 0.5rem 1rem;
-  font-size: 0.9rem;
-}
-
-.remove-btn {
-  padding: 0.5rem 1rem;
-  border: 1px solid #dc3545;
-  background: transparent;
-  color: #dc3545;
-  font-size: 0.85rem;
-  margin-top: 0.5rem;
-}
-
-.remove-btn:hover {
-  background: #dc3545;
-  color: white;
-}
-
-/* Toast */
-.toast {
-  position: fixed;
-  top: 80px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 1rem 1.5rem;
-  border-radius: var(--radius);
-  font-family: var(--font-primary);
-  font-size: 0.95rem;
-  z-index: 1000;
-  animation: slideDown 0.3s ease;
-}
-
-.toast.success {
-  background: #d4edda;
-  color: #155724;
-  border: 1px solid #c3e6cb;
-}
-
-.toast.error {
-  background: #f8d7da;
-  color: #721c24;
-  border: 1px solid #f5c6cb;
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateX(-50%) translateY(-10px);
+  /* ── Colonne droite ── */
+  .col-right {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    background-color: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin: 2.5rem 1rem;
+    padding: 2em;
   }
-  to {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
-}
 
-/* Loading & Error */
-.loading,
-.error {
-  text-align: center;
-  padding: 2rem;
-  font-size: 1.1rem;
-}
+  .col-right h1 {
+    margin: 0;
+    font-size: 1.75rem;    
+  }
+
+  .meta {
+    margin-top: 1rem;
+    padding: 0.75rem 1rem;
+    align-self: flex-start;
+    text-align: start;
+  }
+
+  .meta p {
+    margin: 0.25rem 0;
+  }
+
+  .description {
+    padding: 1em;
+    align-self: flex-start;
+    text-align: start;
+  }
+
+  .description h2 {
+    margin: 0 0 0.75rem;
+    font-size: 1.1rem;
+  }
+  .description p {
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  /* ── Collection ── */
+  .collection-section {
+    padding: 1rem;
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+
+  .add-to-collection,
+  .collection-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .collection-info {
+    gap: 1rem;
+  }
+
+  .add-to-collection label,
+  .update-status label {
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .add-to-collection select,
+  .update-status select {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: var(--radius);
+    font-family: var(--font-primary);
+    font-size: 0.9rem;
+  }
+
+  .add-to-collection select:focus,
+  .update-status select:focus {
+    outline: none;
+    border-color: var(--color-secondary);
+  }
+
+  .add-to-collection button {
+    padding: 0.75rem;
+    font-weight: 600;
+  }
+  .current-status {
+    font-size: 0.95rem;
+    margin: 0;
+  }
+
+  .update-status {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .update-status button {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .remove-btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid #dc3545;
+    background: transparent;
+    color: #dc3545;
+    font-size: 0.85rem;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition:
+      background 0.2s,
+      color 0.2s;
+  }
+  .remove-btn:hover {
+    background: #dc3545;
+    color: white;
+  }
+
+  /* ── Toast ── */
+  .toast {
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 1rem 1.5rem;
+    border-radius: var(--radius);
+    font-family: var(--font-primary);
+    font-size: 0.95rem;
+    z-index: 1000;
+    white-space: nowrap;
+    animation: slideDown 0.3s ease;
+  }
+
+  .toast.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+  }
+  .toast.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateX(-50%) translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+  }
+
+  .loading,
+  .error {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 2rem;
+    font-size: 1.1rem;
+  }
+
+  /* ── Responsive ── */
+  @media screen and (max-width: 768px) {
+    section {
+      grid-template-columns: 1fr;
+      margin: 1.5rem auto;
+      padding: 0 1rem;
+    }
+    .col-left img {
+      max-height: 300px;
+    }
+  }
 </style>

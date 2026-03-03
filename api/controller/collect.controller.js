@@ -2,27 +2,21 @@ import Joi from "joi";
 import { Collect, Book } from "../models/index.js";
 import { StatusCodes } from "http-status-codes";
 
-// Statuts valides pour la collection
-const VALID_STATUSES = ["à lire", "en cours", "lu", "abandonné"];
+// Statuts valides pour la collection (selon spec)
+const VALID_STATUSES = ["à lire", "en cours", "lu", "abandonné", "en pause"];
 
-// Schémas de validation Joi
-const addSchema = Joi.object({
-  bookId: Joi.number().integer().positive().required(),
-  status: Joi.string().valid(...VALID_STATUSES),
-});
-
+// Schéma de validation pour la mise à jour du statut
 const statusSchema = Joi.object({
   status: Joi.string().valid(...VALID_STATUSES).required(),
 });
 
 export const collectController = {
-  // GET /collect - Récupérer tous les livres de la collection
+  // GET /collection - Récupérer tous les livres de la collection
   async all(req, res) {
     try {
       const userId = req.userId;
       const { status } = req.query;
 
-      // Préparer les options de requête Sequelize
       const options = {
         where: { user_id: userId },
         include: [
@@ -31,23 +25,22 @@ export const collectController = {
             attributes: ["id", "title", "author", "cover", "publish_year"],
           },
         ],
-        order: [[Book, "title", "ASC"]],
+        order: [[{ model: Book }, "title", "ASC"]],
       };
 
-      // Ajouter le filtre par statut si fourni
+      // Filtre optionnel par statut
       if (status && VALID_STATUSES.includes(status)) {
         options.where.status = status;
       }
 
       const collection = await Collect.findAll(options);
 
-      // Formater la réponse
       const books = collection.map((item) => ({
-        id: item.Book.id,
-        title: item.Book.title,
-        author: item.Book.author,
-        cover: item.Book.cover,
-        publish_year: item.Book.publish_year,
+        id: item.book.id,
+        title: item.book.title,
+        author: item.book.author,
+        cover: item.book.cover,
+        publish_year: item.book.publish_year,
         collectStatus: item.status,
       }));
 
@@ -60,21 +53,26 @@ export const collectController = {
     }
   },
 
-  // POST /collect - Ajouter un livre à la collection
+  // POST /book/:id/collection - Ajouter un livre à la collection
   async add(req, res) {
     try {
       const userId = req.userId;
+      // bookId vient de l'URL (route : /book/:id/collection)
+      const bookId = parseInt(req.params.id, 10);
 
-      // Valider les données entrantes
-      const { error, value } = addSchema.validate(req.body);
-      if (error) {
+      if (isNaN(bookId)) {
         return res.status(StatusCodes.BAD_REQUEST).json({
-          message: error.details[0].message,
+          message: "L'identifiant du livre est invalide",
         });
       }
 
-      const { bookId, status } = value;
-      const defaultStatus = "à lire";
+      // Statut optionnel dans le body
+      const { status } = req.body;
+      if (status && !VALID_STATUSES.includes(status)) {
+        return res.status(StatusCodes.BAD_REQUEST).json({
+          message: `Statut invalide. Valeurs acceptées : ${VALID_STATUSES.join(", ")}`,
+        });
+      }
 
       // Vérifier que le livre existe
       const book = await Book.findByPk(bookId);
@@ -95,17 +93,18 @@ export const collectController = {
         });
       }
 
-      // Créer l'entrée dans la collection
+      const finalStatus = status || "à lire";
+
       await Collect.create({
         user_id: userId,
         book_id: bookId,
-        status: status || defaultStatus,
+        status: finalStatus,
       });
 
       res.status(StatusCodes.CREATED).json({
         message: "Livre ajouté à la collection",
         bookId,
-        status: status || defaultStatus,
+        status: finalStatus,
       });
     } catch (error) {
       console.error("Erreur lors de l'ajout à la collection:", error);
@@ -115,13 +114,18 @@ export const collectController = {
     }
   },
 
-  // PATCH /collect/:bookId - Modifier le statut d'un livre
+  // PATCH /book/:id/collection - Modifier le statut d'un livre
   async updateStatus(req, res) {
     try {
       const userId = req.userId;
-      const { bookId } = req.params;
+      const bookId = parseInt(req.params.id, 10);
 
-      // Valider le nouveau statut
+      if (isNaN(bookId)) {
+        return res.status(StatusCodes.BAD_REQUEST).json({
+          message: "L'identifiant du livre est invalide",
+        });
+      }
+
       const { error, value } = statusSchema.validate(req.body);
       if (error) {
         return res.status(StatusCodes.BAD_REQUEST).json({
@@ -129,9 +133,6 @@ export const collectController = {
         });
       }
 
-      const newStatus = value.status;
-
-      // Vérifier que l'entrée existe et appartient à l'utilisateur
       const collectEntry = await Collect.findOne({
         where: { user_id: userId, book_id: bookId },
       });
@@ -142,14 +143,13 @@ export const collectController = {
         });
       }
 
-      // Mettre à jour le statut
-      collectEntry.status = newStatus;
+      collectEntry.status = value.status;
       await collectEntry.save();
 
       res.status(StatusCodes.OK).json({
         message: "Statut mis à jour",
         bookId,
-        status: newStatus,
+        status: value.status,
       });
     } catch (error) {
       console.error("Erreur lors de la mise à jour du statut:", error);
@@ -159,13 +159,18 @@ export const collectController = {
     }
   },
 
-  // DELETE /collect/:bookId - Retirer un livre de la collection
+  // DELETE /book/:id/collection - Retirer un livre de la collection
   async remove(req, res) {
     try {
       const userId = req.userId;
-      const { bookId } = req.params;
+      const bookId = parseInt(req.params.id, 10);
 
-      // Vérifier que l'entrée existe et appartient à l'utilisateur
+      if (isNaN(bookId)) {
+        return res.status(StatusCodes.BAD_REQUEST).json({
+          message: "L'identifiant du livre est invalide",
+        });
+      }
+
       const collectEntry = await Collect.findOne({
         where: { user_id: userId, book_id: bookId },
       });
@@ -176,7 +181,6 @@ export const collectController = {
         });
       }
 
-      // Supprimer l'entrée
       await collectEntry.destroy();
 
       res.status(StatusCodes.OK).json({
@@ -191,4 +195,3 @@ export const collectController = {
     }
   },
 };
-

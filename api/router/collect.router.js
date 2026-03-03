@@ -8,8 +8,7 @@ export const collectRouter = Router();
 collectRouter.use(authenticateToken);
 
 // Routes de la collection personnelle
-collectRouter.get("/collect", collectController.all);
-collectRouter.post("/collect", collectController.add);
-collectRouter.patch("/collect/:bookId", collectController.updateStatus);
-collectRouter.delete("/collect/:bookId", collectController.remove);
-
+collectRouter.get("/collection", collectController.all);
+collectRouter.post("/book/:id/collection", collectController.add);
+collectRouter.patch("/book/:id/collection", collectController.updateStatus);
+collectRouter.delete("/book/:id/collection", collectController.remove);

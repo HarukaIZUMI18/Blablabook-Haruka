@@ -15,6 +15,7 @@
     { value: "tous", label: "Tous" },
     { value: "à lire", label: "À lire" },
     { value: "en cours", label: "En cours" },
+    { value: "en pause", label: "En pause" },
     { value: "lu", label: "Lu" },
     { value: "abandonné", label: "Abandonné" },
   ];
@@ -26,16 +27,16 @@
 
   async function loadCollection() {
     const currentVersion = requestVersion;
-    
+
     try {
       loading = true;
-      
+
       const statusParam = currentFilter === "tous" ? null : currentFilter;
       const data = await api.getCollection(statusParam);
-      
+
       // Ignorer la réponse si une requête plus récente a été initiée
       if (requestVersion !== currentVersion) return;
-      
+
       books = data.books || [];
     } catch (error) {
       // Ignorer les erreurs si une requête plus récente a été initiée
@@ -57,14 +58,14 @@
   async function handleStatusChange(bookId, newStatus) {
     try {
       await api.updateCollectionStatus(bookId, newStatus);
-      
+
       // Mise à jour locale
-      const bookIndex = books.findIndex(b => b.id === bookId);
+      const bookIndex = books.findIndex((b) => b.id === bookId);
       if (bookIndex !== -1) {
         books[bookIndex].collectStatus = newStatus;
         books = [...books]; // Trigger reactivity
       }
-      
+
       showToast("Statut mis à jour", "success");
     } catch (error) {
       showToast("Erreur lors de la mise à jour du statut", "error");
@@ -74,10 +75,10 @@
   async function handleRemove(bookId) {
     try {
       await api.removeFromCollection(bookId);
-      
+
       // Suppression locale
-      books = books.filter(b => b.id !== bookId);
-      
+      books = books.filter((b) => b.id !== bookId);
+
       showToast("Livre retiré de la collection", "success");
     } catch (error) {
       showToast("Erreur lors de la suppression", "error");
@@ -86,9 +87,9 @@
 
   function showToast(message, type) {
     if (toastTimeout) clearTimeout(toastTimeout);
-    
+
     toast = { message, type };
-    
+
     toastTimeout = setTimeout(() => {
       toast = null;
     }, 3000);
@@ -116,14 +117,14 @@
   {#if loading}
     <p class="loading" aria-busy="true">Chargement...</p>
 
-  <!-- Collection vide -->
+    <!-- Collection vide -->
   {:else if books.length === 0}
     <div class="empty">
       <p>Votre collection est vide</p>
       <a href="/livres" class="link">Parcourir le catalogue</a>
     </div>
 
-  <!-- Liste des livres -->
+    <!-- Liste des livres -->
   {:else}
     <div class="grid">
       {#each books as book (book.id)}
@@ -133,13 +134,15 @@
             <select
               class="status-select"
               value={book.collectStatus}
-              onchange={(e) => handleStatusChange(book.id, e.target.value)}
+              onchange={(e) =>
+                handleStatusChange(book.id, e.currentTarget.value)}
               aria-label="Changer le statut"
             >
               <option value="à lire">À lire</option>
               <option value="en cours">En cours</option>
               <option value="lu">Lu</option>
               <option value="abandonné">Abandonné</option>
+              <option value="en pause">En pause</option>
             </select>
             <button
               class="remove-btn"
@@ -157,11 +160,11 @@
 
 <!-- Toast notification -->
 {#if toast}
-  <div 
-    class="toast" 
-    class:success={toast.type === "success"} 
+  <div
+    class="toast"
+    class:success={toast.type === "success"}
     class:error={toast.type === "error"}
-    role="alert" 
+    role="alert"
     aria-live="polite"
   >
     {toast.message}
@@ -241,15 +244,29 @@
   /* Grille */
   .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 1rem;
-    padding: 0.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    grid-auto-rows: minmax(420px, auto);
+    max-width: 1600px;
+    margin: 20px auto;
+    gap: 1em 0.5em;
+    justify-items: center;
+    padding: 0 20px;
   }
 
   .card-wrapper {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    height: 100%;
+    width: 100%;
+  }
+
+  .card-wrapper :global(a),
+  .card-wrapper :global(.card) {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
   }
 
   .card-actions {
@@ -333,47 +350,28 @@
     }
   }
 
-  /* Tablette */
-  @media (min-width: 600px) {
+  @media (max-width: 1500px) {
     .grid {
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 1.5rem;
-    }
-
-    h2 {
-      font-size: 2rem;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      width: 90%;
     }
   }
 
-  /* Desktop */
-  @media (min-width: 1024px) {
+  @media (max-width: 840px) {
     .grid {
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 2rem;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      width: 90%;
     }
+  }
 
-    .filters {
-      gap: 0.75rem;
-    }
-
-    .filter-btn {
-      padding: 0.75rem 1.5rem;
-      font-size: 1rem;
-    }
-
-    .card-actions {
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .status-select {
-      flex: 1;
-    }
-
-    .remove-btn {
-      flex: 0 0 auto;
+  @media (max-width: 480px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      width: 95%;
+      padding: 0 8px;
     }
   }
 </style>
-
