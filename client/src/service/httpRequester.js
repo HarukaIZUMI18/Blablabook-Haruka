@@ -3,7 +3,7 @@ export const httpRequester = {
   post: (endpoint, body) => request("POST", endpoint, body),
   patch: (endpoint, body) => request("PATCH", endpoint, body),
   put: (endpoint, body) => request("PUT", endpoint, body),
-  delete: (endpoint) => request("DELETE", endpoint),
+  delete: (endpoint,body) => request("DELETE", endpoint),
 };
 
 async function request(method, endpoint, body) {
