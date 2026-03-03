@@ -204,7 +204,6 @@
     background-color: white;
     border-radius: var(--radius);
     box-shadow: var(--shadow);
-    margin: 2.5rem 1rem;
     padding: 2em;
   }
 
@@ -236,7 +235,6 @@
   }
   .description p {
     margin: 0;
-    line-height: 1.6;
   }
 
   /* ── Collection ── */
