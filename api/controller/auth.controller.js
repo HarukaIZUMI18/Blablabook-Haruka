@@ -64,7 +64,7 @@ export const authController = {
     // 1. Validation des données
     const loginSchema = Joi.object({
       email: Joi.string().email().required(),
-      password: Joi.string().min(8).required(),
+      password: Joi.string().min(8).pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/).required(),
     });
 
     const { email, password } = Joi.attempt(req.body, loginSchema);

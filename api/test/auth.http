@@ -8,10 +8,10 @@ POST {{baseURL}}/auth/register
 Content-Type: application/json
 
 {
-  "name": "Test",
-  "email": "test@test.com",
-  "password": "test123456",
-  "confirm": "test123456"
+  "name": "Book",
+  "email": "blabla@book.com",
+  "password": "Test123456",
+  "confirm": "Test123456"
 }
 ### POST /auth/login
 POST {{baseURL}}/auth/login
