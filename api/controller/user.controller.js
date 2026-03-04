@@ -134,8 +134,7 @@ export const userController = {
   async deleteAccount(req, res) {
     try {
       const userId = req.userId;
-      console.log("body recu:", req.body);
-      console.log("userId:", req.userId);
+
       // Schema de validation — mot de passe obligatoire
       const deleteSchema = Joi.object({
         password: Joi.string().min(1).max(128).required(),
