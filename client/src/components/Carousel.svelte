@@ -11,9 +11,9 @@
   function getVisibleCount() {
     if (typeof window === "undefined") return 5;
     const w = window.innerWidth;
-    if (w <= 600) return 1;
+    if (w <= 650) return 1;
     if (w <= 1000) return 2;
-    if (w <= 1400) return 3;
+    if (w <= 1300) return 3;
     if (w <= 1550) return 4;
     return 5;
   }
