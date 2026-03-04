@@ -35,10 +35,14 @@
     <div class="mention_legal">
       <h3>Mentions légales</h3>
       <p>
-        Site réalisé dans le cadre d’un projet pédagogique. Conformément au RGPD
-        et aux recommandations de la CNIL, ce site respecte les principes de
-        protection des données et d’accessibilité numérique.
+        Site réalisé dans le cadre d’un projet pédagogique. Conformément au 
+        <a href="https://www.economie.gouv.fr/entreprises/gerer-son-entreprise-au-quotidien/assurer-sa-cybersecurite-et-la-protection-de-ses/le#:~:text=dit%20la%20loi-,Le%20RGPD%2C%20qu%27est%2Dce%20que%20c%27est,dans%20toute%20l%27Union%20europ%C3%A9enne.">RGPD</a>
+        et aux recommandations de la <a href="https://www.cnil.fr/fr">CNIL</a>, 
+        ce site respecte les principes de protection des données et d’accessibilité numérique.
       </p>
+      <h3>Droit applicable</h3>
+      <p>Les présentes <a href="https://www.francenum.gouv.fr/guides-et-conseils/developpement-commercial/site-web/rediger-des-conditions-generales-dutilisation">CGU</a> 
+        sont soumises au droit français.</p>
     </div>
     <div class="copyright">
       <p>&#169; Blablabook</p>
@@ -62,6 +66,7 @@
     grid-column-gap: 2rem;
     grid-row-gap: 1rem;
     padding: 1rem;
+    margin: 2rem;
   }
 
   .contact {
@@ -72,7 +77,7 @@
   }
   .mention_legal {
     grid-area: 1 / 3/ 3 / 6;
-    width: 50%;
+    width: 80%;
   }
   .copyright {
     grid-area: 3 / 1 / 4 / 6;
