@@ -4,6 +4,7 @@
 
   let currentPath = $state(window.location.pathname);
 
+  let showLogoutConfirm = $state(false);
   let showAuth = $state(false);
   let authMode = $state("login");
   let token = $state(localStorage.getItem("token"));
@@ -105,7 +106,8 @@
             class="link"
             class:active={currentPath === "/profil"}>Mon profil</a
           >
-          <button onclick={logout}>Déconnexion</button>
+          <button onclick={() => (showLogoutConfirm = true)}>Déconnexion</button
+          >
         {/if}
       </div>
 
@@ -195,7 +197,9 @@
           class="mobile-link"
           onclick={() => (isMenuOpen = false)}>Mon profil</a
         >
-        <button class="mobile-btn" onclick={logout}>Déconnexion</button>
+        <button class="mobile-btn" onclick={() => (showLogoutConfirm = true)}
+          >Déconnexion</button
+        >
       {/if}
     </div>
   </nav>
@@ -208,7 +212,59 @@
   </div>
 {/if}
 
+{#if showLogoutConfirm}
+  <div
+    class="overlay"
+    onclick={() => (showLogoutConfirm = false)}
+    role="none"
+  ></div>
+  <div class="confirm-modal">
+    <p>Voulez-vous vraiment vous déconnecter ?</p>
+    <div class="confirm-actions">
+      <button class="confirm-cancel" onclick={() => (showLogoutConfirm = false)}
+        >Annuler</button
+      >
+      <button class="confirm-logout" onclick={logout}>Déconnexion</button>
+    </div>
+  </div>
+{/if}
+
 <style>
+  .confirm-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--color-primary);
+    padding: 2rem;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 340px;
+    z-index: 999;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    text-align: center;
+  }
+
+  .confirm-modal p {
+    margin: 0 0 1.5rem;
+  }
+
+  .confirm-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+  }
+
+  .confirm-cancel {
+    background: transparent;
+    border: 1px solid var(--color-text);
+  }
+
+  .confirm-logout {
+    background: #c72c3c;
+    color: white;
+  }
+
   header {
     width: 100%;
     background: var(--color-primary);
@@ -344,7 +400,7 @@
   .link.active::after {
     transform: scaleX(1);
   }
-  
+
   .burger-menu {
     display: none;
     flex-direction: column;
@@ -468,6 +524,38 @@
     }
     .burger-menu {
       display: flex;
+    }
+    .auth-modal {
+      padding: 1.5rem;
+      width: 95%;
+    }
+    .confirm-modal {
+      padding: 1.5rem;
+    }
+    .confirm-modal p {
+      font-size: 1rem;
+    }
+    .confirm-cancel,
+    .confirm-logout {
+      font-size: 0.9rem;
+      padding: 0.5rem;
+    }
+  }
+  @media (max-width: 700px) {
+    .auth-modal {
+      padding: 1.2rem;
+      width: 90%;
+    }
+    .confirm-modal {
+      padding: 1rem;
+    }
+    .confirm-modal p {
+      font-size: 0.9rem;
+    }
+    .confirm-cancel,
+    .confirm-logout {
+      font-size: 0.8rem;
+      padding: 0.5rem;
     }
   }
 </style>
