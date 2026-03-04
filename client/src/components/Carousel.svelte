@@ -10,9 +10,9 @@
 
   function getVisibleCount() {
     const w = window.innerWidth;
-    if (w <= 590) return 1;
-    if (w <= 870) return 2;
-    if (w <= 1200) return 3;
+    if (w <= 600) return 1;
+    if (w <= 1000) return 2;
+    if (w <= 1400) return 3;
     if (w <= 1550) return 4;
     return 5;
   }
@@ -61,7 +61,7 @@
     // --- AUTO-DEFILEMENT : démarre le défilement automatique ---
     interval = setInterval(() => {
       next();
-    }, 3000);
+    }, 5000);
   });
 
   onDestroy(() => {
@@ -174,7 +174,7 @@
   .arrow {
   flex-shrink: 0;
   width: 48px;              /* largeur fixe = espace stable */
-  height: 48px;             /* optionnel, pour un carré propre */
+  height: 48px;             
   display: flex;
   align-items: center;
   justify-content: center;
@@ -182,7 +182,7 @@
   border: none;
   font-size: 4rem;
   cursor: pointer;
-  padding: 0;               /* on enlève le padding qui faisait varier la taille */
+  padding: 0;               
   transition: transform 0.2s ease;
   user-select: none;
   z-index: 1000;
