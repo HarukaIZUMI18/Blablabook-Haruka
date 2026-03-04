@@ -11,8 +11,14 @@ export const authController = {
     const registerSchema = Joi.object({
       email: Joi.string().email().required(),
       name: Joi.string().min(1).required(),
-      password: Joi.string().min(8).required(),
-      confirm: Joi.string().min(8).required(),
+      password: Joi.string()
+        .min(8)
+        .pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/)
+        .required(),
+      confirm: Joi.string()
+        .min(8)
+        .pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/)
+        .required(),
     });
 
     // Valider le body
@@ -64,7 +70,10 @@ export const authController = {
     // 1. Validation des données
     const loginSchema = Joi.object({
       email: Joi.string().email().required(),
-      password: Joi.string().min(8).pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/).required(),
+      password: Joi.string()
+        .min(8)
+        .pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/)
+        .required(),
     });
 
     const { email, password } = Joi.attempt(req.body, loginSchema);
@@ -88,7 +97,7 @@ export const authController = {
     // 4. Créer un token JWT (valable 24h)
     const token = jwt.sign(
       { userId: user.id, email: user.email },
-      process.env.JWT_SECRET, 
+      process.env.JWT_SECRET,
       { expiresIn: "24h" },
     );
 
