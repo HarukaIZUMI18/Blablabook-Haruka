@@ -8,6 +8,7 @@ export const api = {
   login,
   getUserInfo,
   updateProfile,
+  deleteAccount,
   randomBook,
   search,
   getCollection,
@@ -33,13 +34,13 @@ async function allBook(params = {}) {
 async function getBook(id) {
   return await httpRequester.get(`book/${id}`);
 }
-  
+
 async function getUserInfo() {
   return await httpRequester.get(`user/me`);
 }
 
 async function randomBook() {
-return await httpRequester.get(`book/random`);
+  return await httpRequester.get(`book/random`);
 }
 
 async function search(query) {
@@ -53,9 +54,14 @@ async function getBookById(id) {
 async function updateProfile(profileData) {
   return await httpRequester.patch(`user/me`, profileData);
 }
+async function deleteAccount(deleteData) {
+  return await httpRequester.delete(`user/me`, deleteData);
+}
 
 async function getCollection(status = null) {
-  const endpoint = status ? `collection?status=${encodeURIComponent(status)}` : "collection";
+  const endpoint = status
+    ? `collection?status=${encodeURIComponent(status)}`
+    : "collection";
   return await httpRequester.get(endpoint);
 }
 
