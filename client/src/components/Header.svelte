@@ -344,7 +344,7 @@
   .link.active::after {
     transform: scaleX(1);
   }
-  
+
   .burger-menu {
     display: none;
     flex-direction: column;
@@ -469,5 +469,17 @@
     .burger-menu {
       display: flex;
     }
+    .auth-modal {
+      padding: 1.5rem;
+      width: 95%;
+    }
   }
+  @media (max-width: 700px) {
+    .auth-modal {
+      padding: 1.2rem;
+      width: 90%;
+    }
+  }
+
+
 </style>
