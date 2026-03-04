@@ -145,7 +145,7 @@
   .copyright {
     grid-area: 3 / 1 / 4 / 6;
     text-align: center;
-    margin-top: 1.5rem;
+    margin-top: 1rem;
   }
 
   @media screen and (max-width: 900px) {
