@@ -1,3 +1,7 @@
+<script>
+  let token = $state(localStorage.getItem("token"));
+</script>
+
 <footer>
   <div class="infomations">
     <dev class="contact">
@@ -7,23 +11,25 @@
       </p>
     </dev>
     <div class="social_media">
-      <a href="#"
+      <h3>Suivez-nous sur ...</h3>
+      <nav class="icons">
+      <a href="https://www.instagram.com/"
         ><img
           width="50"
           height="50"
           src="https://img.icons8.com/doodle/48/instagram-new.png"
-          alt="instagram-new"
+          alt="instagram"
         /></a
       >
-      <a href="#"
+      <a href="https://www.facebook.com/?locale=fr_FR"
         ><img
           width="50"
           height="50"
           src="https://img.icons8.com/ios/50/facebook--v1.png"
-          alt="facebook--v1"
+          alt="facebook"
         /></a
       >
-      <a href="#"
+      <a href="https://www.tiktok.com/fr/"
         ><img
           width="50"
           height="50"
@@ -31,21 +37,47 @@
           alt="tiktok"
         /></a
       >
+      <a href="https://x.com/?lang=fr"
+        ><img
+          width="50"
+          height="50"
+          src="https://img.icons8.com/ios/50/twitterx--v1.png"
+          alt="twitterx--v1"
+        /></a
+      >
+      </nav>
     </div>
-    <div class="mention_legal">
+    <div class="info__legales">
+      <h3>Plan de site</h3>
+      <nav class="plan">
+        <a href="/">Accueil</a>
+        <a href="/livres">Catalogue</a>
+        {#if token}
+          <a href="/collection">Ma collection</a>
+        {/if}
+      </nav>
       <h3>Mentions légales</h3>
       <p>
-        Site réalisé dans le cadre d’un projet pédagogique. Conformément au 
-        <a href="https://www.economie.gouv.fr/entreprises/gerer-son-entreprise-au-quotidien/assurer-sa-cybersecurite-et-la-protection-de-ses/le#:~:text=dit%20la%20loi-,Le%20RGPD%2C%20qu%27est%2Dce%20que%20c%27est,dans%20toute%20l%27Union%20europ%C3%A9enne.">RGPD</a>
-        et aux recommandations de la <a href="https://www.cnil.fr/fr">CNIL</a>, 
-        ce site respecte les principes de protection des données et d’accessibilité numérique.
+        Site réalisé dans le cadre d’un projet pédagogique. Conformément au
+        <a
+          href="https://www.economie.gouv.fr/entreprises/gerer-son-entreprise-au-quotidien/assurer-sa-cybersecurite-et-la-protection-de-ses/le#:~:text=dit%20la%20loi-,Le%20RGPD%2C%20qu%27est%2Dce%20que%20c%27est,dans%20toute%20l%27Union%20europ%C3%A9enne."
+          >RGPD</a
+        >
+        et aux recommandations de la <a href="https://www.cnil.fr/fr">CNIL</a>,
+        ce site respecte les principes de protection des données et
+        d’accessibilité numérique.
       </p>
       <h3>Droit applicable</h3>
-      <p>Les présentes <a href="https://www.francenum.gouv.fr/guides-et-conseils/developpement-commercial/site-web/rediger-des-conditions-generales-dutilisation">CGU</a> 
-        sont soumises au droit français.</p>
+      <p>
+        Les présentes <a
+          href="https://www.francenum.gouv.fr/guides-et-conseils/developpement-commercial/site-web/rediger-des-conditions-generales-dutilisation"
+          >CGU</a
+        >
+        sont soumises au droit français.
+      </p>
     </div>
     <div class="copyright">
-      <p>&#169; Blablabook</p>
+      <p>&#169; 2026 Blablabook</p>
     </div>
   </div>
 </footer>
@@ -53,6 +85,7 @@
 <style>
   footer {
     margin-top: 5rem;
+    margin-bottom: 0;
     width: 100%;
     background: var(--color-primary);
     box-shadow: var(--shadow);
@@ -75,9 +108,39 @@
   .social_media {
     grid-area: 2 / 1 / 3 / 3;
   }
-  .mention_legal {
+  .info__legales {
     grid-area: 1 / 3/ 3 / 6;
     width: 80%;
+  }
+
+.plan {
+    display: flex;
+    justify-content: space-around;
+  }
+
+.plan a {
+    position: relative;
+    text-decoration: none;
+  }
+
+  .plan a::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 1.5px;
+    background: var(--color-secondary);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s ease;
+  }
+
+  .plan a:hover {
+    opacity: 1;
+  }
+ .plan a:hover::after {
+    transform: scaleX(1);
   }
   .copyright {
     grid-area: 3 / 1 / 4 / 6;
@@ -98,10 +161,11 @@
     .social_media {
       grid-area: 2 / 1 / 3 / 2;
       display: flex;
-  gap: 1rem;
-  align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
     }
-    .mention_legal {
+    .info__legales {
       grid-area: 1 / 3 / 3 / 6;
       margin: 1rem;
     }
@@ -116,5 +180,12 @@
       display: flex;
       flex-direction: column;
     }
+.social_media {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      align-items: center;
+    }
+
   }
 </style>
