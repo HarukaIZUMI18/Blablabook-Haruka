@@ -5,11 +5,11 @@
 **BlaBlaBook** est une association fictive de passionnés de lecture proposant une plateforme en ligne de gestion de bibliothèque personnelle.
 
 Destinée à tous les lecteurs, débutants comme confirmés, elle permet :
-- 📚 d’organiser ses livres
-- 🔎 de découvrir de nouvelles lectures  
-- 💬 de partager ses avis  
+- d’organiser ses livres
+- de découvrir de nouvelles lectures  
+- de partager ses avis  
 
-## 🎨 Palette colorielle
+## Palette colorielle
 
 |      Couleur     | Code Hex  |
 |------------------|-----------|
@@ -19,6 +19,6 @@ Destinée à tous les lecteurs, débutants comme confirmés, elle permet :
 | couleur primaire | `#eeeddc` |
 | couleur blanche  | `#FFFFFA` |
 
-## 🔤 Police
+## Police
 
 **Beautifully Delicious**
