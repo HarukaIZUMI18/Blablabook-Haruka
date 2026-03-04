@@ -40,6 +40,7 @@
   $: passwordRules = {
     length: newPassword.length >= 8,
     upper: /[A-Z]/.test(newPassword),
+    lower: /[a-z]/.test(newPassword),
     digit: /[0-9]/.test(newPassword),
   };
 
@@ -51,7 +52,9 @@
         ? "Faible"
         : passwordScore === 2
           ? "Moyen"
-          : "Fort";
+          : passwordScore === 3
+            ? "Bien"
+            : "Fort";
   $: strengthClass =
     passwordScore === 0
       ? "very-weak"
@@ -59,7 +62,9 @@
         ? "weak"
         : passwordScore === 2
           ? "medium"
-          : "strong";
+          : passwordScore === 3
+            ? "good"
+            : "strong";
   $: passwordValid = Object.values(passwordRules).every(Boolean);
   $: passwordsMatch =
     newPassword === confirmPassword && confirmPassword.length > 0;
@@ -85,9 +90,7 @@
   function showMessage(text, type) {
     message = text;
     messageType = type;
-    setTimeout(() => {
-      message = "";
-    }, 4000);
+    setTimeout(() => { message = ""; }, 4000);
   }
 
   function formatDate(raw) {
@@ -239,6 +242,7 @@
     try {
       deletingAccount = true;
       await api.deleteAccount({ password: deletePassword });
+      localStorage.removeItem("token");
       window.location.href = "/";
     } catch (err) {
       const msg =
@@ -301,11 +305,7 @@
             />
             <div class="inline-actions">
               <button type="submit" class="btn-validate" disabled={savingName}>
-                {#if savingName}
-                  <span class="spinner-sm"></span>
-                {:else}
-                  Valider
-                {/if}
+                {#if savingName}<span class="spinner-sm"></span>{:else}Valider{/if}
               </button>
               <button type="button" class="btn-cancel-soft" on:click={cancelEditName}>
                 Annuler
@@ -370,11 +370,7 @@
             </div>
             <div class="inline-actions">
               <button type="submit" class="btn-validate" disabled={savingEmail}>
-                {#if savingEmail}
-                  <span class="spinner-sm"></span>
-                {:else}
-                  Valider
-                {/if}
+                {#if savingEmail}<span class="spinner-sm"></span>{:else}Valider{/if}
               </button>
               <button type="button" class="btn-cancel-soft" on:click={cancelEditEmail}>
                 Annuler
@@ -479,7 +475,7 @@
               <div class="strength-track">
                 <div
                   class="strength-fill {strengthClass}"
-                  style="width: {Math.round(passwordScore * 33.33)}%"
+                  style="width: {Math.round(passwordScore * 25)}%"
                 ></div>
               </div>
               <span class="strength-label {strengthClass}">{strengthLabel}</span>
@@ -487,6 +483,7 @@
             <ul class="pwd-rules" id="pwd-rules-list" role="list">
               <li class:ok={passwordRules.length}>{passwordRules.length ? "v" : "o"} 8 caracteres minimum</li>
               <li class:ok={passwordRules.upper}>{passwordRules.upper ? "v" : "o"} Une majuscule</li>
+              <li class:ok={passwordRules.lower}>{passwordRules.lower ? "v" : "o"} Une minuscule</li>
               <li class:ok={passwordRules.digit}>{passwordRules.digit ? "v" : "o"} Un chiffre</li>
             </ul>
           {/if}
@@ -557,13 +554,13 @@
 
 {#if showDeleteModal}
   <div
-  class="modal-overlay"
-  on:click={handleOverlayClick}
-  on:keydown={handleKeydown}
-  role="dialog"
-  aria-modal="true"
-  aria-labelledby="modal-title"
-  tabindex="-1"
+    class="modal-overlay"
+    on:click={handleOverlayClick}
+    on:keydown={handleKeydown}
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modal-title"
+    tabindex="-1"
   >
     <div class="modal">
       <div class="modal-header">
@@ -1053,6 +1050,7 @@
   .strength-fill.very-weak { background: #e74c3c; }
   .strength-fill.weak      { background: #e67e22; }
   .strength-fill.medium    { background: #f1c40f; }
+  .strength-fill.good      { background: #a8b400; }
   .strength-fill.strong    { background: var(--color-secondary); }
 
   .strength-label {
@@ -1064,6 +1062,7 @@
   .strength-label.very-weak { color: #e74c3c; }
   .strength-label.weak      { color: #e67e22; }
   .strength-label.medium    { color: #c8960c; }
+  .strength-label.good      { color: #a8b400; }
   .strength-label.strong    { color: var(--color-secondary); }
 
   .pwd-rules {

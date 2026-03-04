@@ -4,7 +4,10 @@ import cors from "cors";
 import { xss } from "express-xss-sanitizer";
 import { apiRouter } from "./router/index.js";
 // Import des gestionnaires d'erreurs
-import { errorHandler, notFoundHandler } from "./middleware/error.middleware.js";
+import {
+  errorHandler,
+  notFoundHandler,
+} from "./middleware/error.middleware.js";
 
 const app = express();
 

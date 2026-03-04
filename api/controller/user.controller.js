@@ -5,7 +5,6 @@ import { Op } from "sequelize";
 import { StatusCodes } from "http-status-codes";
 
 export const userController = {
-
   async UserInfo(req, res) {
     try {
       const userId = req.userId;
@@ -65,7 +64,8 @@ export const userController = {
       // Mot de passe actuel obligatoire si changement de mot de passe
       if (password && !currentPassword) {
         return res.status(StatusCodes.BAD_REQUEST).json({
-          message: "Le mot de passe actuel est requis pour changer le mot de passe",
+          message:
+            "Le mot de passe actuel est requis pour changer le mot de passe",
         });
       }
 
@@ -78,7 +78,10 @@ export const userController = {
 
       // Verification et changement du mot de passe
       if (password) {
-        const validPassword = await argon2.verify(user.password, currentPassword);
+        const validPassword = await argon2.verify(
+          user.password,
+          currentPassword,
+        );
         if (!validPassword) {
           return res.status(StatusCodes.UNAUTHORIZED).json({
             message: "Mot de passe actuel incorrect",
@@ -121,7 +124,6 @@ export const userController = {
         email: user.email,
         message: "Profil mis a jour avec succes",
       });
-
     } catch (err) {
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
         message: "Erreur lors de la mise a jour du profil",
@@ -132,7 +134,8 @@ export const userController = {
   async deleteAccount(req, res) {
     try {
       const userId = req.userId;
-
+      console.log("body recu:", req.body);
+      console.log("userId:", req.userId);
       // Schema de validation — mot de passe obligatoire
       const deleteSchema = Joi.object({
         password: Joi.string().min(1).max(128).required(),
@@ -168,7 +171,6 @@ export const userController = {
       res.status(StatusCodes.OK).json({
         message: "Compte supprime avec succes",
       });
-
     } catch (err) {
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
         message: "Erreur lors de la suppression du compte",
