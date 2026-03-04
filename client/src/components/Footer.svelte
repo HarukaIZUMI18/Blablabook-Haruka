@@ -52,7 +52,6 @@
     width: 100%;
     background: var(--color-primary);
     box-shadow: var(--shadow);
-    padding: 1rem;
     position: relative;
   }
 
@@ -62,6 +61,7 @@
     grid-template-rows: auto;
     grid-column-gap: 2rem;
     grid-row-gap: 1rem;
+    padding: 1rem;
   }
 
   .contact {
@@ -72,6 +72,7 @@
   }
   .mention_legal {
     grid-area: 1 / 3/ 3 / 6;
+    width: 50%;
   }
   .copyright {
     grid-area: 3 / 1 / 4 / 6;

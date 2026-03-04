@@ -28,7 +28,7 @@
 
 <section>
   <div class="title">
-    <h2>Liste de livres</h2>
+    <h2>Catalogue</h2>
   </div>
   <div class="controls-top">
     <div class="group">

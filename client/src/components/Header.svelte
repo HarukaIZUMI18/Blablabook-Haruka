@@ -2,6 +2,8 @@
   import Login from "./Login.svelte";
   import Logo from "../lib/assets/Blablabook.svg?raw";
 
+  let currentPath = $state(window.location.pathname);
+
   let showAuth = $state(false);
   let authMode = $state("login");
   let token = $state(localStorage.getItem("token"));
@@ -88,9 +90,21 @@
             }}>Inscription</button
           >
         {:else}
-          <a href="/livres" class="link">Catalogue</a>
-          <a href="/collection" class="link">Ma collection</a>
-          <a href="/profil" class="link">Mon profil</a>
+          <a
+            href="/livres"
+            class="link"
+            class:active={currentPath === "/livres"}>Catalogue</a
+          >
+          <a
+            href="/collection"
+            class="link"
+            class:active={currentPath === "/collection"}>Ma collection</a
+          >
+          <a
+            href="/profil"
+            class="link"
+            class:active={currentPath === "/profil"}>Mon profil</a
+          >
           <button onclick={logout}>Déconnexion</button>
         {/if}
       </div>
@@ -238,7 +252,6 @@
     border: 1px solid transparent;
     border-radius: 50px;
     padding: 2px 6px 2px 18px;
-    
     max-width: 350px;
     box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-bg) 50%, transparent);
   }
@@ -325,6 +338,13 @@
     transform: scaleX(1);
   }
 
+  .link.active {
+    opacity: 1;
+  }
+  .link.active::after {
+    transform: scaleX(1);
+  }
+  
   .burger-menu {
     display: none;
     flex-direction: column;
