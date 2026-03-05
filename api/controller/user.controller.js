@@ -116,6 +116,20 @@ export const userController = {
         }
         user.email = email;
       }
+// Mot de passe obligatoire pour changer l'email
+if (!currentPassword) {
+  return res.status(StatusCodes.BAD_REQUEST).json({
+    message: "Le mot de passe actuel est requis pour changer l'email",
+  });
+}
+
+// Vérification du mot de passe
+const validPassword = await argon2.verify(user.password, currentPassword);
+if (!validPassword) {
+  return res.status(StatusCodes.UNAUTHORIZED).json({
+    message: "Mot de passe actuel incorrect",
+  });
+}
 
       await user.save();
 

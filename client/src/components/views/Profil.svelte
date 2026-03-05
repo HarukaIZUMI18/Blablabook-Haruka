@@ -114,9 +114,13 @@
     if (!emailValid) return showMessage("Format d'email invalide", "error");
     if (!emailsMatch) return showMessage("Les emails ne correspondent pas", "error");
     if (newEmail === user.email) return showMessage("Ce nouvel email est identique a l'actuel", "error");
+    if (!currentPassword) return showMessage("Mot de passe requis pour modifier l'email", "error");
     try {
       savingEmail = true;
-      await api.updateProfile({ email: newEmail });
+      await api.updateProfile({
+  email: newEmail,
+  currentPassword
+});
       user.email = newEmail; editingEmail = false; newEmail = ""; confirmEmail = "";
       showMessage("Email mis a jour avec succes", "success");
     } catch (err) { showMessage(err.message || "Erreur lors de la mise a jour", "error"); }
@@ -276,6 +280,26 @@
                 {/if}
               </div>
             </div>
+            <div class="field password-field">
+  <div class="input-wrapper">
+    <input
+      type={showCurrent ? "text" : "password"}
+      bind:value={currentPassword}
+      placeholder="Mot de passe actuel"
+      autocomplete="current-password"
+      aria-label="Mot de passe actuel"
+    />
+
+    <button
+      type="button"
+      class="toggle-pwd"
+      on:click={() => showCurrent = !showCurrent}
+      aria-label={showCurrent ? "Masquer" : "Afficher"}
+    >
+      {@render eyeIcon(showCurrent)}
+    </button>
+  </div>
+</div>
             <div class="inline-actions">
               <button type="submit" class="btn-validate" disabled={savingEmail}>
                 {#if savingEmail}<span class="spinner-sm"></span>{:else}Valider{/if}
