@@ -106,7 +106,7 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
-    gap: 30px; 
+    gap: 30px;
     margin: 40px 0;
     padding: 0 1rem;
     box-sizing: border-box;
@@ -118,7 +118,7 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-    max-width: 1600px; 
+    max-width: 1600px;
     gap: 15px;
   }
 
@@ -202,20 +202,6 @@
   .dot.active {
     background: #bbbf49;
     border-radius: 10px;
-  }
-  .slide-wrapper :global(h3) {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: 100%;
-    display: block;
-    margin-bottom: 5px;
-  }
-
-  .slide-wrapper :global(p) {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
 
   /* --- RESPONSIVE : ADAPTATION DES TAILLES --- */

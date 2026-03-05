@@ -97,7 +97,7 @@
       background-position: -200% 0;
     }
   }
-  
+
   .content {
     padding: 0.75rem;
     text-align: center;
@@ -107,12 +107,21 @@
     margin: 0 0 6px 0;
     font-size: 1.2rem;
     color: var(--color-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    display: block;
+    margin-bottom: 5px;
   }
 
   p {
     margin: 2px 0;
     font-size: 1rem;
     color: #666;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   @media (max-width: 480px) {

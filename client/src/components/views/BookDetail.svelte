@@ -234,6 +234,7 @@
     padding: 1em;
     align-self: flex-start;
     text-align: start;
+    line-height: 1.7;
   }
 
   .description h2 {
