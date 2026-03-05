@@ -130,7 +130,7 @@
   .is-connected {
     padding-top: 70px;
   }
-
+/* ── Responsive ── */
   @media (max-width: 800px) {
     .welcome {
       margin: 1em;

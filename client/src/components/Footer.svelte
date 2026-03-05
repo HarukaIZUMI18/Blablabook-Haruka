@@ -152,7 +152,7 @@
     text-align: center;
     margin-top: 1rem;
   }
-
+/* ── Responsive ── */
   @media screen and (max-width: 900px) {
     .infomations {
       display: grid;

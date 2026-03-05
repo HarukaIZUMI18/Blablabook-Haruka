@@ -11,15 +11,15 @@
   let loading = false;
   let showPassword = false;
   let showConfirm = false;
-
+// État pour la notification (toast)
   let toast = null;
   let toastTimeout = null;
-
+// Vérifications de mot de passe réactives 
   $: hasMinLength = password.length >= 8;
   $: hasUppercase = /[A-Z]/.test(password);
   $: hasLowercase = /[a-z]/.test(password);
   $: hasDigit = /[0-9]/.test(password);
-
+// Affiche une notification temporaire (toast)
   function showToast(message, type) {
     if (toastTimeout) clearTimeout(toastTimeout);
     toast = { message, type };
@@ -55,13 +55,13 @@
       return "Le mot de passe doit contenir au moins un chiffre.";
     return null;
   }
-// Pop-up pour connecter
+// Pop-up pour login ou inscription
   async function handleSubmit() {
     loading = true;
 
     try {
       let response;
-
+// Pour connextion
       if (isLogin) {
         response = await api.login({ email, password });
 
@@ -72,6 +72,7 @@
           window.location.href = "/";
         }
       } else {
+        // Pour inscription
         const pwdError = validatePassword(password);
         if (pwdError) throw new Error(pwdError);
         if (password !== confirm)
@@ -87,16 +88,17 @@
         }
       }
     } catch (err) {
+      // Notification d'erreur
       showToast(parseError(err.message), "error");
     } finally {
       loading = false;
     }
   }
 </script>
-
+<!-- Conteneur principal du formulaire d'authentification -->
 <div class="auth-container">
   <h2>{isLogin ? "Se connecter" : "Créer un compte"}</h2>
-
+<!-- Formulaire avec gestion de la soumission -->
   <form
     onsubmit={(e) => {
       e.preventDefault();
@@ -181,7 +183,7 @@
           {/if}
         </button> 
       </div>
-      <!-- Vérifivation de mots de pass -->
+      <!-- Vérifivation des règles mots de pass(uniquement inscription) -->
       {#if !isLogin}
         <div class="password-rules">
           <span class:valid={hasMinLength}>
@@ -404,7 +406,7 @@
     color: #721c24;
     border: 1px solid #f5c6cb;
   }
-
+/* ── Responsive ── */
   @media (max-width: 1100px) {
     .auth-container h2 {
       font-size: 1.3rem;
