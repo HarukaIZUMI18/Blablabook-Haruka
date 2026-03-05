@@ -11,11 +11,9 @@ import {
 
 const app = express();
 
-app.use(cors());            // Active CORS
-app.use(express.json());    // Parse le JSON
-app.use(xss());             // Nettoie les entrées XSS
-
-
+app.use(cors()); // Active CORS
+app.use(express.json()); // Parse le JSON
+app.use(xss()); // Nettoie les entrées XSS
 
 // Charge toutes les routes
 app.use(apiRouter);
@@ -25,6 +23,8 @@ app.use(notFoundHandler);
 
 // Gestionnaire d'erreurs (doit être en dernier)
 app.use(errorHandler);
+
+export default app;
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {

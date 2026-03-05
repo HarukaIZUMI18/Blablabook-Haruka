@@ -4,17 +4,25 @@
 
 // Gestionnaire d'erreurs 500 - erreurs serveur internes
 export const errorHandler = (err, req, res, next) => {
+  // Erreurs de validation Joi → 400 Bad Request
+  if (err.isJoi || err.name === "ValidationError") {
+    return res.status(400).json({
+      error: "Validation échouée",
+      message: err.message,
+    });
+  }
+
   console.error(err.stack);
   res.status(500).json({
-    error: 'Erreur Interne du Serveur',
-    message: 'Une erreur est survenue de notre côté.'
+    error: "Erreur Interne du Serveur",
+    message: "Une erreur est survenue de notre côté.",
   });
 };
 
 // Gestionnaire 404 - routes non trouvées
 export const notFoundHandler = (req, res, next) => {
   res.status(404).json({
-    error: 'Non Trouvé',
-    message: 'La ressource demandée n\'existe pas.'
+    error: "Non Trouvé",
+    message: "La ressource demandée n'existe pas.",
   });
 };

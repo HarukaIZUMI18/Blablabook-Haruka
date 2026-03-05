@@ -24,12 +24,11 @@ export const userController = {
       });
     }
   },
-// Met à jour le profil de l'utilisateur
+  // Met à jour le profil de l'utilisateur
   async updateProfile(req, res) {
     try {
       const userId = req.userId;
 
-      // Schéma de validation des champs modifiables
       const updateSchema = Joi.object({
         name: Joi.string().min(1).max(100).trim(),
         email: Joi.string().email().max(255).trim(),
@@ -38,10 +37,9 @@ export const userController = {
           .max(128)
           .pattern(/[A-Z]/, "majuscule")
           .pattern(/[0-9]/, "chiffre"),
-        currentPassword: Joi.string().min(1).max(128).trim()
+        currentPassword: Joi.string().min(1).max(128).trim(),
       });
 
-      // Valide les données envoyées
       const { error, value } = updateSchema.validate(req.body, {
         abortEarly: false,
       });
@@ -55,14 +53,12 @@ export const userController = {
 
       const { name, email, password, currentPassword } = value;
 
-      // Aucun champ fourni
       if (!name && !email && !password) {
         return res.status(StatusCodes.BAD_REQUEST).json({
           message: "Aucune modification fournie",
         });
       }
 
-      // Mot de passe actuel obligatoire si changement de mot de passe
       if (password && !currentPassword) {
         return res.status(StatusCodes.BAD_REQUEST).json({
           message:
@@ -77,7 +73,7 @@ export const userController = {
         });
       }
 
-      // Vérifie et met à jour le mot de passe
+      // Changement de mot de passe
       if (password) {
         const validPassword = await argon2.verify(
           user.password,
@@ -91,7 +87,7 @@ export const userController = {
         user.password = await argon2.hash(password);
       }
 
-      // Vérifie que le pseudo n'est pas déjà utilisé
+      // Changement de pseudo
       if (name && name !== user.name) {
         const nameExists = await User.findOne({
           where: { name, id: { [Op.ne]: userId } },
@@ -104,8 +100,24 @@ export const userController = {
         user.name = name;
       }
 
-      // Vérifie que l'email n'est pas déjà utilisé
+      // Changement d'email
       if (email && email !== user.email) {
+        if (!currentPassword) {
+          return res.status(StatusCodes.BAD_REQUEST).json({
+            message: "Le mot de passe actuel est requis pour changer l'email",
+          });
+        }
+
+        const validPassword = await argon2.verify(
+          user.password,
+          currentPassword,
+        );
+        if (!validPassword) {
+          return res.status(StatusCodes.UNAUTHORIZED).json({
+            message: "Mot de passe actuel incorrect",
+          });
+        }
+
         const emailExists = await User.findOne({
           where: { email, id: { [Op.ne]: userId } },
         });
@@ -114,22 +126,9 @@ export const userController = {
             message: "Cet email est deja utilise",
           });
         }
+
         user.email = email;
       }
-// Mot de passe obligatoire pour changer l'email
-if (!currentPassword) {
-  return res.status(StatusCodes.BAD_REQUEST).json({
-    message: "Le mot de passe actuel est requis pour changer l'email",
-  });
-}
-
-// Vérification du mot de passe
-const validPassword = await argon2.verify(user.password, currentPassword);
-if (!validPassword) {
-  return res.status(StatusCodes.UNAUTHORIZED).json({
-    message: "Mot de passe actuel incorrect",
-  });
-}
 
       await user.save();
 
@@ -146,7 +145,7 @@ if (!validPassword) {
     }
   },
 
-// Supprime le compte utilisateur
+  // Supprime le compte utilisateur
   async deleteAccount(req, res) {
     try {
       const userId = req.userId;
