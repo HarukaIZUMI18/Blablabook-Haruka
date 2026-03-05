@@ -11,7 +11,7 @@
   import BookDetail from "./components/views/BookDetail.svelte";
   import SearchResult from "./components/views/SearchResult.svelte";
   import Footer from "./components/Footer.svelte";
-
+// URL utilisée par le router
   export let url = "";
 
   $: isLoggedIn =
@@ -44,6 +44,7 @@
           </section>
         </div>
       </Route>
+      <!-- Les pages-->
       <Route path="/search">
         <SearchResult />
       </Route>
@@ -62,7 +63,7 @@
       <Route path="/livre/:id" let:params>
         <BookDetail {params} />
       </Route>
-
+<!-- Page 404 si aucune route ne correspond -->
       <Route path="*">
         <NotFound />
       </Route>
