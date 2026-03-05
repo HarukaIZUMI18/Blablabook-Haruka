@@ -32,6 +32,7 @@
   let deletingAccount = false;
 
   let showCurrentPasswordField = false;
+  let notAuthenticated = false;
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   $: emailValid = emailRegex.test(newEmail);
@@ -79,9 +80,18 @@
   async function loadUserInfo() {
     try {
       loading = true;
+      const token = localStorage.getItem("token");
+      if (!token) {
+        notAuthenticated = true;
+        return;
+      }
       user = await api.getUserInfo();
     } catch (err) {
-      showMessage("Erreur lors du chargement du profil", "error");
+      if (err.status === 401) {
+        notAuthenticated = true;
+      } else {
+        showMessage("Erreur lors du chargement du profil", "error");
+      }
     } finally {
       loading = false;
     }
@@ -287,7 +297,18 @@
       <span class="spinner" aria-hidden="true"></span>
       Chargement du profil...
     </div>
-  {:else if user}
+  {:else if notAuthenticated}
+  <div class="not-authenticated" role="alert">
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <circle cx="12" cy="8" r="4" />
+      <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+      <line x1="18" y1="6" x2="22" y2="10" stroke-width="2" />
+      <line x1="22" y1="6" x2="18" y2="10" stroke-width="2" />
+    </svg>
+    <h3>Accès restreint</h3>
+    <p>Vous devez être connecté pour accéder à votre profil.</p>
+  </div>
+{:else if user}
 
     <div class="section fade-in" style="animation-delay: 0.05s" aria-labelledby="recap-title">
       <h3 id="recap-title">Recapitulatif du compte</h3>
@@ -649,6 +670,28 @@
 {/if}
 
 <style>
+  .not-authenticated {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 3rem 1.5rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    text-align: center;
+  }
+  .not-authenticated svg {
+    opacity: 0.4;
+  }
+  .not-authenticated h3 {
+    margin: 0;
+    font-size: 1.1rem;
+  }
+  .not-authenticated p {
+    margin: 0;
+    opacity: 0.7;
+  }
   .profil-container {
     width: 100%;
     max-width: 600px;

@@ -9,6 +9,7 @@
   let toast = $state(null);
   let toastTimeout = $state(null);
   let requestVersion = $state(0);
+  let notAuthenticated = $state(false);
 
   // Liste des filtres
   const filters = [
@@ -31,6 +32,12 @@
     try {
       loading = true;
 
+      const token = localStorage.getItem("token");
+      if (!token) {
+        notAuthenticated = true;
+        return;
+      }
+
       const statusParam = currentFilter === "tous" ? null : currentFilter;
       const data = await api.getCollection(statusParam);
 
@@ -41,7 +48,12 @@
     } catch (error) {
       // Ignorer les erreurs si une requête plus récente a été initiée
       if (requestVersion !== currentVersion) return;
-      showToast("Erreur lors du chargement de la collection", "error");
+
+      if (error.status === 401) {
+        notAuthenticated = true;
+      } else {
+        showToast("Erreur lors du chargement de la collection", "error");
+      }
     } finally {
       // Ignorer si une requête plus récente a été initiée
       if (requestVersion !== currentVersion) return;
@@ -99,62 +111,90 @@
 <section aria-labelledby="collection-title">
   <h2 id="collection-title">Ma collection</h2>
 
-  <!-- Filtres -->
-  <div class="filters" role="group" aria-label="Filtrer par statut">
-    {#each filters as filter}
-      <button
-        class="filter-btn"
-        class:active={currentFilter === filter.value}
-        aria-pressed={currentFilter === filter.value}
-        onclick={() => handleFilterChange(filter.value)}
+  {#if notAuthenticated}
+    <div class="not-authenticated" role="alert">
+      <svg
+        width="52"
+        height="52"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.4"
       >
-        {filter.label}
-      </button>
-    {/each}
-  </div>
-
-  <!-- Chargement -->
-  {#if loading}
-    <p class="loading" aria-busy="true">Chargement...</p>
-
-    <!-- Collection vide -->
-  {:else if books.length === 0}
-    <div class="empty">
-      <p>Votre collection est vide</p>
-      <a href="/livres" class="link">Parcourir le catalogue</a>
+        <circle cx="12" cy="8" r="4" />
+        <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+        <circle
+          cx="18"
+          cy="5"
+          r="3"
+          fill="white"
+          stroke="currentColor"
+          stroke-width="1.4"
+        />
+        <line x1="16.8" y1="3.8" x2="19.2" y2="6.2" stroke-width="1.6" />
+        <line x1="19.2" y1="3.8" x2="16.8" y2="6.2" stroke-width="1.6" />
+      </svg>
+      <h3>Accès restreint</h3>
+      <p>Vous devez être connecté pour accéder à votre collection.</p>
     </div>
-
-    <!-- Liste des livres -->
   {:else}
-    <div class="grid">
-      {#each books as book (book.id)}
-        <article class="card-wrapper">
-          <CardBook {book} />
-          <div class="card-actions">
-            <select
-              class="status-select"
-              value={book.collectStatus}
-              onchange={(e) =>
-                handleStatusChange(book.id, e.currentTarget.value)}
-              aria-label="Changer le statut"
-            >
-              <option value="à lire">À lire</option>
-              <option value="en cours">En cours</option>
-              <option value="lu">Lu</option>
-              <option value="abandonné">Abandonné</option>
-              <option value="en pause">En pause</option>
-            </select>
-            <button
-              class="remove-btn"
-              onclick={() => handleRemove(book.id)}
-              aria-label="Retirer de la collection"
-            >
-              Retirer
-            </button>
-          </div>
-        </article>
+    <!-- Filtres -->
+    <div class="filters" role="group" aria-label="Filtrer par statut">
+      {#each filters as filter}
+        <button
+          class="filter-btn"
+          class:active={currentFilter === filter.value}
+          aria-pressed={currentFilter === filter.value}
+          onclick={() => handleFilterChange(filter.value)}
+        >
+          {filter.label}
+        </button>
       {/each}
     </div>
+
+    <!-- Chargement -->
+    {#if loading}
+      <p class="loading" aria-busy="true">Chargement...</p>
+
+      <!-- Collection vide -->
+    {:else if books.length === 0}
+      <div class="empty">
+        <p>Votre collection est vide</p>
+        <a href="/livres" class="link">Parcourir le catalogue</a>
+      </div>
+
+      <!-- Liste des livres -->
+    {:else}
+      <div class="grid">
+        {#each books as book (book.id)}
+          <article class="card-wrapper">
+            <CardBook {book} />
+            <div class="card-actions">
+              <select
+                class="status-select"
+                value={book.collectStatus}
+                onchange={(e) =>
+                  handleStatusChange(book.id, e.currentTarget.value)}
+                aria-label="Changer le statut"
+              >
+                <option value="à lire">À lire</option>
+                <option value="en cours">En cours</option>
+                <option value="lu">Lu</option>
+                <option value="abandonné">Abandonné</option>
+                <option value="en pause">En pause</option>
+              </select>
+              <button
+                class="remove-btn"
+                onclick={() => handleRemove(book.id)}
+                aria-label="Retirer de la collection"
+              >
+                Retirer
+              </button>
+            </div>
+          </article>
+        {/each}
+      </div>
+    {/if}
   {/if}
 </section>
 
@@ -172,18 +212,34 @@
 {/if}
 
 <style>
-  section {
-    width: 100%;
-    max-width: 1600px;
-    margin: 0 auto;
-    padding: 1rem;
-  }
-
   h2 {
     text-align: center;
     margin: 1rem 0;
     font-size: 1.75rem;
     color: var(--color-text);
+  }
+
+  .not-authenticated {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 3rem 1.5rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    text-align: center;
+  }
+  .not-authenticated svg {
+    opacity: 0.4;
+  }
+  .not-authenticated h3 {
+    margin: 0;
+    font-size: 1.1rem;
+  }
+  .not-authenticated p {
+    margin: 0;
+    opacity: 0.7;
   }
 
   /* Filtres */
@@ -372,6 +428,10 @@
       gap: 8px;
       width: 95%;
       padding: 0 8px;
+    }
+
+    .not-authenticated {
+      padding: 2.5rem 1rem;
     }
   }
 </style>
