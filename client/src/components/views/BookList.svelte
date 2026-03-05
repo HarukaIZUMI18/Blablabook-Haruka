@@ -1,13 +1,17 @@
 <script>
   import { api } from "../../service/api.service.js";
+  // Utiliser card de livre
   import CardBook from "../CardBook.svelte";
 
+  // Pour liste des livres affichés
   let books = $state([]);
   let currentPage = $state(1);
   let totalPages = $state(0);
+  // Nombre de livres par page
   let limit = $state(30);
+  // Ordre de tri des livres
   let order = $state("A-Z");
-
+// Effet réactif : remonte en haut de la page et recharge les livres
   $effect(() => {
     window.scrollTo({
       top: 0,
@@ -15,12 +19,13 @@
     });
     fetchBooks();
   });
-
+// Récupère les livres depuis l'API
   async function fetchBooks() {
     const data = await api.allBook({ page: currentPage, limit, order });
     books = data.books;
     totalPages = data.totalPages;
   }
+  // Réinitialise la pagination lors d'un changement de filtre
   function handleFilterChange() {
     currentPage = 1;
   }
@@ -30,6 +35,7 @@
   <div class="title">
     <h2>Catalogue</h2>
   </div>
+  <!-- Sélection de l'ordre de tri -->
   <div class="controls-top">
     <div class="group">
       <select id="order" bind:value={order} onchange={handleFilterChange}>
@@ -37,6 +43,7 @@
         <option value="Z-A">Titre (Z-A)</option>
       </select>
     </div>
+    <!-- Sélection du nombre de livres par page -->
     <div class="group">
       <select id="pagination" bind:value={limit} onchange={handleFilterChange}>
         <option value={10}>10</option>
@@ -47,19 +54,18 @@
       </select>
     </div>
   </div>
+  <!-- Grille d'affichage des livres -->
   <div class="grid">
     {#each books as book (book.id)}
       <CardBook {book} />
     {/each}
   </div>
-
+<!-- Contrôles de pagination -->
   <div class="controls">
     <button onclick={() => currentPage--} disabled={currentPage <= 1}>
       Précédent
     </button>
-
     <span>Page {currentPage} / {totalPages}</span>
-
     <button onclick={() => currentPage++} disabled={currentPage >= totalPages}>
       Suivant
     </button>
@@ -162,7 +168,7 @@
   span {
     font-weight: bold;
   }
-
+/* ── Responsive ── */
   @media (max-width: 1500px) {
     .grid {
       grid-template-columns: repeat(4, 1fr);

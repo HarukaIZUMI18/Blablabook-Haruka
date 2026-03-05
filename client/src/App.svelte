@@ -77,11 +77,11 @@
     margin: 40px auto;
     padding: 25px 30px;
     max-width: 700px;
-    border: 2px solid #592f25;
+    border: 2px solid var(--color-text);
     border-radius: 12px;
-    background: #fdf8f6;
+    background: var(--color-white);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    color: #592f25;
+    color: var(--color-text);
   }
 
   .welcome h1 {
@@ -130,7 +130,7 @@
   .is-connected {
     padding-top: 70px;
   }
-
+/* ── Responsive ── */
   @media (max-width: 800px) {
     .welcome {
       margin: 1em;

@@ -1,7 +1,6 @@
 <script>
   import { onMount } from "svelte";
   import { api } from "../../service/api.service.js";
-  import { Link } from "svelte-routing";
 
   // Pour page connecté et sans connecté
   let token =
@@ -17,13 +16,14 @@
   let toastTimeout = $state(null);
   let selectedStatus = $state("à lire");
 
+  // Pour sélection de la statut
   const statuses = [
     { value: "à lire", label: "À lire" },
     { value: "en cours", label: "En cours" },
     { value: "lu", label: "Lu" },
     { value: "abandonné", label: "Abandonné" },
   ];
-
+  // Récupérer un livre par Id
   onMount(async () => {
     await loadBook();
     if (token) {
@@ -32,7 +32,7 @@
       checkingCollection = false;
     }
   });
-
+  // Récupérer sa collection par API
   async function loadBook() {
     try {
       loading = true;
@@ -44,7 +44,7 @@
       loading = false;
     }
   }
-
+  // Gérer un statut du livre
   async function checkCollection() {
     try {
       checkingCollection = true;
@@ -57,7 +57,7 @@
       checkingCollection = false;
     }
   }
-
+  // Ajoute le livre à la collection de l'utilisateur
   async function handleAddToCollection() {
     try {
       await api.addToCollection(book.id, selectedStatus);
@@ -67,7 +67,7 @@
       showToast("Erreur lors de l'ajout à la collection", "error");
     }
   }
-
+  // Met à jour le statut du livre dans la collection
   async function handleUpdateStatus() {
     try {
       await api.updateCollectionStatus(book.id, selectedStatus);
@@ -77,7 +77,7 @@
       showToast("Erreur lors de la mise à jour", "error");
     }
   }
-
+  // Supprime le livre de la collection
   async function handleRemoveFromCollection() {
     try {
       await api.removeFromCollection(book.id);
@@ -87,7 +87,7 @@
       showToast("Erreur lors de la suppression", "error");
     }
   }
-
+  // Affiche une notification temporaire
   function showToast(message, type) {
     if (toastTimeout) clearTimeout(toastTimeout);
     toast = { message, type };
@@ -99,8 +99,11 @@
 
 <main>
   <section>
+    <!-- Affiche un message de chargement pendant la récupération des données -->
     {#if loading || checkingCollection}
       <p class="loading" aria-busy="true">Chargement...</p>
+
+      <!-- Affiche les informations du livre une fois chargé -->
     {:else if book}
       <div class="col-left">
         <img src={book.cover} alt={`Couverture de ${book.title}`} />
@@ -108,6 +111,7 @@
         {#if token}
           <div class="collection-section">
             {#if collectionStatus === null}
+              <!-- Sélection du statut avant l'ajout -->
               <div class="add-to-collection">
                 <label for="status-select">Statut</label>
                 <select id="status-select" bind:value={selectedStatus}>
@@ -120,6 +124,7 @@
                 >
               </div>
             {:else}
+              <!-- Affiche le statut actuel du livre -->
               <div class="collection-info">
                 <p class="current-status">
                   <strong>Statut actuel :</strong>
@@ -142,7 +147,7 @@
           </div>
         {/if}
       </div>
-
+      <!-- L'infomation d'un livre-->
       <div class="col-right">
         <h1>{book.title}</h1>
         <div class="meta">
@@ -158,7 +163,7 @@
       <p class="error">Livre non trouvé</p>
     {/if}
   </section>
-
+  <!-- Affiche une notification temporaire (toast) -->
   {#if toast}
     <div
       class="toast"
@@ -339,7 +344,7 @@
     color: #721c24;
     border: 1px solid #f5c6cb;
   }
-
+/* Animation pour faire apparaître un élément en glissant vers le bas */
   @keyframes slideDown {
     from {
       opacity: 0;

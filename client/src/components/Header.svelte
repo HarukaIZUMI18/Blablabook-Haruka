@@ -1,29 +1,35 @@
 <script>
+  // Import des composants et assets
   import Login from "./Login.svelte";
   import Logo from "../lib/assets/Blablabook.svg?raw";
-
+  // État pour le chemin courant
   let currentPath = $state(window.location.pathname);
-
+  // État pour afficher la confirmation de déconnexion
   let showLogoutConfirm = $state(false);
+  // État pour afficher le formulaire d'authentification
   let showAuth = $state(false);
+  //Mode d'authentification : login ou register
   let authMode = $state("login");
+  // Token d'utilisateur stocké localement
   let token = $state(localStorage.getItem("token"));
+  // État pour l'ouverture du menu
   let isMenuOpen = $state(false);
+  //Requête de recherche
   let searchQuery = $state("");
-
+// Callback après succès de connexion
   function handleLoginSuccess(newToken) {
     token = newToken;
     showAuth = false;
     isMenuOpen = false;
   }
-
+// Déconnexion de l'utilisateur
   function logout() {
     localStorage.removeItem("token");
     token = null;
     isMenuOpen = false;
     window.location.replace("/");
   }
-
+//Recherche avec redirection
   function search() {
     const q = searchQuery.trim();
     if (!q) return;
@@ -31,13 +37,14 @@
     searchQuery = "";
     window.location.href = `/search?q=${encodeURIComponent(q)}`;
   }
-
+// Gestion de la touche Entrée dans le champ de recherche
   function handleEnter(e) {
     if (e.key === "Enter") search();
   }
 </script>
 
 <header>
+<!-- Navigation principale -->
   <nav class="nav-container">
     <div class="nav-top">
       <a class="logo" href="/">
@@ -46,6 +53,7 @@
 
       <!-- Liens desktop (toujours rendus, cachés via CSS sur mobile) -->
       <div class="desktop-nav">
+      <!-- Barre de recherche -->
         <div class="search">
           <input
             type="text"
@@ -55,6 +63,7 @@
             onkeydown={handleEnter}
           />
           <button class="search-btn" onclick={search} aria-label="Rechercher">
+          <!-- Icône loupe -->
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="16"
@@ -77,6 +86,7 @@
         </div>
 
         {#if !token}
+        <!-- Utilisateur non connecté -->
           <a href="/livres" class="link">Catalogue</a>
           <button
             onclick={() => {
@@ -91,6 +101,7 @@
             }}>Inscription</button
           >
         {:else}
+        <!-- Utilisateur connecté -->
           <a
             href="/livres"
             class="link"
@@ -110,7 +121,7 @@
           >
         {/if}
       </div>
-
+<!-- Bouton hamburger pour mobile -->
       <button
         class="burger-menu"
         class:is-open={isMenuOpen}
@@ -125,13 +136,14 @@
       </button>
     </div>
 
-    <!-- Drawer mobile -->
+    <!-- Tiroir mobile -->
     <div
       id="mobile-menu"
       class="mobile-drawer"
       class:is-open={isMenuOpen}
       aria-hidden={!isMenuOpen}
     >
+    <!-- Barre de recherche mobile -->
       <div class="search mobile-search">
         <input
           type="text"
@@ -160,6 +172,7 @@
       </div>
 
       {#if !token}
+      <!-- Menu mobile utilisateur non connecté -->
         <a
           href="/livres"
           class="mobile-link"
@@ -182,6 +195,7 @@
           }}>Inscription</button
         >
       {:else}
+      <!-- Menu mobile utilisateur connecté -->
         <a
           href="/livres"
           class="mobile-link"
@@ -204,23 +218,25 @@
     </div>
   </nav>
 </header>
-
+<!-- Modal d'authentification (login / inscription) -->
 {#if showAuth}
   <div class="overlay" onclick={() => (showAuth = false)} role="none"></div>
   <div class="auth-modal">
     <Login isLogin={authMode === "login"} onSuccess={handleLoginSuccess} />
   </div>
 {/if}
-
+<!-- Modal de confirmation de déconnexion -->
 {#if showLogoutConfirm}
   <div
     class="overlay"
     onclick={() => (showLogoutConfirm = false)}
     role="none"
   ></div>
+  <!-- Contenu du modal de confirmation -->
   <div class="confirm-modal">
     <p>Voulez-vous vraiment vous déconnecter ?</p>
     <div class="confirm-actions">
+    <!-- Des Bouton pour confirmer/annuler la déconnexion -->
       <button class="confirm-cancel" onclick={() => (showLogoutConfirm = false)}
         >Annuler</button
       >

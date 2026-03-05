@@ -3,7 +3,7 @@
 
   export let isLogin = true;
   export let onSuccess;
-
+// Des infomations pour connecter
   let email = "";
   let password = "";
   let name = "";
@@ -11,15 +11,15 @@
   let loading = false;
   let showPassword = false;
   let showConfirm = false;
-
+// État pour la notification (toast)
   let toast = null;
   let toastTimeout = null;
-
+// Vérifications de mot de passe réactives 
   $: hasMinLength = password.length >= 8;
   $: hasUppercase = /[A-Z]/.test(password);
   $: hasLowercase = /[a-z]/.test(password);
   $: hasDigit = /[0-9]/.test(password);
-
+// Affiche une notification temporaire (toast)
   function showToast(message, type) {
     if (toastTimeout) clearTimeout(toastTimeout);
     toast = { message, type };
@@ -27,7 +27,7 @@
       toast = null;
     }, 3000);
   }
-
+  // Message d'erreur
   const errorMessages = {
     Conflict: "Les informations saisies sont invalides.",
     Unauthorized: "Email ou mot de passe incorrect.",
@@ -43,7 +43,7 @@
     }
     return "Une erreur est survenue, veuillez réessayer.";
   }
-
+// Vérifivation de mots de pass
   function validatePassword(pwd) {
     if (pwd.length < 8)
       return "Le mot de passe doit contenir au moins 8 caractères.";
@@ -55,13 +55,13 @@
       return "Le mot de passe doit contenir au moins un chiffre.";
     return null;
   }
-
+// Pop-up pour login ou inscription
   async function handleSubmit() {
     loading = true;
 
     try {
       let response;
-
+// Pour connextion
       if (isLogin) {
         response = await api.login({ email, password });
 
@@ -72,6 +72,7 @@
           window.location.href = "/";
         }
       } else {
+        // Pour inscription
         const pwdError = validatePassword(password);
         if (pwdError) throw new Error(pwdError);
         if (password !== confirm)
@@ -87,16 +88,17 @@
         }
       }
     } catch (err) {
+      // Notification d'erreur
       showToast(parseError(err.message), "error");
     } finally {
       loading = false;
     }
   }
 </script>
-
+<!-- Conteneur principal du formulaire d'authentification -->
 <div class="auth-container">
   <h2>{isLogin ? "Se connecter" : "Créer un compte"}</h2>
-
+<!-- Formulaire avec gestion de la soumission -->
   <form
     onsubmit={(e) => {
       e.preventDefault();
@@ -136,6 +138,8 @@
           bind:value={password}
           required
         />
+
+        <!-- L'icon d'oeil pour afficher le mot de pass -->
         <button
           type="button"
           class="toggle-eye"
@@ -177,8 +181,9 @@
               <circle cx="12" cy="12" r="3" />
             </svg>
           {/if}
-        </button>
+        </button> 
       </div>
+      <!-- Vérifivation des règles mots de pass(uniquement inscription) -->
       {#if !isLogin}
         <div class="password-rules">
           <span class:valid={hasMinLength}>
@@ -207,6 +212,7 @@
             bind:value={confirm}
             required
           />
+<!-- L'icon d'oeil pour afficher le mot de pass -->
           <button
             type="button"
             class="toggle-eye"
@@ -257,7 +263,7 @@
       {loading ? "Chargement..." : isLogin ? "Connexion" : "S'inscrire"}
     </button>
   </form>
-
+<!-- Message après inscription et connexion-->
   {#if toast}
     <div
       class="toast"
@@ -400,7 +406,7 @@
     color: #721c24;
     border: 1px solid #f5c6cb;
   }
-
+/* ── Responsive ── */
   @media (max-width: 1100px) {
     .auth-container h2 {
       font-size: 1.3rem;

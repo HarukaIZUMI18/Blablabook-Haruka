@@ -87,9 +87,14 @@
     margin-top: 5rem;
     margin-bottom: 0;
     width: 100%;
+    font-size: 1rem;
     background: var(--color-primary);
     box-shadow: var(--shadow);
     position: relative;
+  }
+
+  h3{
+    font-size: 1.3rem;
   }
 
   .infomations {
@@ -147,7 +152,7 @@
     text-align: center;
     margin-top: 1rem;
   }
-
+/* ── Responsive ── */
   @media screen and (max-width: 900px) {
     .infomations {
       display: grid;
