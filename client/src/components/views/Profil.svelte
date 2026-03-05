@@ -220,7 +220,7 @@
 
       <!-- Nom -->
       <div class="info-row">
-        <span class="label">Nom</span>
+        <span class="label">Pseudo</span>
         {#if editingName}
           <form class="inline-form" on:submit|preventDefault={handleUpdateName}>
             <input type="text" bind:value={newName} placeholder="Prenom et nom" autocomplete="off" aria-label="Nouveau nom"/>
