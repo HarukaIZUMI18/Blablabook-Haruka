@@ -125,7 +125,7 @@
       </button>
     </div>
 
-    <!-- Drawer mobile -->
+    <!-- Tiroir mobile -->
     <div
       id="mobile-menu"
       class="mobile-drawer"

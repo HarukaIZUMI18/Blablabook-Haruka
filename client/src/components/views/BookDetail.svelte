@@ -1,7 +1,6 @@
 <script>
   import { onMount } from "svelte";
   import { api } from "../../service/api.service.js";
-  import { Link } from "svelte-routing";
 
   // Pour page connecté et sans connecté
   let token =

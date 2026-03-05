@@ -105,13 +105,13 @@
 
   h3 {
     margin: 0 0 6px 0;
-    font-size: 1rem;
+    font-size: 1.2rem;
     color: var(--color-text);
   }
 
   p {
     margin: 2px 0;
-    font-size: 0.8rem;
+    font-size: 1rem;
     color: #666;
   }
 

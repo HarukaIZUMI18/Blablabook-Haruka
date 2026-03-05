@@ -3,7 +3,7 @@
 
   export let isLogin = true;
   export let onSuccess;
-
+// Des infomations pour connecter
   let email = "";
   let password = "";
   let name = "";
@@ -27,7 +27,7 @@
       toast = null;
     }, 3000);
   }
-
+  // Message d'erreur
   const errorMessages = {
     Conflict: "Les informations saisies sont invalides.",
     Unauthorized: "Email ou mot de passe incorrect.",
@@ -43,7 +43,7 @@
     }
     return "Une erreur est survenue, veuillez réessayer.";
   }
-
+// Vérifivation de mots de pass
   function validatePassword(pwd) {
     if (pwd.length < 8)
       return "Le mot de passe doit contenir au moins 8 caractères.";
@@ -55,7 +55,7 @@
       return "Le mot de passe doit contenir au moins un chiffre.";
     return null;
   }
-
+// Pop-up pour connecter
   async function handleSubmit() {
     loading = true;
 
@@ -136,6 +136,8 @@
           bind:value={password}
           required
         />
+
+        <!-- L'icon d'oeil pour afficher le mot de pass -->
         <button
           type="button"
           class="toggle-eye"
@@ -177,8 +179,9 @@
               <circle cx="12" cy="12" r="3" />
             </svg>
           {/if}
-        </button>
+        </button> 
       </div>
+      <!-- Vérifivation de mots de pass -->
       {#if !isLogin}
         <div class="password-rules">
           <span class:valid={hasMinLength}>
@@ -207,6 +210,7 @@
             bind:value={confirm}
             required
           />
+<!-- L'icon d'oeil pour afficher le mot de pass -->
           <button
             type="button"
             class="toggle-eye"
@@ -257,7 +261,7 @@
       {loading ? "Chargement..." : isLogin ? "Connexion" : "S'inscrire"}
     </button>
   </form>
-
+<!-- Message après inscription et connexion-->
   {#if toast}
     <div
       class="toast"
