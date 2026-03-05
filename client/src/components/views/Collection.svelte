@@ -302,7 +302,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     grid-auto-rows: minmax(420px, auto);
-    max-width: 1600px;
+    max-width: 1400px;
     margin: 20px auto;
     gap: 1em 0.5em;
     justify-items: center;
@@ -416,9 +416,8 @@
 
   @media (max-width: 840px) {
     .grid {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 15px;
-      width: 90%;
     }
   }
 
@@ -426,7 +425,6 @@
     .grid {
       grid-template-columns: repeat(2, 1fr);
       gap: 8px;
-      width: 95%;
       padding: 0 8px;
     }
 
