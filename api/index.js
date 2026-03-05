@@ -11,10 +11,13 @@ import {
 
 const app = express();
 
-app.use(cors());
-app.use(express.json());
-app.use(xss());
+app.use(cors());            // Active CORS
+app.use(express.json());    // Parse le JSON
+app.use(xss());             // Nettoie les entrées XSS
 
+
+
+// Charge toutes les routes
 app.use(apiRouter);
 
 // Gestionnaire 404 pour les routes non trouvées

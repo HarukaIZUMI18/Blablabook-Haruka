@@ -2,6 +2,7 @@ import { StatusCodes } from "http-status-codes";
 import Joi from "joi";
 
 export const bookMiddleware = {
+  // Vérifie que le paramètre de recherche "q" est présent et non vide
   validateSearchQuery(req, res, next) {
     const search = req.query.q;
     if (!search || search.trim().length === 0) {
@@ -11,6 +12,7 @@ export const bookMiddleware = {
     }
     next();
   },
+  // Vérifie que l'ID fourni dans l'URL est un nombre valide
   validateId(req, res, next) {
     const id = Number(req.params.id);
     if (isNaN(id)) {
@@ -20,6 +22,7 @@ export const bookMiddleware = {
     }
     next();
   },
+  // Valide les paramètres de pagination et de tri
   validatePagination(req, res, next) {
     const schemaPagination = Joi.object({
       page: Joi.number().integer().min(1).optional(),
@@ -33,6 +36,7 @@ export const bookMiddleware = {
         message: "Paramètres de requête invalides",
       });
     }
+    // Remplace les paramètres bruts par les valeurs validées
     req.query.page = value.page;
     req.query.limit = value.limit;
     req.query.order = value.order;

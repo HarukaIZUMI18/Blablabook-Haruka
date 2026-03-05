@@ -13,7 +13,8 @@ Book.belongsToMany(User, {
   foreignKey: "book_id",
 });
 
-// Collect -> User / Book (accès direct au modèle de jointure)
+// Relation Collect -> User / Book via les clés étrangères de jointure
+
 Collect.belongsTo(User, {
   foreignKey: "user_id",
 });
