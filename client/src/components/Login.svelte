@@ -107,12 +107,12 @@
   >
     {#if !isLogin}
       <div class="field">
-        <label for="name">Nom</label>
+        <label for="name">Pseudo</label>
         <input
           id="name"
           type="text"
           bind:value={name}
-          placeholder="Votre nom"
+          placeholder="Votre pseudo"
           required
         />
       </div>

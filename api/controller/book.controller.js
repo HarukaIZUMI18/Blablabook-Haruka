@@ -4,15 +4,19 @@ import { StatusCodes } from "http-status-codes";
 
 export const bookController = {
 
+  // Retourne tous les livres (avec tri et pagination si demandée)
   async all(req, res) {
     const page = req.query.page ? parseInt(req.query.page) : null;
     const limit = req.query.limit ? parseInt(req.query.limit) : null;
     const order = req.query.order === "Z-A" ? "DESC" : "ASC";
 
     const options = {
-      order: [["title", order]],
+      order: [["title", order]], // Tri par titre
+
+
     };
 
+// Active la pagination seulement si page + limit sont fournis
     if (page && limit) {
       options.limit = limit;
       options.offset = (page - 1) * limit;
@@ -23,7 +27,7 @@ export const bookController = {
     res.status(StatusCodes.OK).json({
       totalItems: count,
       books: rows,
-      // On n'envoie ces infos que si la pagination était demandée
+      // Renvoie les infos de pagination uniquement quand elles sont demandées
       ...(page &&
         limit && {
           currentPage: page,
@@ -31,7 +35,7 @@ export const bookController = {
         }),
     });
   },
-  // Récupère un livre par son id
+  // Retourne un livre par son ID
   async one(req, res) {
     const book = await Book.findByPk(req.params.id);
 
@@ -42,11 +46,11 @@ export const bookController = {
     }
     res.status(StatusCodes.OK).json(book);
   },
-  // Récupère une liste de 5 livres au hasard
+  // Retourne une liste aléatoire de livres
   async randomList(req, res) {
     const limitCount = 10;
     const random = await Book.findAll({
-      order: [sequelize.random()],
+      order: [sequelize.random()], // Tirage aléatoire
       limit: limitCount,
     });
     res.status(StatusCodes.OK).json(random);
@@ -76,8 +80,10 @@ export const bookController = {
           },
         ],
       },
-      limit: 20,
+      limit: 100, // Limite les résultats
+
     });
-    res.status(StatusCodes.OK).json(resultSearch);
+    res.status(StatusCodes.OK).json(resultSearch);// Renvoie les résultats de la recherche.
+
   },
 };

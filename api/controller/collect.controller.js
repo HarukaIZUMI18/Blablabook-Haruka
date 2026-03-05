@@ -2,7 +2,7 @@ import Joi from "joi";
 import { Collect, Book } from "../models/index.js";
 import { StatusCodes } from "http-status-codes";
 
-// Statuts valides pour la collection (selon spec)
+// Liste des statuts autorisés pour un livre dans la collection
 const VALID_STATUSES = ["à lire", "en cours", "lu", "abandonné", "en pause"];
 
 // Schéma de validation pour la mise à jour du statut
@@ -11,7 +11,7 @@ const statusSchema = Joi.object({
 });
 
 export const collectController = {
-  // GET /collection - Récupérer tous les livres de la collection
+  // Récupère tous les livres de la collection de l'utilisateur
   async all(req, res) {
     try {
       const userId = req.userId;
@@ -25,7 +25,8 @@ export const collectController = {
             attributes: ["id", "title", "author", "cover", "publish_year"],
           },
         ],
-        order: [[{ model: Book }, "title", "ASC"]],
+        order: [[{ model: Book }, "title", "ASC"]],// Tri par titre
+
       };
 
       // Filtre optionnel par statut
@@ -34,7 +35,7 @@ export const collectController = {
       }
 
       const collection = await Collect.findAll(options);
-
+      //Simplifie les données pour ne garder que les infos utiles au front.
       const books = collection.map((item) => ({
         id: item.book.id,
         title: item.book.title,
@@ -43,10 +44,11 @@ export const collectController = {
         publish_year: item.book.publish_year,
         collectStatus: item.status,
       }));
-
+      // Envoie la liste des livres
       res.status(StatusCodes.OK).json({ books });
     } catch (error) {
       console.error("Erreur lors de la récupération de la collection:", error);
+      // Envoie une erreur serveur
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
         message: "Erreur lors de la récupération de la collection",
       });
@@ -58,7 +60,9 @@ export const collectController = {
     try {
       const userId = req.userId;
       // bookId vient de l'URL (route : /book/:id/collection)
-      const bookId = parseInt(req.params.id, 10);
+      const bookId = parseInt(req.params.id, 10);// ID du livre dans l'URL
+
+
 
       if (isNaN(bookId)) {
         return res.status(StatusCodes.BAD_REQUEST).json({
@@ -93,7 +97,7 @@ export const collectController = {
         });
       }
 
-      const finalStatus = status || "à lire";
+      const finalStatus = status || "à lire"; // Statut par défaut
 
       await Collect.create({
         user_id: userId,
@@ -114,7 +118,7 @@ export const collectController = {
     }
   },
 
-  // PATCH /book/:id/collection - Modifier le statut d'un livre
+  // PATCH /book/:id/collection - Modifie le statut d'un livre
   async updateStatus(req, res) {
     try {
       const userId = req.userId;
@@ -126,6 +130,7 @@ export const collectController = {
         });
       }
 
+    // Valide le body avec Joi
       const { error, value } = statusSchema.validate(req.body);
       if (error) {
         return res.status(StatusCodes.BAD_REQUEST).json({
@@ -133,6 +138,7 @@ export const collectController = {
         });
       }
 
+    // Vérifie que le livre est bien dans la collection
       const collectEntry = await Collect.findOne({
         where: { user_id: userId, book_id: bookId },
       });
@@ -143,6 +149,7 @@ export const collectController = {
         });
       }
 
+      // Met à jour le statut
       collectEntry.status = value.status;
       await collectEntry.save();
 
@@ -159,7 +166,7 @@ export const collectController = {
     }
   },
 
-  // DELETE /book/:id/collection - Retirer un livre de la collection
+  // DELETE /book/:id/collection - Retire un livre de la collection
   async remove(req, res) {
     try {
       const userId = req.userId;
@@ -170,7 +177,7 @@ export const collectController = {
           message: "L'identifiant du livre est invalide",
         });
       }
-
+   // Vérifie que le livre est dans la collection
       const collectEntry = await Collect.findOne({
         where: { user_id: userId, book_id: bookId },
       });

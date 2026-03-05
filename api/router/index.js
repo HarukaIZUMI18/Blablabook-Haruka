@@ -6,6 +6,7 @@ import { collectRouter } from "./collect.router.js";
 
 export const apiRouter = Router();
 
+// Route d'information sur l'API
 apiRouter.get("/", (req, res) => {
   res.json({
     name: "Blablabook API",

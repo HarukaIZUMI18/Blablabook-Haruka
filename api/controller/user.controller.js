@@ -5,6 +5,7 @@ import { Op } from "sequelize";
 import { StatusCodes } from "http-status-codes";
 
 export const userController = {
+  // Récupère les infos du profil (sans le mot de passe)
   async UserInfo(req, res) {
     try {
       const userId = req.userId;
@@ -23,12 +24,12 @@ export const userController = {
       });
     }
   },
-
+// Met à jour le profil de l'utilisateur
   async updateProfile(req, res) {
     try {
       const userId = req.userId;
 
-      // Schema de validation aligne sur les regles du front
+      // Schéma de validation des champs modifiables
       const updateSchema = Joi.object({
         name: Joi.string().min(1).max(100).trim(),
         email: Joi.string().email().max(255).trim(),
@@ -37,10 +38,10 @@ export const userController = {
           .max(128)
           .pattern(/[A-Z]/, "majuscule")
           .pattern(/[0-9]/, "chiffre"),
-        currentPassword: Joi.string().min(1).max(128),
+        currentPassword: Joi.string().min(1).max(128).trim()
       });
 
-      // Validation propre sans Joi.attempt qui peut crasher le serveur
+      // Valide les données envoyées
       const { error, value } = updateSchema.validate(req.body, {
         abortEarly: false,
       });
@@ -76,7 +77,7 @@ export const userController = {
         });
       }
 
-      // Verification et changement du mot de passe
+      // Vérifie et met à jour le mot de passe
       if (password) {
         const validPassword = await argon2.verify(
           user.password,
@@ -90,20 +91,20 @@ export const userController = {
         user.password = await argon2.hash(password);
       }
 
-      // Verification unicite du nom
+      // Vérifie que le pseudo n'est pas déjà utilisé
       if (name && name !== user.name) {
         const nameExists = await User.findOne({
           where: { name, id: { [Op.ne]: userId } },
         });
         if (nameExists) {
           return res.status(StatusCodes.CONFLICT).json({
-            message: "Ce nom est deja utilise",
+            message: "Ce pseudo est deja utilise",
           });
         }
         user.name = name;
       }
 
-      // Verification unicite de l email
+      // Vérifie que l'email n'est pas déjà utilisé
       if (email && email !== user.email) {
         const emailExists = await User.findOne({
           where: { email, id: { [Op.ne]: userId } },
@@ -131,6 +132,7 @@ export const userController = {
     }
   },
 
+// Supprime le compte utilisateur
   async deleteAccount(req, res) {
     try {
       const userId = req.userId;

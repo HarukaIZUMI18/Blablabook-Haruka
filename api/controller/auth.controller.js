@@ -7,7 +7,7 @@ import { StatusCodes } from "http-status-codes";
 
 export const authController = {
   async register(req, res) {
-    // Définition du schema de validation
+   // Schéma Joi qui valide les données d'inscription (email, nom, mot de passe).
     const registerSchema = Joi.object({
       email: Joi.string().email().required(),
       name: Joi.string().min(1).required(),
@@ -21,13 +21,13 @@ export const authController = {
         .required(),
     });
 
-    // Valider le body
+    // Valide le body avec Joi et renvoie uniquement les données conformes au schéma.
     const { email, name, password, confirm } = Joi.attempt(
       req.body,
       registerSchema,
     );
 
-    // Vérifier que le MDP + CONFIRM correspondent, sinon 400 (Bad Request)
+    // Vérifie que le mot de passe et la confirmation correspondent, sinon renvoie une erreur 400.
     if (password !== confirm) {
       return res.status(StatusCodes.BAD_REQUEST).json({
         message: "Le mot de passe et sa confirmation ne correspondent pas",
