@@ -11,9 +11,9 @@ Table USER {
 
 Table BOOK {
   id integer [primary key]
-  title varchar(100) [not null]
+  title text [not null]
   cover varchar  [not null]
-  author varchar(100) [not null]
+  author text [not null]
   description varchar [not null]
   publish_year smallint  [not null]
   created_at timestamp
