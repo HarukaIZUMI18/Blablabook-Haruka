@@ -301,11 +301,9 @@
   .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    grid-auto-rows: minmax(420px, auto);
     max-width: 1400px;
     margin: 20px auto;
     gap: 1em 0.5em;
-    justify-items: center;
     padding: 0 20px;
   }
 
@@ -313,7 +311,6 @@
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    height: 100%;
     width: 100%;
   }
 
@@ -322,7 +319,6 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    height: 100%;
   }
 
   .card-actions {
@@ -408,28 +404,47 @@
 
   @media (max-width: 1500px) {
     .grid {
-      grid-template-columns: repeat(4, 1fr);
-      gap: 15px;
-      width: 90%;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      max-width: 1000px;
+    }
+    .filter-btn {
+      padding: 0.5rem 1rem;
+      font-size: 0.8rem;
+      min-height: 30px;
     }
   }
 
-  @media (max-width: 840px) {
+  @media (max-width: 1000px) {
     .grid {
-      grid-template-columns: repeat(3, 1fr);
-      gap: 15px;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      max-width: 700px;
+    }
+    .status-select {
+      padding: 0.5rem;
+      font-size: 0.8rem;
     }
   }
 
+  @media (max-width: 700px) {
+    .grid {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      max-width: 500px;
+    }
+    .filter-btn {
+      padding: 0.5rem 1rem;
+      font-size: 0.7rem;
+      min-height: 30px;
+    }
+    .remove-btn {
+      padding: 0.4rem 0.6rem;
+      font-size: 0.75rem;
+      min-height: 30px;
+    }
+  }
   @media (max-width: 480px) {
     .grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
-      padding: 0 8px;
-    }
-
-    .not-authenticated {
-      padding: 2.5rem 1rem;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      max-width: 300px;
     }
   }
 </style>
