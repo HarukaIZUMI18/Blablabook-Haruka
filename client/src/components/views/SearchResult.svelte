@@ -1,10 +1,11 @@
 <script>
   import { api } from "../../service/api.service.js";
   import CardBook from "../CardBook.svelte";
-
+  // Liste des livres trouvés
   let books = $state([]);
+  // Terme de recherche
   let query = $state("");
-
+  // Récupère la requête dans l'URL et lance la recherche
   $effect(() => {
     const params = new URLSearchParams(window.location.search);
     query = params.get("q") || "";
@@ -12,7 +13,7 @@
       fetchBooks();
     }
   });
-
+  // Appelle l'API pour chercher des livres
   async function fetchBooks() {
     const data = await api.search(query);
     books = data;
@@ -21,14 +22,14 @@
 
 <section>
   {#if !query}
+    <!-- Aucun mot-clé saisi -->
     <h2>Votre recherche est vide</h2>
-    <p>
-      Entrez un mot-clé dans la barre de recherche pour trouver des livres.
-    </p>
+    <p>Entrez un mot-clé dans la barre de recherche pour trouver des livres.</p>
   {:else if books.length === 0}
     <h2>Aucun résultat pour "{query}"</h2>
     <p>Essayez avec d'autres termes de recherche.</p>
   {:else}
+    <!-- Affiche les résultats de recherche -->
     <h2>Résultats pour "{query}"</h2>
     <div class="grid">
       {#each books as book (book.id)}

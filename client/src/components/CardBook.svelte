@@ -1,12 +1,16 @@
 <script>
+// Récupère le livre passé en propriété
   let { book } = $props();
+  // Indique si l'image est chargée
   let isLoaded = $state(false);
 </script>
 
 <article class="card">
+<!-- Lien vers la page détail du livre -->
   <a href="/livre/{book.id}">
     <figure>
       <div class="image-container">
+      <!-- Affiche un skeleton pendant le chargement de l'image -->
         {#if !isLoaded}
           <div class="skeleton"></div>
         {/if}

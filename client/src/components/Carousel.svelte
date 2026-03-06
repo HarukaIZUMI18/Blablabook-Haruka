@@ -7,7 +7,7 @@
   let books = $state([]);
   let index = $state(0);
   let visibleCount = $state(5);
-
+  // Détermine combien de livres afficher selon la largeur de l'écran
   function getVisibleCount() {
     if (typeof window === "undefined") return 5;
     const w = window.innerWidth;
@@ -17,7 +17,7 @@
     if (w <= 1550) return 4;
     return 5;
   }
-
+  // Met à jour le nombre d'éléments visibles
   function updateVisibleCount() {
     visibleCount = getVisibleCount();
   }
@@ -32,19 +32,19 @@
         )
       : [],
   );
-
+  // Aller au livre précédent dans le carousel
   function prev() {
     if (books.length === 0) return;
     index = (index - 1 + books.length) % books.length;
   }
-
+  // Aller au livre suivant dans le carousel
   function next() {
     if (books.length === 0) return;
     index = (index + 1) % books.length;
   }
 
   let interval;
-
+  // Récupère des livres ramdom depuis l'API
   onMount(async () => {
     try {
       const res = await api.randomBook();
@@ -52,28 +52,32 @@
     } catch (err) {
       console.error("ERREUR API =", err);
     }
-
+    // Initialise le nombre de livres visibles
     updateVisibleCount();
+    // Met à jour le carousel lors du redimensionnement de l'écran
     window.addEventListener("resize", updateVisibleCount);
-
+    // Défilement automatique toutes les 5 secondes
     interval = setInterval(next, 5000);
   });
-
+  // Supprime l'événement resize
   onDestroy(() => {
     if (typeof window !== "undefined") {
       window.removeEventListener("resize", updateVisibleCount);
     }
+    // Arrête le défilement automatique
     clearInterval(interval);
   });
 </script>
 
+<!-- Carousel de livres -->
 {#if books.length > 0}
   <section class="carousel-container">
     <div class="carousel-viewport">
+      <!-- Bouton précédent -->
       <button class="arrow prev" onclick={prev} aria-label="Précédent">
         <span>&#10094;</span>
       </button>
-
+      <!-- Livres visibles -->
       <div class="slides-container">
         {#each visibleBooks as book, i (book.id || index + i)}
           <div class="slide-wrapper">
@@ -81,12 +85,12 @@
           </div>
         {/each}
       </div>
-
+      <!-- Bouton suivant -->
       <button class="arrow next" onclick={next} aria-label="Suivant">
         <span>&#10095;</span>
       </button>
     </div>
-
+    <!-- Indicateurs de navigation -->
     <div class="navigation-dots">
       {#each books as _, i}
         <button
