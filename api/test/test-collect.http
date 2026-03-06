@@ -1,0 +1,86 @@
+@baseURL=http://localhost:3000
+
+### 1. Connexion pour récupérer le token
+# @name login
+POST {{baseURL}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@test.com",
+  "password": "test123456"
+}
+
+### 2. Voir sa collection (vide au départ)
+GET {{baseURL}}/collection
+Authorization: Bearer {{login.response.body.$.token}}
+
+
+### 3. Ajouter le livre ID 1 sans statut (défaut "à lire")
+POST {{baseURL}}/book/1/collection
+Authorization: Bearer {{login.response.body.$.token}}
+
+
+### 4. Ajouter le livre ID 2 avec statut "en cours"
+POST {{baseURL}}/book/2/collection
+Authorization: Bearer {{login.response.body.$.token}}
+Content-Type: application/json
+
+{
+  "status": "en cours"
+}
+
+### 5. Tenter d'ajouter le livre ID 1 déjà présent (doit retourner 409)
+POST {{baseURL}}/book/1/collection
+Authorization: Bearer {{login.response.body.$.token}}
+
+### 6. Voir la collection avec les livres ajoutés
+GET {{baseURL}}/collection
+Authorization: Bearer {{login.response.body.$.token}}
+
+
+
+### 7. Filtrer par statut "à lire"
+GET {{baseURL}}/collection?status=%C3%A0%20lire
+Authorization: Bearer {{login.response.body.$.token}}
+
+### 8. Filtrer par statut "en cours"
+GET {{baseURL}}/collection?status=en%20cours
+Authorization: Bearer {{login.response.body.$.token}}
+
+### 9. Changer le statut du livre ID 1 en "lu"
+PATCH {{baseURL}}/book/1/collection
+Authorization: Bearer {{login.response.body.$.token}}
+Content-Type: application/json
+
+{
+  "status": "lu"
+}
+
+### 10. Changer le statut du livre ID 2 en "en pause"
+PATCH {{baseURL}}/book/2/collection
+Authorization: Bearer {{login.response.body.$.token}}
+Content-Type: application/json
+
+{
+  "status": "en pause"
+}
+
+
+
+### 11. Tenter un statut invalide (doit retourner 400)
+
+PATCH {{baseURL}}/book/1/collection
+Authorization: Bearer {{login.response.body.$.token}}
+Content-Type: application/json
+
+{
+  "status": "pas valide"
+}
+
+### 12. Retirer le livre ID 1 de la collection
+DELETE {{baseURL}}/book/1/collection
+Authorization: Bearer {{login.response.body.$.token}}
+
+### 13. Vérifier que le livre ID 1 est bien retiré
+GET {{baseURL}}/collection
+Authorization: Bearer {{login.response.body.$.token}}

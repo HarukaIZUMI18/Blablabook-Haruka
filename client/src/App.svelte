@@ -1,47 +1,154 @@
 <script>
-  import svelteLogo from './assets/svelte.svg'
-  import viteLogo from '/vite.svg'
-  import Counter from './lib/Counter.svelte'
+  import { Router, Route } from "svelte-routing";
+  // Import des composants de structure
+  import Header from "./components/Header.svelte";
+  import ErrorBoundary from "./components/ErrorBoundary.svelte";
+  import NotFound from "./components/views/NotFound.svelte";
+  import Collection from "./components/views/Collection.svelte";
+  import Profil from "./components/views/Profil.svelte";
+  import BookList from "./components/views/BookList.svelte";
+  import Carousel from "./components/Carousel.svelte";
+  import BookDetail from "./components/views/BookDetail.svelte";
+  import SearchResult from "./components/views/SearchResult.svelte";
+  import Footer from "./components/Footer.svelte";
+// URL utilisée par le router
+  export let url = "";
+
+  $: isLoggedIn =
+    typeof window !== "undefined" && localStorage.getItem("token") !== null;
 </script>
 
-<main>
-  <div>
-    <a href="https://vite.dev" target="_blank" rel="noreferrer">
-      <img src={viteLogo} class="logo" alt="Vite Logo" />
-    </a>
-    <a href="https://svelte.dev" target="_blank" rel="noreferrer">
-      <img src={svelteLogo} class="logo svelte" alt="Svelte Logo" />
-    </a>
-  </div>
-  <h1>Vite + Svelte</h1>
+<ErrorBoundary>
+  <Router {url}>
+    <Header />
 
-  <div class="card">
-    <Counter />
-  </div>
+    <main>
+      <Route path="/">
+        <div class:is-connected={isLoggedIn}>
+          {#if !isLoggedIn}
+            <div class="welcome">
+              <h1>Bienvenue sur <span>BlaBlaBook</span></h1>
+              <p>
+                Découvrez de nouveaux livres, explorez des univers variés et
+                trouvez votre prochaine lecture en un instant.
+              </p>
+              <p>
+                Créez un compte ou connectez‑vous pour accéder à votre espace
+                personnel et commencer votre aventure littéraire.
+              </p>
+            </div>
+          {/if}
+          <section class="carousel">
+            <h2>Suggestion de livres</h2>
+            <Carousel />
+          </section>
+        </div>
+      </Route>
+      <!-- Les pages-->
+      <Route path="/search">
+        <SearchResult />
+      </Route>
+      <Route path="/profil">
+        <Profil />
+      </Route>
 
-  <p>
-    Check out <a href="https://github.com/sveltejs/kit#readme" target="_blank" rel="noreferrer">SvelteKit</a>, the official Svelte app framework powered by Vite!
-  </p>
+      <Route path="/collection">
+        <Collection />
+      </Route>
 
-  <p class="read-the-docs">
-    Click on the Vite and Svelte logos to learn more
-  </p>
-</main>
+      <Route path="/livres">
+        <BookList />
+      </Route>
+
+      <Route path="/livre/:id" let:params>
+        <BookDetail {params} />
+      </Route>
+<!-- Page 404 si aucune route ne correspond -->
+      <Route path="*">
+        <NotFound />
+      </Route>
+    </main>
+    <Footer />
+  </Router>
+</ErrorBoundary>
 
 <style>
-  .logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
-    transition: filter 300ms;
+  .welcome {
+    text-align: center;
+    margin: 40px auto;
+    padding: 25px 30px;
+    max-width: 700px;
+    border: 2px solid var(--color-text);
+    border-radius: 12px;
+    background: var(--color-white);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    color: var(--color-text);
   }
-  .logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
+
+  .welcome h1 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    margin-bottom: 12px;
   }
-  .logo.svelte:hover {
-    filter: drop-shadow(0 0 2em #ff3e00aa);
+
+  .welcome p {
+    font-size: 1.15rem;
+    margin: 6px 0;
+    opacity: 0.9;
   }
-  .read-the-docs {
-    color: #888;
+  main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    text-align: center;
+  }
+  .is-connected h2 {
+    font-size: 1.9rem;
+    font-weight: 700;
+    margin-top: -20px;
+    margin-bottom: 50px;
+    letter-spacing: 0.5px;
+    color: var(--color-text);
+    border-radius: 15px;
+    background-color: var(--color-white);
+    box-shadow: var(--shadow);
+    padding: 1rem 2rem;
+    width: fit-content;
+  }
+
+  .carousel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .is-connected :global(.carousel) {
+    margin-top: 10px;
+  }
+
+  .is-connected {
+    padding-top: 70px;
+  }
+/* ── Responsive ── */
+  @media (max-width: 800px) {
+    .welcome {
+      margin: 1em;
+    }
+    .welcome h1 {
+      font-size: 1.4rem;
+    }
+    .welcome p {
+      font-size: 1rem;
+    }
+    .is-connected h2 {
+      font-size: 1.5rem;
+    }
+  }
+  @media (max-width: 500px) {
+    .is-connected h2 {
+      font-size: 1.2rem;
+    }
   }
 </style>

@@ -1,0 +1,28 @@
+@baseURL=http://localhost:3000
+@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTc3MjQ2MzI4NywiZXhwIjoxNzcyNTQ5Njg3fQ.KczHqW3HE5ad-Svcn5QhkUBSMXXlDSRcfhke6IxWcp0
+### Route home
+GET {{baseURL}}/
+
+### POST /auth/register
+POST {{baseURL}}/auth/register
+Content-Type: application/json
+
+{
+  "name": "Book",
+  "email": "blabla@book.com",
+  "password": "Test123456",
+  "confirm": "Test123456"
+}
+### POST /auth/login
+POST {{baseURL}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@test.com",
+  "password": "test123456"
+}
+### POST /user/me
+
+GET {{baseURL}}/user/me
+Authorization: Bearer {{accessToken}}
+test12

@@ -2,12 +2,12 @@ FROM node:24-alpine
 
 WORKDIR /app
 
-COPY package.json package-lock.json .
+COPY package.json package-lock.json ./
 
-RUN npm i 
+RUN npm i
 
 COPY . .
 
 EXPOSE 3000
 
-CMD ["npm", "test"]
+CMD ["npx", "nodemon", "index.js"]

@@ -1,0 +1,18 @@
+@baseURL=http://localhost:3000
+
+
+### Tout les livres
+GET {{baseURL}}/book
+
+### Tout les livres avec pagination
+GET {{baseURL}}/book?page=2&limit=5
+
+### Trouver 1 livre
+GET {{baseURL}}/book/23
+
+### Liste random
+GET {{baseURL}}/book/random
+
+
+### Recherche
+GET {{baseURL}}/book/search?q=j%20k%20rowling
