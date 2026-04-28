@@ -56,8 +56,8 @@
     updateVisibleCount();
     // Met à jour le carousel lors du redimensionnement de l'écran
     window.addEventListener("resize", updateVisibleCount);
-    // Défilement automatique toutes les 5 secondes
-    interval = setInterval(next, 5000);
+    // Défilement automatique toutes les 8 secondes
+    interval = setInterval(next, 8000);
   });
   // Supprime l'événement resize
   onDestroy(() => {
