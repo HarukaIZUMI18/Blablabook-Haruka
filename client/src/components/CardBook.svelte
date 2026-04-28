@@ -7,7 +7,8 @@
 
 <article class="card">
 <!-- Lien vers la page détail du livre -->
-  <a href="/livre/{book.id}">
+  <a href="/livre/{book.id}"
+  aria-label={`Voir les détails du livre ${book.title}`}>
     <figure>
       <div class="image-container">
       <!-- Affiche un skeleton pendant le chargement de l'image -->
@@ -17,7 +18,7 @@
 
         <img
           src={book.cover}
-          alt={book.title}
+          alt={`Couverture du livre ${book.title} par ${book.author}`}
           loading="lazy"
           decoding="async"
           class:hidden={!isLoaded}

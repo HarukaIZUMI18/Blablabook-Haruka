@@ -12,8 +12,6 @@ export const bookController = {
 
     const options = {
       order: [["title", order]], // Tri par titre
-
-
     };
 
 // Active la pagination seulement si page + limit sont fournis

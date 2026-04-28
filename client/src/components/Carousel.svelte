@@ -71,7 +71,7 @@
 
 <!-- Carousel de livres -->
 {#if books.length > 0}
-  <section class="carousel-container">
+  <section class="carousel-container" aria-label="Suggestions de livres">
     <div class="carousel-viewport">
       <!-- Bouton précédent -->
       <button class="arrow prev" onclick={prev} aria-label="Précédent">

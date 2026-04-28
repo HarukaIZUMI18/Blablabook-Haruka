@@ -45,9 +45,9 @@
 
 <header>
 <!-- Navigation principale -->
-  <nav class="nav-container">
+  <nav class="nav-container" aria-label="Navigation principale">
     <div class="nav-top">
-      <a class="logo" href="/">
+      <a class="logo" href="/" aria-label="Accueil - BlaBlaBook">
         {@html Logo}
       </a>
 
@@ -221,7 +221,7 @@
 <!-- Modal d'authentification (login / inscription) -->
 {#if showAuth}
   <div class="overlay" onclick={() => (showAuth = false)} role="none"></div>
-  <div class="auth-modal">
+  <div class="auth-modal" role="dialog" aria-modal="true">
     <Login isLogin={authMode === "login"} onSuccess={handleLoginSuccess} />
   </div>
 {/if}
