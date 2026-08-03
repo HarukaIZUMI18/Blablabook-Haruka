@@ -3,6 +3,7 @@ import { authRouter } from "./auth.router.js";
 import { userRouter } from "./user.router.js";
 import { bookRouter } from "./book.router.js";
 import { collectRouter } from "./collect.router.js";
+import { threadRouter } from "./thread.router.js";
 
 export const apiRouter = Router();
 
@@ -20,3 +21,4 @@ apiRouter.use(bookRouter);
 apiRouter.use(authRouter);
 apiRouter.use(userRouter);
 apiRouter.use(collectRouter);
+apiRouter.use(threadRouter);

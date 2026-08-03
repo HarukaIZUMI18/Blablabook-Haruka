@@ -15,6 +15,12 @@ export const api = {
   addToCollection,
   updateCollectionStatus,
   removeFromCollection,
+  allThread,
+  getThread,
+  createThread,
+  deleteThread,
+  addComment,
+  deleteComment,
 };
 
 async function register(signupData) {
@@ -75,4 +81,30 @@ async function updateCollectionStatus(bookId, status) {
 
 async function removeFromCollection(bookId) {
   return await httpRequester.delete(`book/${bookId}/collection`);
+}
+
+async function allThread(params = {}) {
+  const searchParams = new URLSearchParams(params).toString();
+  const endpoint = searchParams ? `thread?${searchParams}` : "thread";
+  return await httpRequester.get(endpoint);
+}
+
+async function getThread(id) {
+  return await httpRequester.get(`thread/${id}`);
+}
+
+async function createThread(threadData) {
+  return await httpRequester.post(`thread`, threadData);
+}
+
+async function deleteThread(id) {
+  return await httpRequester.delete(`thread/${id}`);
+}
+
+async function addComment(threadId, body) {
+  return await httpRequester.post(`thread/${threadId}/comment`, { body });
+}
+
+async function deleteComment(threadId, commentId) {
+  return await httpRequester.delete(`thread/${threadId}/comment/${commentId}`);
 }
