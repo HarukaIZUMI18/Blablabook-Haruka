@@ -622,7 +622,7 @@
 
   .fade-in { animation: fadeIn 0.45s ease both; }
 
-  @media (max-width: 480px) {
+  @media (min-width: 480px) {
     .profil-container { padding: 0.75rem; }
     h2 { font-size: 1.25rem; margin-bottom: 1rem; }
     .section { padding: 1rem; }

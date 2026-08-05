@@ -12,7 +12,7 @@ import {
 const app = express();
 
 app.use(cors({
-  origin: 'https://blablabook-haruka.vercel.app'
+  origin: process.env.CORS_ORIGIN
 })); // Active CORS
 app.use(express.json()); // Parse le JSON
 app.use(xss()); // Nettoie les entrées XSS

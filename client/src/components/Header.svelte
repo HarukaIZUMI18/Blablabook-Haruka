@@ -113,6 +113,10 @@
             class:active={currentPath === "/collection"}>Ma collection</a
           >
           <a
+          href="/thread"
+          class="link"
+          class:active={currentPath === "/thread"}>Forum</a>
+          <a
             href="/profil"
             class="link"
             class:active={currentPath === "/profil"}>Mon profil</a

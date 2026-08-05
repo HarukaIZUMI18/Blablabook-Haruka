@@ -11,6 +11,8 @@
   import BookDetail from "./components/views/BookDetail.svelte";
   import SearchResult from "./components/views/SearchResult.svelte";
   import Footer from "./components/Footer.svelte";
+  import Thread from "./components/views/Thread.svelte";
+  import ThreadDetail from "./components/ThreadDetail.svelte";
 // URL utilisée par le router
   export let url = "";
 
@@ -63,6 +65,14 @@
       <Route path="/livre/:id" let:params>
         <BookDetail {params} />
       </Route>
+
+       <Route path="/thread">
+        <Thread />
+      </Route>
+      <Route path="/thread/:id" let:params>
+        <ThreadDetail {params} />
+      </Route>
+      
 <!-- Page 404 si aucune route ne correspond -->
       <Route path="*">
         <NotFound />

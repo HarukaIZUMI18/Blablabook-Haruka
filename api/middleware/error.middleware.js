@@ -13,6 +13,7 @@ export const errorHandler = (err, req, res, next) => {
   }
 
   console.error(err.stack);
+  console.error("Original error:", err.original || err.parent || err);
   res.status(500).json({
     error: "Erreur Interne du Serveur",
     message: "Une erreur est survenue de notre côté.",

@@ -48,7 +48,8 @@ services:
     # on nomme notre conteneur pour savoir qui il est
     container_name: blablabook-client
     env_file:
-      - .docker.env
+    # Pour developement
+      - .docker.env.client
     # docker compose watch
     develop:
       watch:

@@ -8,7 +8,7 @@ export const threadController = {
         const limit = req.query.limit ? parseInt(req.query.limit) : null;
 
         const options = {
-            order: [["createdAt", "DESC"]],
+            order: [["created_at", "DESC"]],
             include: [{ model: User, attributes: ["id", "name"]}],
         };
         if (page && limit){
@@ -20,7 +20,7 @@ export const threadController = {
         res.status(StatusCodes.OK).json({
             totalItems: count,
             threads: rows,
-            ...Comment(page &&
+            ...(page &&
                 limit && {
                     currentPage: page,
                     totalPages: Math.ceil(count / limit),
