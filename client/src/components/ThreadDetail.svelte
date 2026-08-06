@@ -150,6 +150,9 @@
   <p class="error">{error}</p>
 {:else if thread}
   <div class="thread-detail">
+  <div class="return-list">
+  <a href="/thread">Retour à la liste</a>
+  </div>
     <div class="card">
       <div class="card-header">
         <h1>{thread.title}</h1>
@@ -189,8 +192,14 @@
       </div>
     {/if}
 
-    <h2>Ajouter un commentaire</h2>
-    <CommentForm threadId={thread.id} onCommentAdded={handleCommentAdded} />
+    {#if currentUser}
+      <h2>Ajouter un commentaire</h2>
+      <CommentForm threadId={thread.id} onCommentAdded={handleCommentAdded} />
+    {:else}
+      <p class="login-prompt">
+        <a href="/login">Connectez-vous</a> pour ajouter un commentaire.
+      </p>
+    {/if}
   </div>
 
  <!-- Modal édition du sujet -->
@@ -269,6 +278,15 @@
     padding: 1rem;
   }
 
+  .return-list{
+    text-align: start;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  .return-list :hover{
+    text-decoration: underline var(--color-secondary);
+  }
   .card {
     display: block;
     text-decoration: none;
@@ -400,5 +418,16 @@
     color: #c62828;
     font-size: 0.85rem;
     margin: -0.3rem 0 0.6rem 0;
+  }
+
+  .login-prompt {
+    text-align: center;
+    margin: 1rem;
+    color: #666;
+  }
+
+  .login-prompt a {
+    color: var(--color-secondary);
+    font-weight: 600;
   }
 </style>

@@ -57,6 +57,7 @@
         <a href="/livres">Catalogue</a>
         {#if token}
           <a href="/collection">Ma collection</a>
+          <a href="/thread">Forum</a>
         {/if}
       </nav>
       <!-- Mentions légales -->

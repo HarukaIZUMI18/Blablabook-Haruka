@@ -13,6 +13,7 @@
   import Footer from "./components/Footer.svelte";
   import Thread from "./components/views/Thread.svelte";
   import ThreadDetail from "./components/ThreadDetail.svelte";
+  import ThreadList from "./components/ThreadList.svelte";
 // URL utilisée par le router
   export let url = "";
 
@@ -43,6 +44,10 @@
           <section class="carousel">
             <h2>Suggestion de livres</h2>
             <Carousel />
+          </section>
+          <section class="thread">
+          <h2>Forum d'échange autour des livres</h2>
+            <ThreadList />
           </section>
         </div>
       </Route>
@@ -134,6 +139,9 @@
     justify-content: center;
   }
 
+  .thread{
+    margin: 3rem;
+  }
   .is-connected :global(.carousel) {
     margin-top: 10px;
   }
