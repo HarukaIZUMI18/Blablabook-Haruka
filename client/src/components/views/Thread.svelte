@@ -1,14 +1,17 @@
 <script>
+// @ts-nocheck
+
   // Imports et état global
-  import { onMount } from "svelte";
-  import { api } from "../../service/api.service.js";
   import ThreadForm from "../ThreadForm.svelte";
   import ThreadList from "../ThreadList.svelte";
+
+  /** @type {ThreadList} */
+  let threadListRef;
 </script>
 
 <div class="container">
-  <ThreadForm />
-  <ThreadList />
+  <ThreadForm onThreadCreated={() => threadListRef.reload()} />
+  <ThreadList bind:this={threadListRef} />
 </div>
 
 <style>

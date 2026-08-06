@@ -23,6 +23,23 @@ threadRouter.post(
   threadController.addComment,
 );
 
+threadRouter.patch(
+  "/thread/:id",
+  authenticateToken,
+  threadMiddleware.validateId,
+  threadMiddleware.validateUpdate,
+  threadController.update,
+);
+
+threadRouter.patch(
+  "/thread/:id/comment/:commentId",
+  authenticateToken,
+  threadMiddleware.validateId,
+  threadMiddleware.validateCommentId,
+  threadMiddleware.validateComment,
+  threadController.updateComment,
+);
+
 threadRouter.delete(
   "/thread/:id",
   authenticateToken,

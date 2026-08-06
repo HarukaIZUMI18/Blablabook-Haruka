@@ -1,5 +1,5 @@
 <script>
-     // Imports et état global
+  // Imports et état global
   import { onMount } from "svelte";
   import { api } from "../service/api.service.js";
 
@@ -9,22 +9,30 @@
   let loading = $state(true);
   let error = $state("");
 
-  onMount(async () => {
-    console.log("onMount");
-    try {
-        const data = await api.allThread();
-        console.log("data =", data);
-        console.log("threads =", data?.threads);
-        threads = data.threads;
-    }  catch (err) {
-            error = "Impossible de récupérer le sujet."
-        } finally {
-            loading = false;
-        }
-  });
   function formatDate(date) {
-    return new Date(date).toLocaleString("fr-FR");
+    return new Intl.DateTimeFormat("fr-FR", {
+year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(new Date(date));
+}
+
+export async function reload() {
+    loading = true;
+    error = "";
+    try {
+      const data = await api.allThread();
+      threads = data.threads;
+    } catch (err) {
+      error = "Impossible de récupérer le sujet.";
+    } finally {
+      loading = false;
+    }
   }
+
+  onMount(reload);
 </script>
 
 <div class="thread-list">
@@ -37,14 +45,13 @@
   {:else}
     {#each threads as thread}
       <a href="/thread/{thread.id}" class="thread-card">
-      <div class="thread-header">
-        <h3>{thread.title}</h3>
-        <span class="author">{thread.user?.name}</span>
-        <p class="date">
-  {formatDate(thread.created_at)}
-</p>
-       
-</div>
+        <div class="thread-header">
+          <h3>{thread.title}</h3>
+          <span class="author">{thread.user?.name}</span>
+          <p class="date">
+            {formatDate(thread.created_at)}
+          </p>
+        </div>
       </a>
     {/each}
   {/if}
@@ -73,12 +80,12 @@
     transform: scale(1.02);
   }
 
-  .thread-card .thread-header{
+  .thread-card .thread-header {
     display: flex;
     align-items: baseline;
     gap: 1rem;
   }
-  
+
   .thread-card h3 {
     margin: 0 0 0.4rem 0;
     flex: 1;
@@ -91,8 +98,8 @@
   }
 
   .thread-card .date {
-  font-size: 0.8rem;
-  color: #999;
-  margin-top: 0.5rem;
-}
+    font-size: 0.8rem;
+    color: #999;
+    margin-top: 0.5rem;
+  }
 </style>

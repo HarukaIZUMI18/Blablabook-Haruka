@@ -20,6 +20,8 @@ export const api = {
   createThread,
   deleteThread,
   addComment,
+  updateThread,
+  updateComment,
   deleteComment,
 };
 
@@ -97,12 +99,20 @@ async function createThread(threadData) {
   return await httpRequester.post(`thread`, threadData);
 }
 
-async function deleteThread(id) {
-  return await httpRequester.delete(`thread/${id}`);
-}
-
 async function addComment(threadId, body) {
   return await httpRequester.post(`thread/${threadId}/comment`, { body });
+}
+
+async function updateThread(id, threadData) {
+  return await httpRequester.patch(`thread/${id}`, threadData);
+}
+
+async function updateComment(threadId, commentId, body) {
+  return await httpRequester.patch(`thread/${threadId}/comment/${commentId}`, { body });
+}
+
+async function deleteThread(id) {
+  return await httpRequester.delete(`thread/${id}`);
 }
 
 async function deleteComment(threadId, commentId) {

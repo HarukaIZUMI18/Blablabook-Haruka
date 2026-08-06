@@ -1,15 +1,15 @@
 <script>
-import { api } from "../service/api.service.js";
+  import { api } from "../service/api.service.js";  import { getCurrentUser } from "../utils/auth.js";
 
   let { threadId, onCommentAdded = () => {} } = $props();
 
   let body = $state("");
   let loading = $state(false);
-let toast = $state();
-        /** @type {ReturnType<typeof setTimeout>} */
+  let toast = $state();
+  /** @type {ReturnType<typeof setTimeout>} */
   let toastTimeout;
 
-    /**
+  /**
    * @param {string} message
    * @param {"success" | "error"} type
    */
@@ -20,43 +20,46 @@ let toast = $state();
     toastTimeout = setTimeout(() => {
       toast = null;
     }, 3000);
-}
+  }
 
- const errorMessages = {
-        Unauthorized: "Connexion requise.",
-        "Bad Request": "Veuillez saisir le texte.",
-        "Failed to fetch": "Impossible de se connecter au serveur. Veuillez vérifier votre connexion Internet."
-    }
+  const errorMessages = {
+    Unauthorized: "Connexion requise.",
+    "Bad Request": "Veuillez saisir le texte.",
+    "Failed to fetch":
+      "Impossible de se connecter au serveur. Veuillez vérifier votre connexion Internet.",
+  };
 
-
-     /**
+  /**
    * @param {string} message
    */
-    function parseError(message) {
-        for (const [key, value] of Object.entries(errorMessages)){
-            if(message.includes(key)) return value;
-        }
-        return "Une erreur s'est produite. Veuillez réessayer.";
+  function parseError(message) {
+    for (const [key, value] of Object.entries(errorMessages)) {
+      if (message.includes(key)) return value;
     }
+    return "Une erreur s'est produite. Veuillez réessayer.";
+  }
 
-     async function handleSubmit() {
-        if (!body.trim() || !body.trim()) {
-            showToast("Veuillez saisir le texte.", "error");
-            return
-        }
-        loading = true;
-        try {
-            const comment = await api.addComment({ threadId, body });
-            body = "";
-            onCommentAdded(comment);
-            showToast("J'ai laissé un commentaire.", "success");
-
-        } catch (err) {
-            const message = err instanceof Error ? err.message : String(err);
-            showToast(parseError(message), "error");
-        } finally {
-            loading = false;
-        }
+  async function handleSubmit() {
+    if (!body.trim() || !body.trim()) {
+      showToast("Veuillez saisir le texte.", "error");
+      return;
+    }
+    if (body.trim().length < 10) {
+      showToast("Le texte doit contenir au moins 10 caractères.", "error");
+      return;
+    }
+    loading = true;
+    try {
+      const comment = await api.addComment(threadId, body);
+      body = "";
+      onCommentAdded(comment);
+      showToast("J'ai laissé un commentaire.", "success");
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      showToast(parseError(message), "error");
+    } finally {
+      loading = false;
+    }
   }
 </script>
 
@@ -82,8 +85,7 @@ let toast = $state();
   </form>
 
   {#if toast}
-
-  <div
+    <div
       class="toast"
       class:success={toast.type === "success"}
       class:error={toast.type === "error"}
@@ -101,7 +103,6 @@ let toast = $state();
     flex-direction: column;
     gap: 0.8rem;
   }
-
 
   .field {
     display: flex;

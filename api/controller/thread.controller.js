@@ -64,6 +64,43 @@ export const threadController = {
     });
     res.status(StatusCodes.CREATED).json(comment);
 },
+// Modifier un sujet (auteur uniquement)
+  async update(req, res) {
+    const thread = await Thread.findByPk(req.params.id);
+
+    if (!thread) {
+      return res.status(StatusCodes.NOT_FOUND).json({ erreur: "Le sujet n'a pas été trouvé" });
+    }
+
+    if (thread.user_id !== req.userId) {
+      return res.status(StatusCodes.FORBIDDEN).json({ erreur: "Vous n'êtes pas l'auteur de ce sujet" });
+    }
+
+    const { title, body } = req.body;
+    if (title) thread.title = title;
+    if (body) thread.body = body;
+    await thread.save();
+
+    res.status(StatusCodes.OK).json(thread);
+  },
+// Modifier un commentaire (auteur uniquement)
+async updateComment(req, res) {
+    const comment = await Comment.findByPk(req.params.commentId);
+
+    if (!comment || comment.thread_id !== parseInt(req.params.id, 10)) {
+      return res.status(StatusCodes.NOT_FOUND).json({ erreur: "Le commentaire n'a pas été trouvé" });
+    }
+
+    if (comment.user_id !== req.userId) {
+      return res.status(StatusCodes.FORBIDDEN).json({ erreur: "Vous n'êtes pas l'auteur de ce commentaire" });
+    }
+
+    comment.body = req.body.body;
+    await comment.save();
+
+    res.status(StatusCodes.OK).json(comment);
+  },
+
 // Suppression d'un sujet (auteur uniquement)
   async remove(req, res) {
     const thread = await Thread.findByPk(req.params.id);
