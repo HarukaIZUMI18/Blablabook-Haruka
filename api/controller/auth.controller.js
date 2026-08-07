@@ -12,12 +12,14 @@ export const authController = {
       email: Joi.string().email().required(),
       name: Joi.string().min(1).required(),
       password: Joi.string()
-        .min(8)
-        .pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/)
+        .min(12)
+        .max(24)
+        .pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>_\-+=~`[\]/\\;'])(.+).+$/)
         .required(),
       confirm: Joi.string()
-        .min(8)
-        .pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/)
+        .min(12)
+        .max(24)
+        .pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>_\-+=~`[\]/\\;'])(.+).+$/)
         .required(),
     });
 

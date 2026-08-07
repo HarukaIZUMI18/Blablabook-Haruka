@@ -15,10 +15,11 @@
   let toast = null;
   let toastTimeout = null;
 // Vérifications de mot de passe réactives 
-  $: hasMinLength = password.length >= 8;
+  $: hasMinLength = password.length >= 12;
   $: hasUppercase = /[A-Z]/.test(password);
   $: hasLowercase = /[a-z]/.test(password);
   $: hasDigit = /[0-9]/.test(password);
+  $: hasSpecial = /[!@#$%^&*(),.?":{}|<>_\-+=~`[\]/\\;']/.test(password);
 // Affiche une notification temporaire (toast)
   function showToast(message, type) {
     if (toastTimeout) clearTimeout(toastTimeout);
@@ -45,14 +46,16 @@
   }
 // Vérifivation de mots de pass
   function validatePassword(pwd) {
-    if (pwd.length < 8)
-      return "Le mot de passe doit contenir au moins 8 caractères.";
+    if (pwd.length < 12)
+      return "Le mot de passe doit contenir au moins 12 caractères.";
     if (!/[A-Z]/.test(pwd))
       return "Le mot de passe doit contenir au moins une majuscule.";
     if (!/[a-z]/.test(pwd))
       return "Le mot de passe doit contenir au moins une minuscule.";
     if (!/[0-9]/.test(pwd))
       return "Le mot de passe doit contenir au moins un chiffre.";
+    if (!/[!@#$%^&*(),.?":{}|<>_\-+=~`[\]/\\;']/.test(pwd))
+      return "Le mot de passe doit contenir au moins un caractère spécial.";
     return null;
   }
 // Pop-up pour login ou inscription
@@ -187,7 +190,7 @@
       {#if !isLogin}
         <div class="password-rules">
           <span class:valid={hasMinLength}>
-            {hasMinLength ? "✓" : "✗"} 8 caractères minimum
+            {hasMinLength ? "✓" : "✗"} 12 caractères minimum
           </span>
           <span class:valid={hasUppercase}>
             {hasUppercase ? "✓" : "✗"} Une majuscule
@@ -197,6 +200,9 @@
           </span>
           <span class:valid={hasDigit}>
             {hasDigit ? "✓" : "✗"} Un chiffre
+          </span>
+          <span class:valid={hasSpecial}>
+            {hasSpecial ? "✓" : "✗"} Un caractère spécial
           </span>
         </div>
       {/if}
