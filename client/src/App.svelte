@@ -14,7 +14,7 @@
   import Thread from "./components/views/Thread.svelte";
   import ThreadDetail from "./components/ThreadDetail.svelte";
   import ThreadList from "./components/ThreadList.svelte";
-// URL utilisée par le router
+  // URL utilisée par le router
   export let url = "";
 
   $: isLoggedIn =
@@ -46,7 +46,7 @@
             <Carousel />
           </section>
           <section class="thread">
-          <h2>Forum d'échange autour des livres</h2>
+            <h2>Forum d'échange autour des livres</h2>
             <ThreadList />
           </section>
         </div>
@@ -71,14 +71,19 @@
         <BookDetail {params} />
       </Route>
 
-       <Route path="/thread">
+      <Route path="/thread">
         <Thread />
       </Route>
+
       <Route path="/thread/:id" let:params>
         <ThreadDetail {params} />
       </Route>
-      
-<!-- Page 404 si aucune route ne correspond -->
+
+      <Route path="/threadList">
+        <ThreadList />
+      </Route>
+
+      <!-- Page 404 si aucune route ne correspond -->
       <Route path="*">
         <NotFound />
       </Route>
@@ -139,7 +144,7 @@
     justify-content: center;
   }
 
-  .thread{
+  .thread {
     margin: 3rem;
   }
   .is-connected :global(.carousel) {
@@ -149,7 +154,7 @@
   .is-connected {
     padding-top: 70px;
   }
-/* ── Responsive ── */
+  /* ── Responsive ── */
   @media (max-width: 800px) {
     .welcome {
       margin: 1em;

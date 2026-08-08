@@ -55,9 +55,9 @@
       <nav class="plan">
         <a href="/">Accueil</a>
         <a href="/livres">Catalogue</a>
+         <a href="/threadList">Forum</a>
         {#if token}
           <a href="/collection">Ma collection</a>
-          <a href="/thread">Forum</a>
         {/if}
       </nav>
       <!-- Mentions légales -->
