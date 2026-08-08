@@ -9,18 +9,18 @@ export const threadMiddleware = {
         next();
     },
     validateCreate(req, res, next) {
-    const { title, body } = req.body;
-    if (!title || !body) {
-      return res.status(StatusCodes.BAD_REQUEST).json({ erreur: "title et body sont requis" });
-    }
-    if(!title.trim().length < 5) {
-      return res.status(StatusCodes.BAD_REQUEST).json({ erreur: "Le title doit contenir au moins 5 caractères" });
-    }
-    if(!title.trim().length < 20) {
-      return res.status(StatusCodes.BAD_REQUEST).json({ erreur: "Le commentaire contenir au moins 20 caractères" });
-    }
-    next();
-  },
+  const { title, body } = req.body;
+  if (!title || !body) {
+    return res.status(StatusCodes.BAD_REQUEST).json({ erreur: "title et body sont requis" });
+  }
+  if (title.trim().length < 5) {
+    return res.status(StatusCodes.BAD_REQUEST).json({ erreur: "Le title doit contenir au moins 5 caractères" });
+  }
+  if (body.trim().length < 20) {
+    return res.status(StatusCodes.BAD_REQUEST).json({ erreur: "Le commentaire doit contenir au moins 20 caractères" });
+  }
+  next();
+},
 
   validateComment(req, res, next) {
     if (!req.body.body) {
@@ -38,22 +38,22 @@ export const threadMiddleware = {
   },
 
   validateUpdate(req, res, next) {
-    const { title, body } = req.body;
-    if (!title && !body) {
-      return res.status(StatusCodes.BAD_REQUEST).json({ erreur: "title ou body est requis" });
-    }
-    if (title !== undefined && !title.trim()) {
-      return res.status(StatusCodes.BAD_REQUEST).json({ erreur: "Le title ne peut pas être vide" });
-    }
-       if(!title.trim().length < 5) {
-      return res.status(StatusCodes.BAD_REQUEST).json({ erreur: "Le title doit contenir au moins 5 caractères" });
-    }
-    if (body !== undefined && !body.trim()) {
-      return res.status(StatusCodes.BAD_REQUEST).json({ erreur: "body ne peut pas être vide" });
-    }
-    if(!title.trim().length < 10) {
-      return res.status(StatusCodes.BAD_REQUEST).json({ erreur: "Le commentaire contenir au moins 10 caractères" });
-    }
-    next();
-  },
+  const { title, body } = req.body;
+  if (!title && !body) {
+    return res.status(StatusCodes.BAD_REQUEST).json({ erreur: "title ou body est requis" });
+  }
+  if (title !== undefined && !title.trim()) {
+    return res.status(StatusCodes.BAD_REQUEST).json({ erreur: "Le title ne peut pas être vide" });
+  }
+  if (title !== undefined && title.trim().length < 5) {
+    return res.status(StatusCodes.BAD_REQUEST).json({ erreur: "Le title doit contenir au moins 5 caractères" });
+  }
+  if (body !== undefined && !body.trim()) {
+    return res.status(StatusCodes.BAD_REQUEST).json({ erreur: "body ne peut pas être vide" });
+  }
+  if (body !== undefined && body.trim().length < 10) {
+    return res.status(StatusCodes.BAD_REQUEST).json({ erreur: "Le commentaire doit contenir au moins 10 caractères" });
+  }
+  next();
+},
 }
