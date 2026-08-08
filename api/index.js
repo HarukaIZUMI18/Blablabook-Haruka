@@ -12,7 +12,7 @@ import {
 const app = express();
 
 app.use(cors({
-  origin: process.env.CORS_ORIGIN
+  origin: process.env.CORS_ORIGIN,
 })); // Active CORS
 app.use(express.json()); // Parse le JSON
 app.use(xss()); // Nettoie les entrées XSS
