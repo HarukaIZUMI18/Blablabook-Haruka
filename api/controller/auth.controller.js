@@ -37,16 +37,14 @@ export const authController = {
     }
 
     const alreadyExist = await User.findOne({
-      where: {
-        [Op.or]: [{ email }, { name }],
-      },
+      where: { email },
     });
 
     // Vérifier si le username n'est pas déjà pris, sinon 409 (Conflict)
     if (alreadyExist) {
       return res
         .status(StatusCodes.CONFLICT)
-        .json({ message: "Email ou nom déjà utilisé" });
+        .json({ message: "Email déjà utilisé" });
     }
 
     // Hacher le mot de passe à l'aide de argon2
